@@ -1,4 +1,6 @@
+from app.models.basemodel import UserRole
 from app.models.patient import Patient
+from app.models.owner import HospitalOwner
 from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship
 from passlib.context import CryptContext
@@ -6,12 +8,7 @@ from uuid import UUID, uuid4
 import re
 from enum import Enum
 
-context = CryptContext(schemes=['bcrypt'])
-
-class UserRole(str, Enum):
-    ADMIN = "admin"
-    DOCTOR = "doctor"
-    PATIENT = "patient"
+context = CryptContext(schemes=["bcrypt"])
 
 class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
@@ -19,7 +16,8 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, index=True, description="Email of User")
     password: str = Field(description="Password of User")
 
-    patient: Optional["Patient"] = Relationship(back_populates="user")
+    patient: Optional["Patient"] = Relationship(back_populates="user")  
+    owner: Optional["HospitalOwner"] = Relationship(back_populates="user")
 
     def __init__(self, **kwargs):
         email = kwargs.get("email")
