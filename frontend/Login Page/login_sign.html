@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="A modern hospital website with signup and signin functionality.">
+    <meta name="keywords" content="Hospital, Healthcare, Signup, Signin, Responsive Design">
+    <meta name="author" content="Your Name">
+    <title>MedAze</title>
+    
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="login_sign.css">
+
+    <!-- Font Awesome for Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" href="medical_snake.webp" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <!-- Forms Container -->
+        <div class="forms-container">
+            <!-- Signup Form -->
+            <div class="form-control signup-form">
+                <form action="#">
+                    <h2>Qeydiyyat</h2>
+                    <input type="text" placeholder="Ad Soyad" required />
+                    <input type="email" placeholder="Email" required />
+                    <input type="password" placeholder="Şifrə" required />
+                    <input type="password" placeholder="Şifrəni təsdiqlə" required />
+                    <button type="submit">Daxil ol</button>
+                </form>
+                <span>və yaxud</span>
+                <div class="socials">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-google-plus-g"></i>
+                    <i class="fab fa-linkedin-in"></i>
+                </div>
+            </div>
+            <!-- Signin Form -->
+            <div class="form-control signin-form">
+                <form action="#">
+                    <h2>Daxil Ol</h2>
+                    <input type="text" placeholder="Ad Soyad" required />
+                    <input type="password" placeholder="Şifrə" required />
+                    <button type="submit">Daxil ol</button>
+                </form>
+                <span>və yaxud</span>
+                <div class="socials">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-google-plus-g"></i>
+                    <i class="fab fa-linkedin-in"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Introductions Container -->
+        <div class="intros-container">
+            <!-- Signin Intro -->
+            <div class="intro-control signin-intro">
+                <div class="intro-control__inner">
+                    <h2>Xoş gəlmisiniz!</h2>
+                    <p>
+                        Yenidən xoş gəldiniz! Sizi burada görmək bizi çox sevindirir. Ümid edirik ki, hər şey yaxşıdır və qaldığınız yerdən rahat şəkildə davam edə bilərsiniz. Hazırsınızsa, başlayaq!
+                    </p>
+                    <button id="signup-btn">Hesabınız yoxdur? Qeydiyyatdan keçin.</button>
+                </div>
+            </div>
+            <!-- Signup Intro -->
+            <div class="intro-control signup-intro">
+                <div class="intro-control__inner">
+                    <h2>Bizə qoşulun!</h2>
+                    <p>
+                        Sizi burada görmək bizi çox sevindirir! Əgər hələ hesab yaratmamısınızsa, indi qeydiyyatdan keçin və tibbi xidmətlərə, xüsusi təkliflərə və daha çoxuna asanlıqla giriş əldə edin!
+                    </p>
+                    <button id="signin-btn">Artıq hesabınız var? Daxil olun.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Link to JavaScript -->
+    <script src="login-sign.js"></script>
+</body>
+</html>
