@@ -1,3 +1,4 @@
+from app.api.v1.endpoints.auth import router as auth_router
 from fastapi import FastAPI
 from sqlalchemy import create_engine
 from sqlmodel import SQLModel
@@ -8,6 +9,7 @@ MYSQL_LINK = 'mysql://root:M3tin190534@localhost/Hospital'
 engine = create_engine(MYSQL_LINK, echo=True)
 
 def create_app():
+    app.include_router(router=auth_router)
     return app
 
 def create_db_and_tables():
