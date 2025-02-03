@@ -10,11 +10,8 @@ class Facade:
         self.patient_repo = Repository(Patient)
 
     async def add_user(self, user, session: AsyncSession):
-        new_user = user.model_dump()
-        user_data = User(**new_user)
-        await self.user_repo.add(obj=user_data, session=session)
-        
-        return user_data
+        await self.user_repo.add(obj=user, session=session)
+        return user
 
     async def get_user(self, user_id, session: AsyncSession):
         return await self.user_repo.get(obj_id=user_id, session=session)
@@ -28,11 +25,8 @@ class Facade:
         return next((user for user in users if user.email == email), None)
     
     async def add_patient(self, patient: Patient, session: AsyncSession):
-        patient_data = patient.model_dump()
-        new_patient = Patient(**patient_data)
-        await self.patient_repo.add(obj=new_patient, session=session)
-
-        return new_patient
+        await self.patient_repo.add(obj=patient, session=session)
+        return patient
     
     async def get_patient(self, patient_id, session: AsyncSession):
         return await self.patient_repo.get(obj_id=patient_id, session=session)
