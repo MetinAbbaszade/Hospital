@@ -1,14 +1,25 @@
-from app.models.basemodel import BaseModel
+from app.models.abstract.basemodel import BaseModel
 from sqlmodel import Field, Relationship
-from uuid import UUID, uuid4
-from typing import Optional
+from uuid import UUID
+from typing import List
 
-class HospitalOwner(BaseModel, table=True):
-    owner_id: UUID = Field(default_factory=uuid4, primary_key=True, foreign_key="user.id")
-    surname: str = Field(description="Surname of Hospital Owner")
+class Owner(BaseModel, table=True):
+    __tablename__ = "hospitalowners"
+    id: UUID = Field(
+        foreign_key="users.id",
+        primary_key=True,
+        unique=True,  # This ensures one-to-one relationship
+        index=True
+    )
+    fname: str = Field(description="Surname of Hospital Owner")
+    lname: str = Field(description="Name of Hospital Owner")
+    role: str = Field(description="Role Hospital Owner")
 
-    user: Optional["User"] = None 
+    user: "User" = Relationship(  # type: ignore
+        back_populates="owner",
+        sa_relationship_kwargs={"lazy": "joined"}
+    )
 
-from app.models.user import User  
-
-HospitalOwner.user = Relationship(back_populates="owner")
+    hospitals: List["Hospital"] = Relationship(  # type: ignore
+        back_populates="owner"
+    )

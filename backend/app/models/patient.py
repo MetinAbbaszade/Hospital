@@ -1,17 +1,24 @@
-from __future__ import annotations
-from app.models.basemodel import BaseModel
+from app.models.abstract.basemodel import BaseModel
 from sqlmodel import Field, Relationship
 from uuid import UUID, uuid4
-from typing import Optional, TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from app.models.user import User
+
 
 class Patient(BaseModel, table=True):
-    patient_id: UUID = Field(default_factory=uuid4, primary_key=True, foreign_key="user.id")
-    surname: str = Field(description="Surname of Patient")
+    __tablename__ = "patients"
 
-    user: Optional["User"] = Relationship(back_populates="patient")
 
-if not TYPE_CHECKING:
-    from app.models.user import User
+    id: UUID = Field(
+        foreign_key="users.id",
+        primary_key=True,
+        unique=True,
+        index=True
+    )
+    lname: str = Field(description="Surname of Patient")
+    fname: str = Field(description="Name of Patient")
+    role: str = Field(description="Role Patient")
+
+    user: "User" = Relationship( #type: ignore
+        back_populates="patient",
+        sa_relationship_kwargs={"lazy": "joined"}
+        )

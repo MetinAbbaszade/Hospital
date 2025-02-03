@@ -1,14 +1,21 @@
-from app.models.basemodel import BaseModel
+from app.models.abstract.basemodel import BaseModel
 from sqlmodel import Field, Relationship
 from uuid import UUID, uuid4
-from typing import Optional
 
 class Admin(BaseModel, table=True):
-    admin_id: UUID = Field(default_factory=uuid4, primary_key=True, foreign_key="user.id")
-    surname: str = Field(description="Surname of Admin")
+    __tablename__ = "admins"
+    
+    id: UUID = Field(
+        foreign_key="users.id",
+        primary_key=True,
+        unique=True,
+        index=True
+    )
+    lname: str = Field(description="Surname of Admin")
+    fname: str = Field(description="Name of Admin")
+    role: str = Field(description="Role Admin")
 
-    user: Optional["User"] = None  
-
-from app.models.user import User  
-
-Admin.user = Relationship(back_populates="admin")
+    user: "User" = Relationship( #type: ignore
+        back_populates="admin",
+        sa_relationship_kwargs={"lazy": "joined"}
+        )

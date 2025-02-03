@@ -1,26 +1,38 @@
-from app.models.basemodel import UserRole
-from app.models.patient import Patient
-from app.models.owner import HospitalOwner
-from app.models.admin import Admin
-from app.models.doctor import Doctor
-from typing import Optional
-from sqlmodel import SQLModel, Field, Relationship
+from app.models.abstract.basemodel import BaseModel
+from sqlmodel import Field, Relationship
 from passlib.context import CryptContext
-from uuid import UUID, uuid4
 import re
 
 context = CryptContext(schemes=["bcrypt"])
 
-class User(SQLModel, table=True):
-    id: UUID = Field(default_factory=uuid4, primary_key=True)
-    role: UserRole = Field(description="Role of User")
+class User(BaseModel, table=True):
+    __tablename__ = "users"
+
+    fname: str
+    lname: str
+    role: str = Field(description="Role of User")
     email: str = Field(unique=True, index=True, description="Email of User")
     password: str = Field(description="Password of User")
 
-    patient: Optional["Patient"] = Relationship(back_populates="user")  
-    owner: Optional["HospitalOwner"] = Relationship(back_populates="user")
-    admin: Optional["Admin"] = Relationship(back_populates="user")
-    doctor: Optional["Doctor"] = Relationship(back_populates="user")
+    patient: "Patient" = Relationship(  # type: ignore
+        back_populates="user",
+        sa_relationship_kwargs={"lazy": "joined"}
+    )
+
+    owner: "Owner" = Relationship(  # type: ignore
+        back_populates="user",
+        sa_relationship_kwargs={"lazy": "joined"}
+    )
+
+    admin: "Admin" = Relationship(  # type: ignore
+        back_populates="user",
+        sa_relationship_kwargs={"lazy": "joined"}
+    )
+
+    doctor: "Doctor" = Relationship(  # type: ignore
+        back_populates="user",
+        sa_relationship_kwargs={"lazy": "joined"}
+    )
 
     def __init__(self, **kwargs):
         email = kwargs.get("email")
