@@ -9,9 +9,17 @@ class Facade:
         self.user_repo = Repository(User)
         self.patient_repo = Repository(Patient)
 
-    async def add_user(self, user, session: AsyncSession):
-        await self.user_repo.add(obj=user, session=session)
-        return user
+    async def add_user(self, Model, session: AsyncSession):
+        userModel = User(
+        id=Model.id,
+        role=Model.role,
+        fname=Model.fname,
+        lname=Model.lname,
+        email=Model.email,
+        password=Model.password
+    )
+        await self.user_repo.add(obj=userModel, session=session)
+        return userModel
 
     async def get_user(self, user_id, session: AsyncSession):
         return await self.user_repo.get(obj_id=user_id, session=session)
@@ -24,7 +32,15 @@ class Facade:
         users = await self.user_repo.get_all(session=session)
         return next((user for user in users if user.email == email), None)
     
-    async def add_patient(self, patient: Patient, session: AsyncSession):
+    async def add_patient(self, Model, session: AsyncSession):
+        patient = Patient(
+            id=Model.id,
+            role=Model.role,
+            fname=Model.fname,
+            lname=Model.lname,
+            created_at=Model.created_at,
+            updated_at=Model.updated_at
+        )
         await self.patient_repo.add(obj=patient, session=session)
         return patient
     

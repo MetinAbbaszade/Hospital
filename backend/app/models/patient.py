@@ -14,8 +14,8 @@ class Patient(BaseModel, table=True):
         unique=True,
         index=True
     )
-    lname: str = Field(description="Surname of Patient")
     fname: str = Field(description="Name of Patient")
+    lname: str = Field(description="Surname of Patient")
     role: str = Field(description="Role Patient")
 
     user: "User" = Relationship( #type: ignore

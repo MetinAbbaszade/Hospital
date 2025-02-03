@@ -14,8 +14,8 @@ class Doctor(BaseModel, table=True):
     hospital_id: UUID = Field(
         foreign_key="hospitals.id"
     )
-    lname: str = Field(description="Surname of Doctor")
     fname: str = Field(description="Name of Doctor")
+    lname: str = Field(description="Surname of Doctor")
     role: str = Field(description="Role Doctor")
     specialization: str = Field(description="Specialization of Doctor")
     phone_num: str = Field(description="Phone Number of Doctor")

@@ -27,26 +27,9 @@ async def signup(Model: PatientModel, session: AsyncSession = Depends(get_db)):
     Model.updated_at = datetime.now(timezone.utc)
     Model.created_at = datetime.now(timezone.utc)
 
-    userModel = User(
-        id=Model.id,
-        role=Model.role,
-        fname=Model.fname,
-        lname=Model.lname,
-        email=Model.email,
-        password=Model.password
-    )
-    new_user: User = await facade.add_user(user=userModel, session=session)
+    new_user: User = await facade.add_user(Model=Model, session=session)
+    await facade.add_patient(Model=Model, session=session)
 
-    patient = Patient(
-        id=Model.id,
-        role=Model.role,
-        fname=Model.fname,
-        lname=Model.lname,
-        created_at=Model.created_at,
-        updated_at=Model.updated_at
-    )
-    await facade.add_patient(patient=patient, session=session)
-    print(new_user)
     return new_user
 
 

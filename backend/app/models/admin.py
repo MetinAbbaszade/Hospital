@@ -11,8 +11,8 @@ class Admin(BaseModel, table=True):
         unique=True,
         index=True
     )
-    lname: str = Field(description="Surname of Admin")
     fname: str = Field(description="Name of Admin")
+    lname: str = Field(description="Surname of Admin")
     role: str = Field(description="Role Admin")
 
     user: "User" = Relationship( #type: ignore
