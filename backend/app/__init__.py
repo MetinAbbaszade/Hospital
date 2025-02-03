@@ -5,7 +5,7 @@ from sqlmodel import SQLModel
 
 
 app = FastAPI()
-MYSQL_LINK = 'mysql://root:M3tin190534@localhost/Hospital'
+MYSQL_LINK = 'mysql+pymysql://root:M3tin190534@localhost/Hospital'
 engine = create_engine(MYSQL_LINK, echo=True)
 
 def create_app():
