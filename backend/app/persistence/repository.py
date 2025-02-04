@@ -45,10 +45,17 @@ class Repository(AbstractRepository):
 
     
     async def delete(self, obj_id, session: AsyncSession):
+        try:
+            if isinstance(obj_id, str):
+                obj_id = UUID(obj_id)
+            else:
+                pass
+        except:
+            raise ValueError('Id not suitable for uuid format.')
+        
         existing_object = session.execute(select(self.model).where(self.model.id == obj_id)).scalars().first()
         if existing_object:
             session.delete(existing_object)
             session.commit()
-
         else:
             raise ValueError(f'Product with ID {obj_id} not found')
