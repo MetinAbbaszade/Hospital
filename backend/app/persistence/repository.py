@@ -33,17 +33,23 @@ class Repository(AbstractRepository):
         return session.execute(select(self.model)).scalars().all()
 
     async def update(self, obj_id, obj, session: AsyncSession):
-        data = obj.dict()
-        existing_object = self.get(obj_id=obj_id, session=session)
-        for key, value in data:
-            if existing_object.get(key) != value:
+        data = obj.model_dump(exclude_unset=True)
+        try:
+            if isinstance(obj_id, str):
+                obj_id = UUID(obj_id)
+            else:
+                pass
+        except:
+            raise ValueError('Id not suitable for uuid format.')
+        
+        existing_object = session.execute(select(self.model).where(self.model.id == obj_id)).scalars().first()
+        for key, value in data.items():
+            if getattr(existing_object, key) != value and value:
                 setattr(existing_object, key, value)
         session.commit()
         session.refresh(existing_object)
-
         return existing_object
 
-    
     async def delete(self, obj_id, session: AsyncSession):
         try:
             if isinstance(obj_id, str):
