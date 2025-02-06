@@ -8,8 +8,6 @@ context = CryptContext(schemes=["bcrypt"])
 class User(BaseModel, table=True):
     __tablename__ = "users"
 
-    fname: str
-    lname: str
     role: str = Field(description="Role of User")
     email: str = Field(unique=True, index=True, description="Email of User")
     password: str = Field(description="Password of User")

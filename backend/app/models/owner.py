@@ -8,7 +8,7 @@ class Owner(BaseModel, table=True):
     id: UUID = Field(
         foreign_key="users.id",
         primary_key=True,
-        unique=True,  # This ensures one-to-one relationship
+        unique=True,
         index=True
     )
     fname: str = Field(description="Surname of Hospital Owner")
