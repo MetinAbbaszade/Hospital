@@ -1,5 +1,5 @@
 from app.api.v1.schemas.auth import CustomOAuthBearer, create_access_token
-from app.api.v1.schemas.patient import PatientModel
+from app.api.v1.schemas.patient import PostPatientModel
 from app.api.v1.schemas.user import UserModel
 from app.models.user import User
 from app.models.patient import Patient
@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 router = APIRouter(prefix='/api/v1/auth', tags=['authentication'])
 
 @router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=UserModel)
-async def signup(Model: PatientModel, session: AsyncSession = Depends(get_db)):
+async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db)):
     existing_user = await facade.get_user_by_email(email=Model.email, session=session)
 
     if existing_user:
