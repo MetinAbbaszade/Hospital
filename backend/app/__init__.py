@@ -1,4 +1,9 @@
 from app.api.v1.endpoints.auth import router as auth_router
+from app.api.v1.endpoints.admin import router as admin_router
+from app.api.v1.endpoints.patient import router as patient_router
+from app.api.v1.endpoints.doctor import router as doctor_router
+from app.api.v1.endpoints.hospital import router as hospital_router
+from app.api.v1.endpoints.owner import router as owner_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from sqlalchemy import create_engine
@@ -20,6 +25,11 @@ def create_app():
     )
 
     app.include_router(router=auth_router)
+    app.include_router(router=admin_router)
+    app.include_router(router=patient_router)
+    app.include_router(router=doctor_router)
+    app.include_router(router=hospital_router)
+    app.include_router(router=owner_router)
     return app
 
 def create_db_and_tables():
