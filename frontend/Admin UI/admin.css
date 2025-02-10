@@ -47,9 +47,21 @@
     display: block;
     color: #fff;
     font-size: 1.1rem;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.sidebar-menu a.active {
+.sidebar-menu a:hover {
+    background-color: #14a4d4;
+    color: white;
+    border-radius: 30px 0px 0px 30px;
+}
+
+.sidebar-menu a:hover span {
+    color: white !important;
+}
+
+
+.sidebar-menu a {
     background: #fff;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -59,7 +71,7 @@
 
 .sidebar-menu a span:first-child {
     font-size: 1.5rem;
-    padding-right: 1rem;
+    padding-right: 1.rem;
 }
 
 #nav-toggle:checked + .sidebar{
@@ -70,6 +82,16 @@
 #nav-toggle:checked + .sidebar li {
     padding-left: 1rem;
     text-align: center;
+}
+
+#nav-toggle:checked + .sidebar .sidebar-brand h1 span:last-child {
+    display: none;
+}
+
+.sidebar-brand h1 span:first-child {
+    display: inline-block;
+    text-align: center;
+    width: 1.5rem;
 }
 
 #nav-toggle:checked + .sidebar li a {
@@ -179,7 +201,21 @@ main {
     background-color: #fff;
     padding: 2rem;
     border-radius: 2px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
+
+.card-single:hover {
+    background-color: #14a4d4;
+    color: white;
+}
+
+.card-single:hover h1,
+.card-single:hover span,
+.card-single:hover div:last-child span,
+.card-single:hover div:first-child span {
+    color: white !important;
+}
+
 
 .card-single div:last-child span{
     font-size: 3rem;
@@ -188,16 +224,6 @@ main {
 
 .card-single div:first-child span{
     color: #8390a2;
-}
-
-.card-single:last-child {
-    background-color:#14a4d4;
-}
-
-.card-single:last-child h1,
-.card-single:last-child div:last-child span,
-.card-single:last-child div:first-child span{
-    color: #fff;
 }
 
 .recent-grid {
@@ -264,6 +290,13 @@ tr td:last-child {
     align-items: center;
 }
 
+.status {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%; 
+    margin-right: 5px;
+}
 
 .status.purple {
     background: rebeccapurple;
