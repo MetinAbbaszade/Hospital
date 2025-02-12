@@ -5,7 +5,7 @@ navToggle.addEventListener('change', () => {
     sidebar.style.transform = navToggle.checked ? 'translateX(0)' : 'translateX(-250px)';
 });
 
-const searchInput = document.querySelector('input[type="search"]');
+const seachInput = document.querySelector('input[type="search"]');
 const appointsRows = document.querySelectorAll('.recent-grid .projects .card-body table tbody tr');
 const usersRows = document.querySelectorAll('.customers .card-body .customer');
 
@@ -20,7 +20,7 @@ searchInput.addEventListener('input', (e) => {
     });
 
     usersRows.forEach(user => {
-        const name = user.querySelector('.info h4').textContent.toLowerCase();
+    
         const role = user.querySelector('.info small').textContent.toLowerCase();
 
         user.style.display = (name.includes(query) || role.includes(query)) ? '' : 'none';
