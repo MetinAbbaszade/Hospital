@@ -6,7 +6,7 @@ navToggle.addEventListener('change', () => {
 });
 
 const seachInput = document.querySelector('input[type="search"]');
-const appointsRows = document.querySelectorAll('.recent-grid .projects .card-body table tbody tr');
+c
 const usersRows = document.querySelectorAll('.customers .card-body .customer');
 
 searchInput.addEventListener('input', (e) => {
