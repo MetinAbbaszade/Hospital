@@ -26,3 +26,21 @@ body {
 .sidebar ul li {
     padding: 15px;
 }
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar ul li a.active {
+    background-color: #4c8bf5;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    width: 100%;
+}
