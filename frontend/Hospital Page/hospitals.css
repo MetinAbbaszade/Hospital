@@ -9,4 +9,7 @@ body {
     width: 250px;
     background-color: #1e3a5f;
     color: white;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
 }
