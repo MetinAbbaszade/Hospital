@@ -13,3 +13,7 @@ body {
     padding: 20px;
     position: fixed;
 }
+
+.sidebar h2 {
+    text-align: center;
+}
