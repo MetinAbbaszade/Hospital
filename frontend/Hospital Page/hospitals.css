@@ -17,3 +17,12 @@ body {
 .sidebar h2 {
     text-align: center;
 }
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px;
+}
