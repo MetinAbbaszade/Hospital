@@ -31,8 +31,6 @@ class Facade:
         userModel = User(
         id=Model.id,
         role=Model.role,
-        fname=Model.fname,
-        lname=Model.lname,
         email=Model.email,
         password=Model.password,
         created_at=Model.created_at,
