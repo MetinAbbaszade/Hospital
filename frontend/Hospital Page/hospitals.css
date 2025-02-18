@@ -44,3 +44,9 @@ body {
     padding: 20px;
     width: 100%;
 }
+
+.add-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
