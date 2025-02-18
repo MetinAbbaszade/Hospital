@@ -55,4 +55,23 @@ body {
     font-size: 20px;
     padding: 10px;
     border: none;
+    background-color: #4c8bf5;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
 }
+
+.hospital-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.hospital-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
+
