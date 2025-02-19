@@ -6,7 +6,7 @@
     const saveHospital = document.getElementById("saveHospital");
     const hospitalList = document.getElementById("hospitalList");
 
-    // Открытие модального окна
+    
     addHospitalLeft.addEventListener("click", () => {
         modal.style.display = "block";
     });
@@ -15,12 +15,11 @@
         modal.style.display = "block";
     });
 
-    // Закрытие модального окна
+    
     closeModal.addEventListener("click", () => {
         modal.style.display = "none";
     });
 
-    // Добавление госпиталя
     saveHospital.addEventListener("click", () => {
         const name = document.getElementById("hospitalName").value;
         const location = document.getElementById("hospitalLocation").value;
@@ -37,19 +36,19 @@
 
             hospitalList.appendChild(hospitalCard);
 
-            // Очистка полей ввода
+            
             document.getElementById("hospitalName").value = "";
             document.getElementById("hospitalLocation").value = "";
             document.getElementById("hospitalHours").value = "";
 
-            // Закрытие модального окна
+            
             modal.style.display = "none";
         } else {
             alert("Please fill in all fields!");
         }
     });
 
-    // Закрытие модального окна при клике вне его
+    
     window.addEventListener("click", (event) => {
         if (event.target == modal) {
             modal.style.display = "none";

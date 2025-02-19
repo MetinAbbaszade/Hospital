@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css");
+
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -6,19 +10,14 @@ body {
 }
 
 .sidebar {
-    width: 200px;
+    width: 345px;
     position: fixed;
     left: 0;
     top: 0;
     height: 100%;
     background: linear-gradient(170deg, #14a4d4, #171717);
-    padding-top: 20px;
+    z-index: 100;
     transition: width 300ms;
-    color: white;
-    text-align: center;
-    border-right: 4px solid #14a4d4;
-    z-index: 90;
-    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -31,16 +30,19 @@ body {
 .sidebar-brand span {
     display: inline-block;
     padding-right: 1rem;
+    margin-left: -10px;
 }
 
 .sidebar-menu {
     margin-top: 1rem;
+    list-style: none;
 }
 
 .sidebar-menu li{
     width: 100%;
     margin-bottom: 1.7rem;
-    padding-left: 1rem;
+    padding-left: 0rem;
+    list-style: none;
 }
 
 .sidebar-menu a {
@@ -75,15 +77,29 @@ body {
     padding-right: 1.rem;
 }
 
+#nav-toggle:checked + .sidebar{
+    width: 70px;
+}
+
+#nav-toggle:checked + .sidebar .sidebar-brand,
+#nav-toggle:checked + .sidebar li {
+    padding-left: 1rem;
+    text-align: center;
+}
+
+#nav-toggle:checked + .sidebar .sidebar-brand h1 span:last-child {
+    display: none;
+}
+
 .content {
-    margin-left: 270px;
+    margin-left: 345px;
     padding: 20px;
     width: 100%;
 }
 
 .add-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-bottom: 20px;
 }
 
