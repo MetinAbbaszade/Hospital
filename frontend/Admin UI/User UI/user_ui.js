@@ -67,8 +67,4 @@ editForm.addEventListener('submit', (e) => {
 
     // Show success message
     alert('Profile updated successfully!');
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 0a45d92 (z)
