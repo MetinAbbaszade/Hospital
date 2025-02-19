@@ -5,27 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospitals - MedAze</title>
     <link rel="stylesheet" href="hospitals.css">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>MedAze</h2>
-        <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="users.html">Users</a></li>
-            <li><a href="hospitals.html" class="active">Hospitals</a></li>
-            <li><a href="appoints.html">Appoints</a></li>
-        </ul>
+    
+    <div id="menu-toggle" class="menu-toggle">
+        <span class="las la-bars"></span> 
     </div>
 
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h1><span class="las la-star-of-life"></span> <span>MedAze</span></h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="" class="active"><span class="las la-igloo"></span> <span>Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="" class="active"><span class="las la-users-cog"></span> <span>Users</span></a>
+                </li>
+                <li>
+                    <a href="" class="active"><span class="las la-procedures"></span> <span>Hospitals</span></a>
+                </li>
+                <li>
+                    <a href="" class="active"><span class="las la-calendar-check"></span> <span>Appoints</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main content -->
     <div class="content">
-        <h1>Hospitals in Baku</h1>
+        <h1>Hospitals</h1>
         <div class="add-buttons">
-            <button id="addHospitalLeft">➕</button>
             <button id="addHospitalRight">➕</button>
         </div>
         <div class="hospital-list">
             <div class="hospital-card">
-                <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Failehekimi.az%2Fsaglamliq-unvani-baki-saglamliq-m-rk-zi%2F&psig=AOvVaw12xwBXoZxwQ7Rym-kTq3xh&ust=1739820160297000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCLC2zKf1yIsDFQAAAAAdAAAAABAE" alt="Baku Health Center">
+                <img src="" alt="Baku Health Center">
                 <h2>Baku Health Center</h2>
                 <p>📍 Location: Baku</p>
                 <p>🕒 Working Hours: 08:00 - 20:00</p>
@@ -53,7 +72,7 @@
             </div>
 
             <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="City Hospita">
+                <img src="images/hospitals/medilux_clinic.jpg" alt="City Hospital">
                 <h2>City Hospital</h2>
                 <p>📍 Location: Baku</p>
                 <p>🕒 Working Hours: 07:00 - 23:00</p>
@@ -108,8 +127,8 @@
                 <p>🕒 Working Hours: 24/7</p>
             </div>
         </div>
+    </div>
 
-        <script src="hospitals.js"></script>
-    </body>
-    </html>
-
+    <script src="hospitals.js"></script>
+</body>
+</html>

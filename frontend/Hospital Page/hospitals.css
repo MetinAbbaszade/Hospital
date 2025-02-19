@@ -2,19 +2,25 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     margin: 0;
-    background-color: #2a6db0;
+    background-color: #f4f7fe;
 }
 
 .sidebar {
-    width: 345px;
+    width: 200px;
     position: fixed;
     left: 0;
     top: 0;
     height: 100%;
     background: linear-gradient(170deg, #14a4d4, #171717);
-    z-index: 100;
+    padding-top: 20px;
     transition: width 300ms;
+    color: white;
+    text-align: center;
+    border-right: 4px solid #14a4d4;
+    z-index: 90;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
 }
+
 
 .sidebar-brand {
     height: 90px;
@@ -68,6 +74,7 @@ body {
     font-size: 1.5rem;
     padding-right: 1.rem;
 }
+
 .content {
     margin-left: 270px;
     padding: 20px;
@@ -103,6 +110,7 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     width: 300px;
 }
+
 
 .modal {
     display: none;
@@ -146,4 +154,3 @@ body {
     font-size: 24px;
     cursor: pointer;
 }
-
