@@ -13,11 +13,12 @@ class Doctor(BaseModel, table=True):
         index=True
     )
     hospital_id: UUID = Field(
-        foreign_key="hospitals.id"
+        foreign_key="hospitals.id",
+        index=True
     )
     fname: str = Field(description="Name of Doctor")
     lname: str = Field(description="Surname of Doctor")
-    specialization: str = Field(description="Specialization of Doctor")
+    specialization: str = Field(description="Specialization of Doctor", index=True)
     phone_num: str = Field(description="Phone Number of Doctor")
     experience: int = Field(description="Experience of Doctor")
 

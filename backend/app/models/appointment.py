@@ -17,7 +17,7 @@ class Appointment(BaseModel, table=True):
     doctor_id: UUID = Field(foreign_key="doctors.id", index=True)
     date_time: datetime = Field(description="Datetime of appointment", index=True)
     problem: str = Field(description="Problem of patient")
-    status: AppointmentStatus = Field(description="Status of appointment", default=AppointmentStatus.PENDING)
+    status: AppointmentStatus = Field(description="Status of appointment", default=AppointmentStatus.PENDING, index=True)
     comment: str = Field(default="", description="Comment from patient")
 
     patient: "Patient" = Relationship( #type: ignore
