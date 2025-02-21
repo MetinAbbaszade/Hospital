@@ -220,3 +220,11 @@ class Facade:
     async def delete_appointment(self, appointment_id, session: AsyncSession):
         return await self.appointment_repo.delete(obj_id=appointment_id, session=session)
     
+    async def get_appointment_by_doctor(self, doctor_id, session: AsyncSession):
+        return await self.appointment_repo.get_appoint_by_doctor(doctor_id=doctor_id, session=session)
+    
+    async def get_appointment_by_patient(self, patient_id, session: AsyncSession):
+        return await self.appointment_repo.get_appoint_by_patient(patient_id=patient_id, session=session)
+    
+    async def get_appointment_by_datetime(self, datetime, session: AsyncSession):
+        return await self.appointment_repo.get_appoint_by_datetime(datetime=datetime, session=session)
