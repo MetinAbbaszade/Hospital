@@ -96,6 +96,22 @@ async def get_doctor_by_hospital(
         data.append(doctor)
     return data
 
+@router.get('/specialization/{specialization}', response_model=List[GetDoctorModel], status_code=status.HTTP_200_OK)
+async def get_doctor_by_specialization(
+    specialization,
+    session: AsyncSession = Depends(get_db)
+):
+    doctors = await facade.get_doctor_by_specialization(specialization=specialization, session=session)
+    if not doctors:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Doctors not found'
+        )
+    
+    data = []
+    for doctor in doctors:
+        data.append(doctor)
+    return data
 
 @router.put('/{doctor_id}', response_model=GetDoctorModel, status_code=status.HTTP_200_OK)
 async def update_doctor(

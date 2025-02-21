@@ -18,3 +18,6 @@ class DoctorRepository(Repository):
             raise ValueError('Id not suitable for uuid format.')
         
         return session.execute(select(self.model).where(self.model.hospital_id == hospital_id)).scalars().all()
+    
+    async def get_doctor_by_specialities(self, specialization, session: AsyncSession):
+        return session.execute(select(self.model).where(self.model.specialization == specialization)).scalars().all()

@@ -151,6 +151,8 @@ class Facade:
     async def get_doctor_by_hospital(self, hospital_id, session: AsyncSession):
         return await self.doctor_repo.get_doctor_by_hospital(hospital_id=hospital_id, session=session)
     
+    async def get_doctor_by_specialization(self, specialization, session: AsyncSession):
+        return await self.doctor_repo.get_doctor_by_specialities(specialization=specialization, session=session)
     
     async def add_hospital(self, Model: HospitalModel, session: AsyncSession):
         data = Model.model_dump()
@@ -171,9 +173,11 @@ class Facade:
         return await self.hospital_repo.delete(obj_id=hospital_id, session=session)
     
     async def get_hospital_by_email(self, email, session: AsyncSession):
-        hospitals = await self.hospital_repo.get_all(session=session)
-        return next((hospital for hospital in hospitals if hospital.email == email), None)
+        return await self.hospital_repo.get_hospital_by_email(email=email, session=session)
     
+    async def get_hospital_by_owner(self, owner_id, session: AsyncSession):
+        return await self.hospital_repo.get_hospital_by_owner(owner_id=owner_id, session=session)
+        
     async def add_hospital_owner(self, Model: PostOwnerModel, session: AsyncSession):
         owner = Owner(
             id=Model.id,

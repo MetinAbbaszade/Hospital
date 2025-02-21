@@ -9,11 +9,11 @@ class Hospital(BaseModel, table=True):
     owner_id: UUID = Field(foreign_key="hospitalowners.id", index=True)
     name: str = Field(description="Name of Hospital")
     phone_number: str = Field(description="Phone Number of Hospital")
-    email: str = Field(description="Email of Hospital")
-    state: str = Field(description="State of Hospital", index=True)
-    city: str = Field(description="City of Hospital", index=True)
-    zipcode: str = Field(description="Zipcode of Hospital", index=True)
-    street: str = Field(description="Street of Hospital", index=True)
+    email: str = Field(description="Email of Hospital", index=True)
+    state: str = Field(description="State of Hospital")
+    city: str = Field(description="City of Hospital")
+    zipcode: str = Field(description="Zipcode of Hospital")
+    street: str = Field(description="Street of Hospital")
 
 
     owner: "Owner" = Relationship( #type: ignore

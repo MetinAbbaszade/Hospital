@@ -1,6 +1,6 @@
 from app.models.abstract.basemodel import BaseModel
 from sqlmodel import Field, Relationship
-from uuid import UUID, uuid4
+from uuid import UUID
 from typing import List
 
 

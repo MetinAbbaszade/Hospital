@@ -65,6 +65,40 @@ async def get_hospital(
         )
     return hospital
 
+@router.get('/owner/{owner_id}', response_model=List[HospitalModel], status_code=status.HTTP_200_OK)
+async def get_hospital_by_owner(
+    owner_id: UUID,
+    session: AsyncSession = Depends(get_db)):
+    owner = await facade.get_hospital_owner(owner_id=owner_id, session=session)
+    if not owner:
+        raise HTTPException(
+            detail='Owners not found',
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+    hospitals = await facade.get_hospital_by_owner(owner_id=owner_id, session=session)
+    if not hospitals:
+        raise HTTPException(
+            detail='Hospitals not found',
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+    
+    data = []
+    for hospital in hospitals:
+        data.append(hospital)
+    return data
+
+@router.get('/email/{email}', response_model=HospitalModel, status_code=status.HTTP_200_OK)
+async def get_hospital_by_email(
+    email: str,
+    session: AsyncSession = Depends(get_db)):
+    hospital = await facade.get_hospital_by_email(email=email, session=session)
+    if not hospital:
+        raise HTTPException(
+            detail='Hospitals not found',
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+    return hospital
+
 @router.put('/{hospital_id}', response_model=HospitalModel, status_code=status.HTTP_200_OK)
 async def update_hospital(
     hospital_id: UUID,
