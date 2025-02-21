@@ -10,7 +10,7 @@ class PostOwnerModel(BaseModel):
     password: str
     fname: str
     lname: str
-    role: None = "owner"
+    role: str | None = "owner"
     created_at: datetime | None = None
     updated_at: datetime | None = None
 

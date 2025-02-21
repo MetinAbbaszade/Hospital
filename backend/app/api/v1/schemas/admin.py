@@ -8,7 +8,7 @@ class PostAdminModel(BaseModel):
     password: str
     lname: str
     fname: str
-    role: None = "admin"
+    role: str | None = "admin"
     created_at: datetime | None = None
     updated_at: datetime | None = None    
 

@@ -8,7 +8,7 @@ class PostPatientModel(BaseModel):
     lname: str
     email: str
     password: str
-    role: None = "patient"
+    role: str | None = "patient"
     created_at: datetime | None = None
     updated_at: datetime | None = None
 

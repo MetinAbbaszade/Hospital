@@ -1,27 +1,36 @@
-from app.persistence.repository import Repository
+from app.persistence.modelRepository.admin import AdminRepository
+from app.persistence.modelRepository.user import UserRepository
+from app.persistence.modelRepository.patient import PatientRepository
+from app.persistence.modelRepository.doctor import DoctorRepository
+from app.persistence.modelRepository.owner import OwnerRepository
+from app.persistence.modelRepository.hospital import HospitalRepository
+from app.persistence.modelRepository.appointment import AppointmentRepository
 from app.models.user import User
 from app.models.patient import Patient
 from app.models.admin import Admin
 from app.models.doctor import Doctor
 from app.models.owner import Owner
 from app.models.hospital import Hospital
+from app.models.appointment import Appointment
 from app.api.v1.schemas.doctor import PostDoctorModel, UpdateDoctorModel
 from app.api.v1.schemas.patient import PostPatientModel, UpdatePatientModel
 from app.api.v1.schemas.user import UserModel
 from app.api.v1.schemas.admin import PostAdminModel, UpdateAdminModel
 from app.api.v1.schemas.hospital import HospitalModel, UpdateHospitalModel
 from app.api.v1.schemas.owner import PostOwnerModel, UpdateOwnerModel
+from app.api.v1.schemas.appointment import GetAppointmentModel, UpdateAppointmentModel, PostAppointmentModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class Facade:
     def __init__(self):
-        self.user_repo = Repository(User)
-        self.patient_repo = Repository(Patient)
-        self.admin_repo = Repository(Admin)
-        self.doctor_repo = Repository(Doctor)
-        self.owner_repo = Repository(Owner)
-        self.hospital_repo = Repository(Hospital)
+        self.user_repo = UserRepository()
+        self.patient_repo = PatientRepository()
+        self.admin_repo = AdminRepository()
+        self.doctor_repo = DoctorRepository()
+        self.owner_repo = OwnerRepository()
+        self.hospital_repo = HospitalRepository()
+        self.appointment_repo = AppointmentRepository()
 
 
     async def add_user(
@@ -139,6 +148,9 @@ class Facade:
     async def delete_doctor(self, doctor_id, session: AsyncSession):
         return await self.doctor_repo.delete(obj_id=doctor_id, session=session)
     
+    async def get_doctor_by_hospital(self, hospital_id, session: AsyncSession):
+        return await self.doctor_repo.get_doctor_by_hospital(hospital_id=hospital_id, session=session)
+    
     
     async def add_hospital(self, Model: HospitalModel, session: AsyncSession):
         data = Model.model_dump()
@@ -185,3 +197,22 @@ class Facade:
 
     async def delete_hospital_owner(self, owner_id, session: AsyncSession):
         return await self.owner_repo.delete(obj_id=owner_id, session=session)
+    
+    async def add_appointment(self, Model: PostAppointmentModel, session: AsyncSession):
+        data = Model.model_dump()
+        appointment = Appointment(**data)
+        await self.appointment_repo.add(obj=appointment, session=session)
+        return appointment
+    
+    async def get_all_appointments(self, session: AsyncSession):
+        return await self.appointment_repo.get_all(session=session)
+    
+    async def get_appointment(self, appointment_id, session: AsyncSession):
+        return await self.appointment_repo.get(obj_id=appointment_id, session=session)
+    
+    async def update_appointment(self, Model: UpdateAppointmentModel, appointment_id, session: AsyncSession):
+        return await self.appointment_repo.update(obj_id=appointment_id, obj=Model, session=session)
+    
+    async def delete_appointment(self, appointment_id, session: AsyncSession):
+        return await self.appointment_repo.delete(obj_id=appointment_id, session=session)
+    
