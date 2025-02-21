@@ -10,8 +10,8 @@ class HospitalRepository(Repository):
 
     async def get_hospital_by_owner(self, owner_id: UUID, session: AsyncSession):
         try:
-            if isinstance(hospital_id, str):
-                hospital_id = UUID(hospital_id)
+            if isinstance(owner_id, str):
+                owner_id = UUID(owner_id)
             else:
                 pass
         except:
