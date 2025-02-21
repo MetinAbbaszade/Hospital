@@ -11,7 +11,7 @@ class PostDoctorModel(BaseModel):
     hospital_id: UUID
     fname: str
     lname: str
-    role: str | None = "doctor"
+    role: None = "doctor"
     specialization: str
     phone_num: str
     experience: int
@@ -23,7 +23,6 @@ class GetDoctorModel(BaseModel):
     hospital_id: UUID
     fname: str
     lname: str
-    role: str | None = "doctor"
     specialization: str
     phone_num: str
     experience: int

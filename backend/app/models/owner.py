@@ -13,7 +13,6 @@ class Owner(BaseModel, table=True):
     )
     fname: str = Field(description="Surname of Hospital Owner")
     lname: str = Field(description="Name of Hospital Owner")
-    role: str = Field(description="Role Hospital Owner")
 
     user: "User" = Relationship(  # type: ignore
         back_populates="owner",

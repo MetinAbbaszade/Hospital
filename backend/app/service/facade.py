@@ -68,7 +68,6 @@ class Facade:
     async def add_admin(self, Model: PostAdminModel, session: AsyncSession):
         admin = Admin(
             id=Model.id,
-            role=Model.role,
             lname=Model.lname,
             fname=Model.fname,
             created_at=Model.created_at,
@@ -93,7 +92,6 @@ class Facade:
     async def add_patient(self, Model: PostPatientModel, session: AsyncSession):
         patient = Patient(
             id=Model.id,
-            role=Model.role,
             fname=Model.fname,
             lname=Model.lname,
             created_at=Model.created_at,
@@ -120,7 +118,6 @@ class Facade:
             hospital_id=Model.hospital_id,
             fname=Model.fname,
             lname=Model.lname,
-            role=Model.role,
             specialization=Model.specialization,
             phone_num=Model.phone_num,
             experience=Model.experience,
@@ -170,7 +167,6 @@ class Facade:
             id=Model.id,
             fname=Model.fname,
             lname=Model.lname,
-            role=Model.role,
             created_at=Model.created_at,
             updated_at=Model.updated_at
         )

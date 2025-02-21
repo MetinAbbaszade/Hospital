@@ -13,7 +13,6 @@ class Admin(BaseModel, table=True):
     )
     fname: str = Field(description="Name of Admin")
     lname: str = Field(description="Surname of Admin")
-    role: str = Field(description="Role Admin")
 
     user: "User" = Relationship( #type: ignore
         back_populates="admin",

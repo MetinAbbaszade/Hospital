@@ -2,13 +2,20 @@ from app.models.abstract.basemodel import BaseModel
 from sqlmodel import Field, Relationship
 from passlib.context import CryptContext
 import re
+from enum import Enum
+
+class UserRole(str, Enum):
+    ADMIN = "admin"
+    DOCTOR = "doctor"
+    PATIENT = "patient"
+    OWNER = "owner"
 
 context = CryptContext(schemes=["bcrypt"])
 
 class User(BaseModel, table=True):
     __tablename__ = "users"
 
-    role: str = Field(description="Role of User")
+    role: UserRole = Field(description="Role of User")
     email: str = Field(unique=True, index=True, description="Email of User")
     password: str = Field(description="Password of User")
 
