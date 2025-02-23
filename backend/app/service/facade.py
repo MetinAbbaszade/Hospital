@@ -248,6 +248,9 @@ class Facade:
     async def get_specialization(self, specialization_id, session: AsyncSession):
         return await self.specialization_repo.get(obj_id=specialization_id, session=session)
     
+    async def get_specialization_by_name(self, name, session: AsyncSession):
+        return await self.specialization_repo.get_specialization_by_name(name=name, session=session)
+    
     async def update_specialization(self, Model: UpdateSpecialization, specialization_id, session: AsyncSession):
         return await self.specialization_repo.update(obj_id=specialization_id, obj=Model, session=session)
     
@@ -267,10 +270,21 @@ class Facade:
     async def get_doctorspecialization(self, doctorspecialization_id, session: AsyncSession):
         return await self.doctorspecialization_repo.get(obj_id=doctorspecialization_id, session=session)
     
+    async def get_doctorspecialization_by_doctor(self, doctor_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.get_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
+    
+    async def get_doctorspecialization_by_specialization(self, specialization_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.get_doctorspecialization_by_specialization(specialization_id=specialization_id, session=session)
+    
     async def update_doctorspecialization(self, Model: UpdateDoctorSpecializationModel, doctorspecialization_id, session: AsyncSession):
         return await self.doctorspecialization_repo.update(obj_id=doctorspecialization_id, obj=Model, session=session)
     
     async def delete_doctorspecialization(self, doctorspecialization_id, session: AsyncSession):
         return await self.doctorspecialization_repo.delete(obj_id=doctorspecialization_id, session=session)
     
+    async def delete_doctorspecialization_by_doctor(self, doctor_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.delete_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
+    
+    async def delete_doctorspecialization_by_specialization(self, specialization_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.delete_doctorspecialization_by_specialization(specialization_id=specialization_id, session=session)
     
