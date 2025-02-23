@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 
 
@@ -12,6 +12,7 @@ class PostDoctorModel(BaseModel):
     fname: str
     lname: str
     role: str | None = "doctor"
+    specialities: List[str] | None = []
     phone_num: str
     experience: int
     created_at: datetime | None = None
