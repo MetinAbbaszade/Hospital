@@ -5,6 +5,8 @@ from app.api.v1.endpoints.doctor import router as doctor_router
 from app.api.v1.endpoints.hospital import router as hospital_router
 from app.api.v1.endpoints.owner import router as owner_router
 from app.api.v1.endpoints.appointment import router as appointment_router
+from app.api.v1.endpoints.specialization import router as specialization_router
+from app.api.v1.endpoints.doctorspecialization import router as doctorspecialization_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from sqlalchemy import create_engine
@@ -32,6 +34,8 @@ def create_app():
     app.include_router(router=hospital_router)
     app.include_router(router=owner_router)
     app.include_router(router=appointment_router)
+    app.include_router(router=specialization_router)
+    app.include_router(router=doctorspecialization_router)
     return app
 
 def create_db_and_tables():
