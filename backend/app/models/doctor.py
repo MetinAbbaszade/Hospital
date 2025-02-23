@@ -1,6 +1,7 @@
 from app.models.abstract.basemodel import BaseModel
+from app.models.doctorspecialization import DoctorSpecialization
 from sqlmodel import Field, Relationship
-from uuid import UUID, uuid4
+from uuid import UUID
 from typing import List
 
 class Doctor(BaseModel, table=True):
@@ -18,10 +19,14 @@ class Doctor(BaseModel, table=True):
     )
     fname: str = Field(description="Name of Doctor")
     lname: str = Field(description="Surname of Doctor")
-    specialization: str = Field(description="Specialization of Doctor", index=True)
     phone_num: str = Field(description="Phone Number of Doctor")
     experience: int = Field(description="Experience of Doctor")
 
+
+    specialization: List["Specialization"] = Relationship( #type: ignore
+        back_populates="doctors",
+        link_model=DoctorSpecialization)
+    
     user: "User" = Relationship( #type: ignore
         back_populates="doctor",
         sa_relationship_kwargs={"lazy": "joined"}
