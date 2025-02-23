@@ -13,20 +13,12 @@ router = APIRouter(prefix='/api/v1/doctorspecialization', tags=['DoctorSpecializ
 @router.post('/', response_model=GetDoctorSpecializationModel, status_code=status.HTTP_201_CREATED)
 async def create_doctorspecialization(Model: PostDoctorSpecializationModel, session: AsyncSession = Depends(get_db)):
     doctor_id = Model.doctor_id
-    existing_doctor = facade.get_doctor(doctor_id=doctor_id, session=session)
+    existing_doctor = await facade.get_doctor(doctor_id=doctor_id, session=session)
 
     if not existing_doctor:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Doctor not found'
-        )
-    specialization_id = Model.specialization_id
-    existing_specialization = facade.get_specialization(specialization_id=specialization_id, session=session)
-
-    if not existing_specialization:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Specialization Not Found"
         )
     
     Model.id = uuid4()

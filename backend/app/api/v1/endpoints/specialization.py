@@ -62,5 +62,6 @@ async def delete_specialization(specialization_id: UUID, session: Session = Depe
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Specialization not found"
             )
+    await facade.delete_doctorspecialization_by_specialization(specialization_id=specialization_id, session=session)
     await facade.delete_specialization(specialization_id=specialization_id, session=session)
     return None
