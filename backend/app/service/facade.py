@@ -5,6 +5,8 @@ from app.persistence.modelRepository.doctor import DoctorRepository
 from app.persistence.modelRepository.owner import OwnerRepository
 from app.persistence.modelRepository.hospital import HospitalRepository
 from app.persistence.modelRepository.appointment import AppointmentRepository
+from app.persistence.modelRepository.specialization import SpecializationRepository
+from app.persistence.modelRepository.doctorspecialization import DoctorSpecializationRepository
 from app.models.user import User
 from app.models.patient import Patient
 from app.models.admin import Admin
@@ -12,13 +14,17 @@ from app.models.doctor import Doctor
 from app.models.owner import Owner
 from app.models.hospital import Hospital
 from app.models.appointment import Appointment
+from app.models.specialization import Specialization
+from app.models.doctorspecialization import DoctorSpecialization
 from app.api.v1.schemas.doctor import PostDoctorModel, UpdateDoctorModel
 from app.api.v1.schemas.patient import PostPatientModel, UpdatePatientModel
 from app.api.v1.schemas.user import UserModel
 from app.api.v1.schemas.admin import PostAdminModel, UpdateAdminModel
 from app.api.v1.schemas.hospital import HospitalModel, UpdateHospitalModel
 from app.api.v1.schemas.owner import PostOwnerModel, UpdateOwnerModel
-from app.api.v1.schemas.appointment import GetAppointmentModel, UpdateAppointmentModel, PostAppointmentModel
+from app.api.v1.schemas.appointment import UpdateAppointmentModel, PostAppointmentModel
+from app.api.v1.schemas.specialization import PostSpecialization, UpdateSpecialization
+from app.api.v1.schemas.doctorspecialization import PostDoctorSpecializationModel, UpdateDoctorSpecializationModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -31,6 +37,8 @@ class Facade:
         self.owner_repo = OwnerRepository()
         self.hospital_repo = HospitalRepository()
         self.appointment_repo = AppointmentRepository()
+        self.specialization_repo = SpecializationRepository()
+        self.doctorspecialization_repo = DoctorSpecializationRepository()
 
 
     async def add_user(
@@ -127,7 +135,6 @@ class Facade:
             hospital_id=Model.hospital_id,
             fname=Model.fname,
             lname=Model.lname,
-            specialization=Model.specialization,
             phone_num=Model.phone_num,
             experience=Model.experience,
             created_at=Model.created_at,
@@ -228,3 +235,42 @@ class Facade:
     
     async def get_appointment_by_datetime(self, datetime, session: AsyncSession):
         return await self.appointment_repo.get_appoint_by_datetime(datetime=datetime, session=session)
+    
+    async def add_specialization(self, Model: PostSpecialization, session: AsyncSession):
+        data = Model.model_dump()
+        specialization = Specialization(**data)
+        await self.specialization_repo.add(obj=specialization, session=session)
+        return specialization
+    
+    async def get_all_specializations(self, session: AsyncSession):
+        return await self.specialization_repo.get_all(session=session)
+    
+    async def get_specialization(self, specialization_id, session: AsyncSession):
+        return await self.specialization_repo.get(obj_id=specialization_id, session=session)
+    
+    async def update_specialization(self, Model: UpdateSpecialization, specialization_id, session: AsyncSession):
+        return await self.specialization_repo.update(obj_id=specialization_id, obj=Model, session=session)
+    
+    async def delete_specialization(self, specialization_id, session: AsyncSession):
+        return await self.specialization_repo.delete(obj_id=specialization_id, session=session)
+    
+    
+    async def add_doctorspecialization(self, Model: PostDoctorSpecializationModel, session: AsyncSession):
+        data = Model.model_dump()
+        doctorspecialization = DoctorSpecialization(**data)
+        await self.doctorspecialization_repo.add(obj=doctorspecialization, session=session)
+        return doctorspecialization
+    
+    async def get_all_doctorspecializations(self, session: AsyncSession):
+        return await self.doctorspecialization_repo.get_all(session=session)
+    
+    async def get_doctorspecialization(self, doctorspecialization_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.get(obj_id=doctorspecialization_id, session=session)
+    
+    async def update_doctorspecialization(self, Model: UpdateDoctorSpecializationModel, doctorspecialization_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.update(obj_id=doctorspecialization_id, obj=Model, session=session)
+    
+    async def delete_doctorspecialization(self, doctorspecialization_id, session: AsyncSession):
+        return await self.doctorspecialization_repo.delete(obj_id=doctorspecialization_id, session=session)
+    
+    
