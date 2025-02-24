@@ -1,5 +1,8 @@
 from app.api.v1.schemas.doctor import GetDoctorModel, PostDoctorModel, UpdateDoctorModel
+from app.api.v1.schemas.doctorspecialization import PostDoctorSpecializationModel
 from app.api.v1.schemas.user import UserModel
+from app.api.v1.schemas.hospital import HospitalModel
+from app.api.v1.endpoints.doctorspecialization import create_doctorspecialization
 from app.extensions import get_db
 from app.service import facade
 from datetime import datetime
@@ -17,6 +20,7 @@ async def add_doctor(
     ):
     existing_email = await facade.get_user_by_email(email=Model.email, session=session)
 
+   
     if existing_email:
         raise HTTPException(
             detail='Email has already signed up',
@@ -34,8 +38,25 @@ async def add_doctor(
     Model.created_at = datetime.now()
     Model.updated_at = datetime.now()
 
+
     user = await facade.add_user(Model=Model, session=session)
     await facade.add_doctor(Model=Model, session=session)
+
+    for speciality in Model.specialities:
+        specialization = await facade.get_specialization_by_name(name=speciality, session=session)
+        if not specialization:
+            raise HTTPException(
+                detail='Specialization does not exist',
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+        doctor_specialization = PostDoctorSpecializationModel(
+            id=None,
+            doctor_id=Model.id,
+            specialization_id=specialization.id,
+            created_at=None,
+            updated_at=None
+        )
+        await create_doctorspecialization(Model=doctor_specialization, session=session)
 
     return user
 
@@ -70,6 +91,46 @@ async def get_doctor(
         )
     return doctor
 
+@router.get('/hospital/{hospital_id}', response_model=List[GetDoctorModel], status_code=status.HTTP_200_OK)
+async def get_doctor_by_hospital(
+    hospital_id: UUID, 
+    session: AsyncSession = Depends(get_db)
+    ):
+    hospital: HospitalModel = await facade.get_hospital(hospital_id=hospital_id, session=session)
+    print(hospital)
+    if not hospital:
+        raise HTTPException(
+            detail='Hospital not found',
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+    doctors = await facade.get_doctor_by_hospital(hospital_id=hospital_id, session=session)
+    print(doctors)
+    if doctors is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Doctors not found'
+        )
+    data = []
+    for doctor in doctors:
+        data.append(doctor)
+    return data
+
+@router.get('/specialization/{specialization}', response_model=List[GetDoctorModel], status_code=status.HTTP_200_OK)
+async def get_doctor_by_specialization(
+    specialization,
+    session: AsyncSession = Depends(get_db)
+):
+    doctors = await facade.get_doctor_by_specialization(specialization=specialization, session=session)
+    if not doctors:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Doctors not found'
+        )
+    
+    data = []
+    for doctor in doctors:
+        data.append(doctor)
+    return data
 
 @router.put('/{doctor_id}', response_model=GetDoctorModel, status_code=status.HTTP_200_OK)
 async def update_doctor(
@@ -107,5 +168,6 @@ async def delete_doctor(
             detail='Doctor not found',
             status_code=status.HTTP_404_NOT_FOUND
         )
+    await facade.delete_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
     await facade.delete_doctor(doctor_id=doctor_id, session=session)
     await facade.delete_user(user_id=doctor_id, session=session)

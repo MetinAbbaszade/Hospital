@@ -8,15 +8,14 @@ class PostOwnerModel(BaseModel):
     id: UUID | None = None
     email: str
     password: str
-    role: str | None = "owner"
     fname: str
     lname: str
+    role: str | None = "owner"
     created_at: datetime | None = None
     updated_at: datetime | None = None
 
 class GetOwnerModel(BaseModel):
     id: UUID | None = None
-    role: str
     fname: str
     lname: str
     created_at: datetime | None = None

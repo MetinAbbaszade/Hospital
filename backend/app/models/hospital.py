@@ -6,10 +6,10 @@ from uuid import UUID
 class Hospital(BaseModel, table=True):
     __tablename__ = "hospitals"
     
-    owner_id: UUID = Field(foreign_key="hospitalowners.id")
+    owner_id: UUID = Field(foreign_key="hospitalowners.id", index=True)
     name: str = Field(description="Name of Hospital")
     phone_number: str = Field(description="Phone Number of Hospital")
-    email: str = Field(description="Email of Hospital")
+    email: str = Field(description="Email of Hospital", index=True)
     state: str = Field(description="State of Hospital")
     city: str = Field(description="City of Hospital")
     zipcode: str = Field(description="Zipcode of Hospital")

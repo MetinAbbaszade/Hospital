@@ -73,6 +73,66 @@ async def get_all_appoints(
         data.append(appoint)
     return data
 
+@router.get("/doctor_id", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
+async def get_appoint_by_doctor(
+    doctor_id: UUID,
+    session: AsyncSession = Depends(get_db)
+    ):
+    doctor = await facade.get_doctor(doctor_id=doctor_id, session=session)
+    if not doctor:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Doctor not found"
+        )
+    
+    appoints = await facade.get_appointment_by_doctor(doctor_id=doctor_id, session=session)
+    if not appoints:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appoints not found"
+        )
+    data = []
+    for appoint in appoints:
+        data.append(appoint)
+    return data
+
+@router.get("/patient_id", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
+async def get_appoint_by_patient(
+    patient_id: UUID,
+    session: AsyncSession = Depends(get_db)
+    ):
+    patient = await facade.get_patient(patient_id=patient_id, session=session)
+    if not patient:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient not found"
+        )
+    appoints = await facade.get_appointment_by_patient(patient_id=patient_id, session=session)
+    if not appoints:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appoints not found"
+        )
+    data = []
+    for appoint in appoints:    
+        data.append(appoint)
+    return data
+
+@router.get("/datetime", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
+async def get_appoint_by_datetime(
+    datetime: datetime,
+    session: AsyncSession = Depends(get_db)
+):
+    appoints = await facade.get_appointment_by_datetime(datetime=datetime, session=session)
+    if not appoints:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appoints not found"
+        )
+    data = []
+    for appoint in appoints:
+        data.append(appoint)
+    return data
 
 @router.put("/appoint_id", response_model=GetAppointmentModel, status_code=status.HTTP_200_OK)
 async def update_full_appoint(
