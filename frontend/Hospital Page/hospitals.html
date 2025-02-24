@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospitals - MedAze</title>
-    <link rel="stylesheet" href="hospitals.css">
+    <title>MedAze - Hospitals</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="hospitals.css">
+    <link rel="icon" href="../Admin UI/Medical Snake.webp" type="image/x-icon">
 </head>
 <body>
-    
     <input type="checkbox" id="nav-toggle">
 
     <div class="sidebar">
@@ -19,122 +19,146 @@
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="" class="active"><span class="las la-igloo"></span> <span>Dashboard</span></a>
+                    <a href="../Admin UI/admin.html"><span class="las la-igloo"></span>
+                    <span>Dashboard</span></a>
                 </li>
                 <li>
-                    <a href="" class="active"><span class="las la-users-cog"></span> <span>Users</span></a>
+                    <a href="../User Page/users.html"><span class="las la-users-cog"></span>
+                    <span>Users</span></a>
                 </li>
                 <li>
-                    <a href="" class="active"><span class="las la-procedures"></span> <span>Hospitals</span></a>
+                    <a href="hospitals.html" class="active"><span class="las la-hospital"></span>
+                    <span>Hospitals</span></a>
                 </li>
                 <li>
-                    <a href="" class="active"><span class="las la-calendar-check"></span> <span>Appoints</span></a>
+                    <a href="../Appoint Page/appoints.html"><span class="las la-calendar-check"></span>
+                    <span>Appoints</span></a>
                 </li>
             </ul>
         </div>
     </div>
 
-
-    <div class="content">
-        <h1>Hospitals</h1>
+    <div class="main-content">
         <header>
             <h2>
                 <label for="nav-toggle">
                     <span class="las la-bars"></span>
                 </label>
-                    
+                Hospitals
             </h2>
 
-        <div class="add-buttons">
-            <button id="addHospitalRight">➕</button>
-        </div>
-
-
-        <div class="hospital-list">
-            <div class="hospital-card">
-                <img src="" alt="Baku Health Center">
-                <h2>Baku Health Center</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 08:00 - 20:00</p>
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="search" placeholder="Search hospitals..." id="hospitalSearch">
             </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/baku_medical_plaza.jpg" alt="Baku Medical Plaza">
-                <h2>Baku Medical Plaza</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 09:00 - 21:00</p>
+            <div class="add-button">
+                <button id="addHospitalBtn">
+                    <span class="las la-plus"></span>
+                    Add Hospital
+                </button>
             </div>
+        </header>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/avrasiya_hospital.jpg" alt="Avrasiya Hospital">
-                <h2>Avrasiya Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 24/7</p>
-            </div>
+        <main>
+            <div class="hospital-list">
+                <div class="hospital-card">
+                    <img src="images/hospitals/baku_health_center.jpg" alt="Baku Health Center">
+                    <h2>Baku Health Center</h2>
+                    <p><span class="las la-map-marker"></span>Address: 24 Javadkhan str., Nasimi district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 08:00 - 20:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 67</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="Medilux Clinic">
-                <h2>Medilux Clinic</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 08:30 - 19:30</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/baku_medical_plaza.jpg" alt="Baku Medical Plaza">
+                    <h2>Baku Medical Plaza</h2>
+                    <p><span class="las la-map-marker"></span>Address: 112 Tabriz str., Narimanov district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 09:00 - 21:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 68</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="City Hospital">
-                <h2>City Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 23:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/avrasiya_hospital.jpg" alt="Avrasiya Hospital">
+                    <h2>Avrasiya Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 21 Inshaatchilar ave., Yasamal district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 24/7</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 69</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="American Hospital Baku">
-                <h2>American Hospital Baku</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 23:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="Medilux Clinic">
+                    <h2>Medilux Clinic</h2>
+                    <p><span class="las la-map-marker"></span>Address: 8 Suleyman Sani Akhundov, Binagadi district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 08:30 - 19:30</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 70</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="Medera Hospital">
-                <h2>Medera Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 23:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="City Hospital">
+                    <h2>City Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 24 Javadkhan str., Nasimi district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 23:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 67</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="Modern Hospital">
-                <h2>Modern Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 23:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="American Hospital Baku">
+                    <h2>American Hospital Baku</h2>
+                    <p><span class="las la-map-marker"></span>Address: 112 Tabriz str., Narimanov district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 23:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 68</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="Ege Hospital">
-                <h2>Ege Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 23:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="Medera Hospital">
+                    <h2>Medera Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 21 Inshaatchilar ave., Yasamal district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 23:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 69</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="Central Clinic">
-                <h2>Central Clinic</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 18:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="Modern Hospital">
+                    <h2>Modern Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 8 Suleyman Sani Akhundov, Binagadi district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 23:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 70</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="Caspian International Hospital">
-                <h2>Caspian International Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 07:00 - 18:00</p>
-            </div>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="Ege Hospital">
+                    <h2>Ege Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 24 Javadkhan str., Nasimi district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 23:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 67</p>
+                </div>
 
-            <div class="hospital-card">
-                <img src="images/hospitals/medilux_clinic.jpg" alt="German Hospital">
-                <h2>German Hospital</h2>
-                <p>📍 Location: Baku</p>
-                <p>🕒 Working Hours: 24/7</p>
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="Central Clinic">
+                    <h2>Central Clinic</h2>
+                    <p><span class="las la-map-marker"></span>Address: 112 Tabriz str., Narimanov district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 18:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 68</p>
+                </div>
+
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="Caspian International Hospital">
+                    <h2>Caspian International Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 21 Inshaatchilar ave., Yasamal district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 07:00 - 18:00</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 69</p>
+                </div>
+
+                <div class="hospital-card">
+                    <img src="images/hospitals/medilux_clinic.jpg" alt="German Hospital">
+                    <h2>German Hospital</h2>
+                    <p><span class="las la-map-marker"></span>Address: 8 Suleyman Sani Akhundov, Binagadi district, Baku</p>
+                    <p><span class="las la-clock"></span>Working Hours: 24/7</p>
+                    <p><span class="las la-phone"></span>+994 12 123 45 70</p>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <script src="hospitals.js"></script>
