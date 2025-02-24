@@ -29,14 +29,14 @@
 
 .sidebar-brand span {
     display: inline-block;
-    padding-right: 1rem;
+    padding-right: 0.1rem;
 }
 
 .sidebar-menu {
     margin-top: 1rem;
 }
 
-.sidebar-menu li {
+.sidebar-menu li{
     width: 100%;
     margin-bottom: 1.7rem;
     padding-left: 1rem;
@@ -55,20 +55,34 @@
 }
 
 .sidebar-menu a:hover {
-    background: #14a4d4;
-    color: #fff;
+    background-color: #14a4d4;
+    color: white;
+    border-radius: 30px 0px 0px 30px;
+}
+
+.sidebar-menu a:hover span {
+    color: white !important;
+}
+
+
+.sidebar-menu a {
+    padding-left: 1rem;
+    display: block;
+    color: #14a4d4;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    background: #fff;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 30px 0px 0px 30px;
 }
 
 .sidebar-menu a span:first-child {
     font-size: 1.5rem;
-    padding-right: 1rem;
+    padding-right: 0.1rem;
 }
 
-#nav-toggle {
-    display: none;
-}
-
-#nav-toggle:checked + .sidebar {
+#nav-toggle:checked + .sidebar{
     width: 70px;
 }
 
@@ -78,23 +92,35 @@
     text-align: center;
 }
 
+#nav-toggle:checked + .sidebar .sidebar-brand h1 span:last-child {
+    display: none;
+}
+
+.sidebar-brand h1 span:first-child {
+    display: inline-block;
+    text-align: center;
+    width: 1.5rem;
+}
+
 #nav-toggle:checked + .sidebar li a {
     padding-left: 0rem;
 }
 
-#nav-toggle:checked + .sidebar .sidebar-brand h1 span:last-child,
+
+#nav-toggle:checked + .sidebar .sidebar-brand h2 span:last-child,
 #nav-toggle:checked + .sidebar li a span:last-child {
     display: none;
 }
 
-#nav-toggle:checked ~ .main-content {
+#nav-toggle:checked ~ .main-content{
     margin-left: 70px;
 }
 
-#nav-toggle:checked ~ .main-content header {
+#nav-toggle:checked ~ .main-content header{
     width: calc(100% - 70px);
     left: 70px;
 }
+
 
 .main-content {
     transition: margin-left 300ms;
