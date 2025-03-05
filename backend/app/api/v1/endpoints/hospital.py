@@ -1,4 +1,6 @@
 from app.api.v1.schemas.hospital import HospitalModel, UpdateHospitalModel
+from app.api.v1.endpoints.patienttohospitalcomment import delete_ph_comment_by_hospital_id
+from app.api.v1.endpoints.doctortohospitalcomments import delete_dh_comment_by_hospital_id
 from app.extensions import get_db
 from app.models.hospital import Hospital
 from app.service import facade
@@ -132,4 +134,6 @@ async def delete_hospital(
             status_code=status.HTTP_400_BAD_REQUEST
         )
     
+    await delete_dh_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    await delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
     await facade.delete_hospital(hospital_id=hospital_id, session=session)

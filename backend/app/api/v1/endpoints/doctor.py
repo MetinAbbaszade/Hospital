@@ -5,6 +5,7 @@ from app.api.v1.schemas.hospital import HospitalModel
 from app.api.v1.endpoints.doctorspecialization import create_doctorspecialization
 from app.api.v1.endpoints.patienttodoctorcomment import delete_pd_comment_by_doctor_id
 from app.api.v1.endpoints.doctortoappointcomment import delete_da_comment_by_doctor_id
+from app.api.v1.endpoints.doctortohospitalcomments import delete_dh_comment_by_doctor_id
 from app.extensions import get_db
 from app.service import facade
 from datetime import datetime
@@ -172,6 +173,7 @@ async def delete_doctor(
         )
     await delete_pd_comment_by_doctor_id(doctor_id=doctor_id, session=session)
     await delete_da_comment_by_doctor_id(doctor_id=doctor_id, session=session)
+    await delete_dh_comment_by_doctor_id(doctor_id=doctor_id, session=session)
     await facade.delete_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
     await facade.delete_doctor(doctor_id=doctor_id, session=session)
     await facade.delete_user(user_id=doctor_id, session=session)

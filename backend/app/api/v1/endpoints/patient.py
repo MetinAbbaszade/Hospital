@@ -1,6 +1,8 @@
 from app.api.v1.schemas.patient import PostPatientModel, GetPatientModel, UpdatePatientModel
 from app.api.v1.schemas.user import UserModel
 from app.api.v1.endpoints.patienttodoctorcomment import delete_pd_comment_by_patient_id
+from app.api.v1.endpoints.patienttoappointcomment import delete_pa_comment_by_patient_id
+from app.api.v1.endpoints.patienttohospitalcomment import delete_ph_comment_by_patient_id
 from app.extensions import get_db
 from app.models.user import User
 from app.service import facade
@@ -90,5 +92,7 @@ async def delete_patient(
             status_code=status.HTTP_404_NOT_FOUND
         )
     await delete_pd_comment_by_patient_id(patient_id=patient_id, session=session)
+    await delete_pa_comment_by_patient_id(patient_id=patient_id, session=session)
+    await delete_ph_comment_by_patient_id(patient_id=patient_id, session=session)
     await facade.delete_patient(patient_id=patient_id, session=session)
     await facade.delete_user(user_id=patient_id, session=session)
