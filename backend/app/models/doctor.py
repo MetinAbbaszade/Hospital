@@ -40,3 +40,11 @@ class Doctor(BaseModel, table=True):
     appointments: List["Appointment"] = Relationship( #type: ignore
         back_populates="doctor"
         )
+    
+    patienttodoctorcomments: List["PatientToDoctorComment"] = Relationship( #type: ignore
+        back_populates="doctor"
+        )
+
+    doctortoappointcomments: List ["DoctorToAppointComment"] = Relationship(#type: ignore
+        back_populates="doctor"
+    )

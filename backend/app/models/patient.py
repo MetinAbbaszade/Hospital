@@ -26,3 +26,15 @@ class Patient(BaseModel, table=True):
     appointments: List["Appointment"] = Relationship( #type: ignore
         back_populates="patient"
         )
+    
+    patienttodoctorcomments: List["PatientToDoctorComment"] = Relationship( #type: ignore
+        back_populates="patient"
+    )
+
+    patienttoappointcomments: List["PatientToAppointComment"] = Relationship(#type: ignore
+        back_populates="patient"
+    )
+
+    patienttohospitalcomments: List["PatientToHospitalComment"] = Relationship(#type: ignore
+        back_populates="patient"
+    )

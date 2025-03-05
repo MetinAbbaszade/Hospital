@@ -1,4 +1,5 @@
 from app.api.v1.schemas.appointment import PostAppointmentModel, GetAppointmentModel, UpdateAppointmentModel
+from app.api.v1.endpoints.doctortoappointcomment import delete_da_comment_by_appoint_id
 from app.extensions import get_db
 from app.models.appointment import Appointment
 from app.service import facade
@@ -178,4 +179,5 @@ async def delete_appoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Appoint not found"
         )
+    await delete_da_comment_by_appoint_id(appoint_id=appoint_id, session=session)
     await facade.delete_appointment(appointment_id=appoint_id, session=session)
