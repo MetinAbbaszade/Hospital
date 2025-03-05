@@ -1,4 +1,6 @@
 from app.api.v1.schemas.hospital import HospitalModel, UpdateHospitalModel
+from app.api.v1.schemas.hospitalspecialization import PostHospitalSpecializationModel, GetHospitalSpecializationModel
+from app.api.v1.endpoints.hospitalspecialization import create_hospitalspecialization
 from app.api.v1.endpoints.patienttohospitalcomment import delete_ph_comment_by_hospital_id
 from app.api.v1.endpoints.doctortohospitalcomments import delete_dh_comment_by_hospital_id
 from app.extensions import get_db
@@ -36,6 +38,22 @@ async def add_hospital(
     Model.updated_at = datetime.now()
 
     hospital = await facade.add_hospital(Model=Model, session=session)
+    for speciality in Model.specialities:
+        specialization = await facade.get_specialization_by_name(name=speciality, session=session)
+        if not specialization:
+            raise HTTPException(
+                detail='Specialization does not exist',
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+        hospital_specialization = PostHospitalSpecializationModel(
+            id=None,
+            hospital_id=Model.id,
+            specialization_id=specialization.id,
+            created_at=None,
+            updated_at=None
+        )
+        await create_hospitalspecialization(Model=hospital_specialization, session=session)
+
     return hospital
 
 
@@ -101,6 +119,22 @@ async def get_hospital_by_email(
         )
     return hospital
 
+@router.get('/specialization/{specialization}', response_model=List[GetHospitalSpecializationModel], status_code=status.HTTP_200_OK)
+async def get_hospital_by_specialization(
+    specialization,
+    session: AsyncSession = Depends(get_db)
+):
+    hospitals = await facade.get_hospitalspecialization_by_specialization(specialization_id=specialization, session=session)
+    if not hospitals:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Hospitals not found'
+        )
+    data = []
+    for hospital in hospitals:
+        data.append(hospital)
+    return data
+
 @router.put('/{hospital_id}', response_model=HospitalModel, status_code=status.HTTP_200_OK)
 async def update_hospital(
     hospital_id: UUID,
@@ -136,4 +170,5 @@ async def delete_hospital(
     
     await delete_dh_comment_by_hospital_id(hospital_id=hospital_id, session=session)
     await delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    await facade.delete_hospitalspecialization_by_hospital(hospital_id=hospital, session=session)
     await facade.delete_hospital(hospital_id=hospital_id, session=session)

@@ -1,4 +1,5 @@
 from app.models.abstract.basemodel import BaseModel
+from app.models.hospitalspecialization import HospitalSpecialization
 from typing import List
 from sqlmodel import Field, Relationship
 from uuid import UUID
@@ -23,6 +24,11 @@ class Hospital(BaseModel, table=True):
     doctors: List["Doctor"] = Relationship( #type: ignore
         back_populates="hospital"
         )
+    
+    specialization: List["Specialization"] = Relationship( #type: ignore
+        back_populates="hospitals",
+        link_model=HospitalSpecialization
+    )
     
     patienttohospitalcomments: List["PatientToHospitalComment"] = Relationship(#type: ignore
         back_populates="hospital"

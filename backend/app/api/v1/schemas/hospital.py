@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 
 
@@ -13,6 +13,7 @@ class HospitalModel(BaseModel):
     state: str
     city: str
     zipcode: str
+    specialities: List[str] | None = []
     street: str
     created_at: datetime | None = None
     updated_at: datetime | None = None
