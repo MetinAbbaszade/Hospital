@@ -2,7 +2,6 @@ from app.api.v1.schemas.doctor import GetDoctorModel, PostDoctorModel, UpdateDoc
 from app.api.v1.schemas.doctorspecialization import PostDoctorSpecializationModel
 from app.api.v1.schemas.user import UserModel
 from app.api.v1.schemas.hospital import HospitalModel
-from app.api.v1.endpoints.doctorspecialization import create_doctorspecialization
 from app.api.v1.endpoints.patienttodoctorcomment import delete_pd_comment_by_doctor_id
 from app.api.v1.endpoints.doctortoappointcomment import delete_da_comment_by_doctor_id
 from app.api.v1.endpoints.doctortohospitalcomments import delete_dh_comment_by_doctor_id
@@ -42,9 +41,6 @@ async def add_doctor(
     Model.updated_at = datetime.now()
 
 
-    user = await facade.add_user(Model=Model, session=session)
-    await facade.add_doctor(Model=Model, session=session)
-
     for speciality in Model.specialities:
         specialization = await facade.get_specialization_by_name(name=speciality, session=session)
         if not specialization:
@@ -59,7 +55,9 @@ async def add_doctor(
             created_at=None,
             updated_at=None
         )
-        await create_doctorspecialization(Model=doctor_specialization, session=session)
+        await facade.add_doctorspecialization(Model=doctor_specialization, session=session)
+    user = await facade.add_user(Model=Model, session=session)
+    await facade.add_doctor(Model=Model, session=session)
 
     return user
 

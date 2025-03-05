@@ -1,6 +1,5 @@
 from app.api.v1.schemas.hospital import HospitalModel, UpdateHospitalModel
 from app.api.v1.schemas.hospitalspecialization import PostHospitalSpecializationModel, GetHospitalSpecializationModel
-from app.api.v1.endpoints.hospitalspecialization import create_hospitalspecialization
 from app.api.v1.endpoints.patienttohospitalcomment import delete_ph_comment_by_hospital_id
 from app.api.v1.endpoints.doctortohospitalcomments import delete_dh_comment_by_hospital_id
 from app.extensions import get_db
@@ -37,7 +36,6 @@ async def add_hospital(
     Model.created_at = datetime.now()
     Model.updated_at = datetime.now()
 
-    hospital = await facade.add_hospital(Model=Model, session=session)
     for speciality in Model.specialities:
         specialization = await facade.get_specialization_by_name(name=speciality, session=session)
         if not specialization:
@@ -52,8 +50,8 @@ async def add_hospital(
             created_at=None,
             updated_at=None
         )
-        await create_hospitalspecialization(Model=hospital_specialization, session=session)
-
+        await facade.add_hospitalspecialization(Model=hospital_specialization, session=session)
+    hospital = await facade.add_hospital(Model=Model, session=session)
     return hospital
 
 

@@ -31,8 +31,8 @@ async def create_hospitalspecialization(Model: PostHospitalSpecializationModel, 
 
 @router.get('/', response_model=List[GetHospitalSpecializationModel], status_code=status.HTTP_200_OK)
 async def get_all_hospitalspecialization(session: AsyncSession = Depends(get_db)):
-    relationships = await facade.get_all_hospitalspecialization(session=session)
-    if not relationship:
+    relationships = await facade.get_all_hospitalspecializations(session=session)
+    if not relationships:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='No Hospital Specialization Found'
