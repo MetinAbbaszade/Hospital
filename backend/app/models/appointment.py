@@ -1,8 +1,9 @@
 from app.models.abstract.basemodel import BaseModel
 from datetime import datetime
+import enum
 from sqlmodel import Field, Relationship
 from uuid import UUID
-import enum
+from typing import List
 
 class AppointmentStatus(str, enum.Enum):
     PENDING = "pending"
@@ -28,4 +29,12 @@ class Appointment(BaseModel, table=True):
     doctor: "Doctor" = Relationship( #type: ignore
         back_populates="appointments",
         sa_relationship_kwargs={"lazy": "joined"}
+    )
+
+    doctortoappointcomments: List["DoctorToAppointComment"] = Relationship(#type: ignore
+        back_populates="appoint"
+    )
+    
+    patienttoappointcomments: List["PatientToAppointComment"] = Relationship(#type: ignore
+        back_populates="appoint"
     )
