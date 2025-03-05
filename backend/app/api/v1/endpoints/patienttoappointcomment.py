@@ -40,7 +40,7 @@ async def get_all_pa_comments(session: AsyncSession = Depends(get_db)):
     if not comments:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Comments not found"
+            detail="There is not any comments which are written to appoint by patient"
         )
     
     data = []
@@ -55,7 +55,7 @@ async def get_pa_comment(patienttoappointcomment_id, session: AsyncSession = Dep
     if not comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Comment not found"
+            detail="There isn't any comment on this id"
         )
     return comment
 
@@ -69,6 +69,11 @@ async def get_da_comment_by_patient_id(patient_id, session: AsyncSession = Depen
         )
     
     comments = await facade.get_pa_comment_by_patient_id(patient_id=patient_id, session=session)
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="AppointComments by patient_id not found"
+        )
     data = []
 
     for comment in comments:
@@ -87,6 +92,11 @@ async def get_pa_comment_by_appoint_id(appoint_id, session: AsyncSession = Depen
         )
     
     comments = await facade.get_pa_comment_by_appoint_id(appoint_id=appoint_id, session=session)
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="AppointComments by appoint_id not found"
+        )
     data = []
 
     for comment in comments:
@@ -102,24 +112,20 @@ async def update_pa_comment(patienttoappointcomment_id, Model: UpdatePatientToAp
     if not existing_comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='Comment not found'
+            detail="There is not any comments which are written to appoint by patient"
         )
     
     if Model.patient_id and Model.patient_id != existing_comment.patient_id:
-        existing_patient = await facade.get_patient(patient_id=Model.doctor_id, session=session)
-        if not existing_patient:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Patient Not Found'
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient_id can't change"
+        )
         
     if Model.appoint_id and Model.appoint_id != existing_comment.appoint_id:
-        existing_appoint = await facade.get_appointment(appointment_id=Model.appoint_id, session=session)
-        if not existing_appoint:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Appoint Not Found'
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appoint_id can't change"
+        )
         
     updated_comment = await facade.update_pa_comment(Model=Model, patienttoappointcomment_id=patienttoappointcomment_id, session=session)
 
@@ -131,7 +137,7 @@ async def delete_pa_comment(patienttoappointcomment_id, session: AsyncSession = 
     if not existing_comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='Comment not found'
+            detail='AppointComment not found'
         )
     await facade.delete_pa_comment(patienttoappointcomment_id=patienttoappointcomment_id, session=session)
     return None
@@ -143,7 +149,7 @@ async def delete_pa_comment_by_patient_id(patient_id, session: AsyncSession = De
     if not existing_comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='Comment not found'
+            detail='AppointComment not found'
         )
     
     await facade.delete_pa_comment_by_patient_id(patient_id=patient_id, session=session)
@@ -156,7 +162,7 @@ async def delete_pa_comment_by_appoint_id(appoint_id, session: AsyncSession = De
     if not existing_comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='Comment not found'
+            detail='AppointComment not found'
         )
     
     await facade.delete_pa_comment_by_appoint_id(appoint_id=appoint_id, session=session)

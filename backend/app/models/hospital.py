@@ -27,3 +27,7 @@ class Hospital(BaseModel, table=True):
     patienttohospitalcomments: List["PatientToHospitalComment"] = Relationship(#type: ignore
         back_populates="hospital"
     )
+
+    doctortohospitalcomments: List["DoctorToHospitalComment"] = Relationship( #type: ignore
+        back_populates="hospital"
+    )

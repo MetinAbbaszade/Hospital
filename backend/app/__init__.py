@@ -11,6 +11,7 @@ from app.api.v1.endpoints.patienttodoctorcomment import router as pd_comment_rou
 from app.api.v1.endpoints.doctortoappointcomment import router as da_comment_router
 from app.api.v1.endpoints.patienttoappointcomment import router as pa_comment_router
 from app.api.v1.endpoints.patienttohospitalcomment import router as ph_comment_router
+from app.api.v1.endpoints.doctortohospitalcomments import router as dh_comment_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from sqlalchemy import create_engine
@@ -44,6 +45,7 @@ def create_app():
     app.include_router(router=da_comment_router)
     app.include_router(router=pa_comment_router)
     app.include_router(router=ph_comment_router)
+    app.include_router(router=dh_comment_router)
     return app
 
 def create_db_and_tables():

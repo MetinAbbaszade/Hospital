@@ -39,7 +39,7 @@ async def get_all_da_comments(session: AsyncSession = Depends(get_db)):
     if not comments:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Comments not found"
+            detail="There is not any comments which are written to appointment by doctor"
         )
     
     data = []
@@ -54,7 +54,7 @@ async def get_da_comment(doctortoappointcomment_id, session: AsyncSession = Depe
     if not comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Comment not found"
+            detail="There isn't any coment on this id"
         )
     return comment
 
@@ -68,6 +68,11 @@ async def get_da_comment_by_doctor_id(doctor_id, session: AsyncSession = Depends
         )
     
     comments = await facade.get_da_comment_by_doctor_id(doctor_id=doctor_id, session=session)
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="There isn't any comment on this doctor_id"
+        )
     data = []
 
     for comment in comments:
@@ -86,6 +91,11 @@ async def get_da_comment_by_appoint_id(appoint_id, session: AsyncSession = Depen
         )
     
     comments = await facade.get_da_comment_by_appoint_id(appoint_id=appoint_id, session=session)
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="There isn't any comment on this appoint_id"
+        )
     data = []
 
     for comment in comments:
@@ -105,20 +115,16 @@ async def update_da_comment(doctortoappointcomment_id, Model: UpdateDoctorToAppo
         )
     
     if Model.doctor_id and Model.doctor_id != existing_comment.doctor_id:
-        existing_doctor = await facade.get_doctor(doctor_id=Model.doctor_id, session=session)
-        if not existing_doctor:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Doctor Not Found'
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="You can't change doctor_id"
+        )
         
     if Model.appoint_id and Model.appoint_id != existing_comment.appoint_id:
-        existing_appoint = await facade.get_appointment(appointment_id=Model.appoint_id, session=session)
-        if not existing_appoint:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Appoint Not Found'
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="You can't change appoint_id"
+        )
         
     updated_comment = await facade.update_da_comment(Model=Model, doctortoappointcomment_id=doctortoappointcomment_id, session=session)
 

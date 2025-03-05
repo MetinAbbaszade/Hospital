@@ -11,6 +11,7 @@ from app.persistence.modelRepository.patienttodoctorcomment import PatientToDoct
 from app.persistence.modelRepository.doctortoappointcomment import DoctorToAppointRepository
 from app.persistence.modelRepository.patienttoappointcomment import PatientToAppointCommentRepository
 from app.persistence.modelRepository.patienttohospitalcomment import PatientToHospitalCommentRepository
+from app.persistence.modelRepository.doctortohospitalcomment import DoctorToHospitalCommentRepository
 from app.models.user import User
 from app.models.patient import Patient
 from app.models.admin import Admin
@@ -24,6 +25,7 @@ from app.models.doctortoappointcomment import DoctorToAppointComment
 from app.models.patienttodoctorcomment import PatientToDoctorComment
 from app.models.patienttoappointcomment import PatientToAppointComment
 from app.models.patienttohospitalcomment import PatientToHospitalComment
+from app.models.doctortohospitalcomments import DoctorToHospitalComment
 from app.api.v1.schemas.doctor import PostDoctorModel, UpdateDoctorModel
 from app.api.v1.schemas.patient import PostPatientModel, UpdatePatientModel
 from app.api.v1.schemas.user import UserModel
@@ -37,6 +39,7 @@ from app.api.v1.schemas.patienttodoctorcomment import PostPatientToDoctorComment
 from app.api.v1.schemas.doctortoappointcomment import PostDoctorToAppointCommentModel, UpdateDoctorToAppointCommentModel
 from app.api.v1.schemas.patienttoappointcomment import PostPatientToAppointCommentModel, UpdatePatientToAppointCommentModel
 from app.api.v1.schemas.patienttohospitalcomment import PostPatientToHospitalCommentModel, UpdatePatientToHospitalCommentModel
+from app.api.v1.schemas.doctortohospitalcomment import PostDoctorToHospitalCommentModel, UpdateDoctorToHospitalCommentModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -55,6 +58,7 @@ class Facade:
         self.doctortoappointcomment_repo = DoctorToAppointRepository()
         self.patienttoappointcomment_repo = PatientToAppointCommentRepository()
         self.patienttohospitalcomment_repo = PatientToHospitalCommentRepository()
+        self.doctortohospitalcomment_repo = DoctorToHospitalCommentRepository()
     #User Facade
 
 
@@ -429,8 +433,8 @@ class Facade:
     async def add_ph_comment(self, Model: PostPatientToHospitalCommentModel, session: AsyncSession):
         data = Model.model_dump()
         hospitalcomment = PatientToHospitalComment(**data)
-        await self.patienttohospitalcomment_repo.add(obj=hospitalcommentw, session=session)
-        return hospitalcommentw
+        await self.patienttohospitalcomment_repo.add(obj=hospitalcomment, session=session)
+        return hospitalcomment
     
     async def update_ph_comment(self, Model: UpdatePatientToHospitalCommentModel, patienttohospitalcomment_id, session: AsyncSession):
         return await self.patienttohospitalcomment_repo.update(obj_id=patienttohospitalcomment_id, obj=Model, session=session)
@@ -444,3 +448,35 @@ class Facade:
 
     async def delete_ph_comment_by_hospital_id(self, hospital_id, session: AsyncSession):
         return await self.patienttohospitalcomment_repo.delete_by_hospital_id(hospital_id=hospital_id, session=session)
+    
+
+    #Doctor to Hospital Comments facade
+    async def get_dh_comment(self, doctortohospitalcomment_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.get(obj_id=doctortohospitalcomment_id, session=session)
+    
+    async def get_all_dh_comments(self, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.get_all(session=session)
+    
+    async def get_dh_comment_by_doctor_id(self, doctor_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.get_by_doctor_id(doctor_id=doctor_id, session=session)
+
+    async def get_dh_comment_by_hospital_id(self, hospital_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.get_by_hospital_id(hospital_id=hospital_id, session=session)
+    
+    async def add_dh_comment(self, Model: PostPatientToHospitalCommentModel, session: AsyncSession):
+        data = Model.model_dump()
+        hospitalcomment = DoctorToHospitalComment(**data)
+        await self.doctortohospitalcomment_repo.add(obj=hospitalcomment, session=session)
+        return hospitalcomment
+    
+    async def update_dh_comment(self, Model: UpdatePatientToHospitalCommentModel, doctortohospitalcomment_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.update(obj_id=doctortohospitalcomment_id, obj=Model, session=session)
+    
+    async def delete_dh_comment(self, doctortohospitalcomment_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.delete(obj_id=doctortohospitalcomment_id, session=session)
+    
+    async def delete_dh_comment_by_doctor_id(self, doctor_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.delete_by_doctor_id(doctor_id=doctor_id, session=session)
+
+    async def delete_dh_comment_by_hospital_id(self, hospital_id, session: AsyncSession):
+        return await self.doctortohospitalcomment_repo.delete_by_hospital_id(hospital_id=hospital_id, session=session)

@@ -48,7 +48,7 @@ async def get_patient_to_hospital_comment(hospitalcomment_id: UUID | str, sessio
     if not hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='There is not any comments which are written to doctor by hospital'
+            detail="There isn't any comment on this id"
         )
     return hospitalcomment
 
@@ -62,6 +62,11 @@ async def get_ph_comment_by_hospital_id(hospital_id: UUID, session: AsyncSession
         )
     
     comments = await facade.get_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="There isn't comment on this hospital_id"
+        )
 
     data = []
     for comment in comments:
@@ -79,7 +84,11 @@ async def get_ph_comment_by_patient_id(patient_id: UUID, session: AsyncSession =
         )
     
     comments = await facade.get_ph_comment_by_patient_id(patient_id=patient_id, session=session)
-
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="There isn't comment on this patient_id"
+        )
     data = []
     for comment in comments:
         data.append(comment)
@@ -93,7 +102,7 @@ async def update_patient_to_hospital_comment(hospitalcomment_id: UUID | str, Mod
     if not existing_hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='There is not any comments which are written by patient to doctor'
+            detail='There is not any comments which are written to hospital by patient'
         )
     if Model.hospital_id and Model.hospital_id != existing_hospitalcomment.hospital_id:
         raise HTTPException(
@@ -126,7 +135,7 @@ async def delete_ph_comment_by_hospital_id(hospital_id: UUID, session: AsyncSess
     if not existing_hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='hospitalcomment not found'
+            detail='Hospitalcomment not found'
         )
     await facade.delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
     return None
@@ -138,7 +147,7 @@ async def delete_ph_comment_by_patient_id(patient_id: UUID, session: AsyncSessio
     if not existing_doctorcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='Doctorcomment not found'
+            detail='Hospitalcomment not found'
         )
     await facade.delete_ph_comment_by_patient_id(patient_id=patient_id, session=session)
     return None

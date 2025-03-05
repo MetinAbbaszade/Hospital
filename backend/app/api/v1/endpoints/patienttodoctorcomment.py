@@ -35,7 +35,7 @@ async def get_patient_to_doctor_comments(session: AsyncSession = Depends(get_db)
     if not doctorcomments:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='There is not any comments which are written by patient to doctor'
+            detail='There is not any comments which are written to doctor by patient'
         )
     data = []
     for doctorcomment in doctorcomments:
@@ -48,7 +48,7 @@ async def get_patient_to_doctor_comment(doctorcomment_id: UUID | str, session: A
     if not doctorcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='There is not any comments which are written by patient to doctor'
+            detail="There isn't comment on this id"
         )
     return doctorcomment
 
@@ -62,6 +62,11 @@ async def get_pd_comment_by_doctor_id(doctor_id: UUID, session: AsyncSession = D
         )
     
     comments = await facade.get_pd_comment_by_doctor_id(doctor_id=doctor_id, session=session)
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Comment not found on this doctor_id'
+        )
 
     data = []
     for comment in comments:
@@ -79,7 +84,11 @@ async def get_pd_comment_by_patient_id(patient_id: UUID, session: AsyncSession =
         )
     
     comments = await facade.get_pd_comment_by_patient_id(patient_id=patient_id, session=session)
-
+    if not comments:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Comment not found on this patient_id'
+        )
     data = []
     for comment in comments:
         data.append(comment)
@@ -93,7 +102,7 @@ async def update_patient_to_doctor_comment(doctorcomment_id: UUID | str, Model: 
     if not existing_doctorcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='There is not any comments which are written by patient to doctor'
+            detail="There isn't comment on this id"
         )
     if Model.doctor_id and Model.doctor_id != existing_doctorcomment.doctor_id:
         raise HTTPException(
