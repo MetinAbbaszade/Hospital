@@ -2,7 +2,8 @@ from app.api.v1.schemas.admin import GetAdminModel, PostAdminModel, UpdateAdminM
 from app.api.v1.schemas.user import UserModel
 from app.extensions import get_db
 from app.models.user import User
-from app.service import facade
+from app.service.admin import Facade as Admin_facade
+from app.service.user import Facade as User_facade
 from datetime import datetime
 from fastapi import APIRouter, Depends, status, HTTPException
 from uuid import UUID, uuid4
@@ -11,10 +12,13 @@ from typing import List
 
 router = APIRouter(prefix='/api/v1/admin', tags=['admin'])
 
+user_facade = User_facade()
+admin_facade = Admin_facade()
+
 
 @router.post('/', response_model=UserModel, status_code=status.HTTP_201_CREATED)
 async def add_admin(Model: PostAdminModel, session: AsyncSession = Depends(get_db)):
-    existing_user: User = await facade.get_user_by_email(email=Model.email,session=session)
+    existing_user: User = await user_facade.get_user_by_email(email=Model.email,session=session)
     if existing_user:
         raise HTTPException(
             detail='Email has already signed up',
@@ -25,13 +29,13 @@ async def add_admin(Model: PostAdminModel, session: AsyncSession = Depends(get_d
     Model.created_at = datetime.now()
     Model.updated_at = datetime.now()
     
-    new_user = await facade.add_user(Model=Model, session=session)
-    await facade.add_admin(Model=Model, session=session)
+    new_user = await user_facade.add_user(Model=Model, session=session)
+    await admin_facade.add_admin(Model=Model, session=session)
     return new_user
 
 @router.get('/', response_model=List[GetAdminModel], status_code=status.HTTP_200_OK)
 async def get_all_admins(session: AsyncSession = Depends(get_db)):
-    admins: List[GetAdminModel] = await facade.get_all_admins(session=session)
+    admins: List[GetAdminModel] = await admin_facade.get_all_admins(session=session)
 
     if not admins:
         raise HTTPException(
@@ -45,7 +49,7 @@ async def get_all_admins(session: AsyncSession = Depends(get_db)):
 
 @router.get('/{admin_id}', response_model=GetAdminModel, status_code=status.HTTP_200_OK)
 async def get_admin(admin_id, session: AsyncSession = Depends(get_db)):
-    admin: GetAdminModel = await facade.get_admin(admin_id=admin_id, session=session)
+    admin: GetAdminModel = await admin_facade.get_admin(admin_id=admin_id, session=session)
 
     if not admin:
         raise HTTPException(
@@ -61,24 +65,24 @@ async def update_admin(
     Model: UpdateAdminModel,
     session: AsyncSession = Depends(get_db)
 ):
-    admin: GetAdminModel = await facade.get_admin(admin_id=admin_id, session=session)
+    admin: GetAdminModel = await admin_facade.get_admin(admin_id=admin_id, session=session)
 
     if not admin:
         raise HTTPException(
             detail='Admin not found',
             status_code=status.HTTP_404_NOT_FOUND
         )
-    updated_admin = await facade.update_admin(admin_id=admin_id, Model=Model, session=session)
+    updated_admin = await admin_facade.update_admin(admin_id=admin_id, Model=Model, session=session)
     return updated_admin
 
 @router.delete('/{admin_id}', response_model=None, status_code=status.HTTP_204_NO_CONTENT)
 async def delete_admin(admin_id, session: AsyncSession = Depends(get_db)):
-    admin: GetAdminModel = await facade.get_admin(admin_id=admin_id, session=session)
+    admin: GetAdminModel = await admin_facade.get_admin(admin_id=admin_id, session=session)
 
     if not admin:
         raise HTTPException(
             detail='Admin not found',
             status_code=status.HTTP_404_NOT_FOUND
         )
-    await facade.delete_admin(admin_id=admin_id, session=session)
-    await facade.delete_user(user_id=admin_id, session=session)
+    await admin_facade.delete_admin(admin_id=admin_id, session=session)
+    await user_facade.delete_user(user_id=admin_id, session=session)

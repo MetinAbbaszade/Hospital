@@ -3,12 +3,18 @@ from app.api.v1.endpoints.doctortoappointcomment import delete_da_comment_by_app
 from app.api.v1.endpoints.patienttoappointcomment import delete_pa_comment_by_appoint_id
 from app.extensions import get_db
 from app.models.appointment import Appointment
-from app.service import facade
+from app.service.appointment import Facade as Appoint_facade
+from app.service.doctor import Facade as Doctor_facade
+from app.service.patient import Facade as Patient_facade
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, status, Depends
 from uuid import uuid4, UUID
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
+
+appoint_facade = Appoint_facade()
+doctor_facade = Doctor_facade()
+patient_facade = Patient_facade()
 
 
 router = APIRouter(prefix="/api/v1/appointment", tags=['Appointment'])
@@ -20,7 +26,7 @@ async def create_appoint(
     ):
     doctor_id = Model.doctor_id
     patient_id = Model.patient_id
-    existing_doctor = await facade.get_doctor(doctor_id=doctor_id, session=session)
+    existing_doctor = await doctor_facade.get_doctor(doctor_id=doctor_id, session=session)
 
     if not existing_doctor:
         raise HTTPException(
@@ -28,7 +34,7 @@ async def create_appoint(
             detail='Doctor Not Found'
         )
     
-    existing_patient = await facade.get_patient(patient_id=patient_id, session=session)
+    existing_patient = await patient_facade.get_patient(patient_id=patient_id, session=session)
 
     if not existing_patient:
         raise HTTPException(
@@ -40,7 +46,7 @@ async def create_appoint(
     Model.created_at = datetime.now()
     Model.updated_at = datetime.now()
 
-    appoint = await facade.add_appointment(Model=Model, session=session)
+    appoint = await appoint_facade.add_appointment(Model=Model, session=session)
 
     return appoint
 
@@ -51,7 +57,7 @@ async def get_appoint(
     appoint_id: UUID,
     session: AsyncSession = Depends(get_db)
     ):
-    appoint = await facade.get_appointment(appointment_id=appoint_id, session=session)
+    appoint = await appoint_facade.get_appointment(appointment_id=appoint_id, session=session)
 
     if not appoint:
         raise HTTPException(
@@ -64,7 +70,7 @@ async def get_appoint(
 async def get_all_appoints(
     session: AsyncSession = Depends(get_db)
 ):
-    appoints = await facade.get_all_appointments(session=session)
+    appoints = await appoint_facade.get_all_appointments(session=session)
     if not appoints:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -80,14 +86,14 @@ async def get_appoint_by_doctor(
     doctor_id: UUID,
     session: AsyncSession = Depends(get_db)
     ):
-    doctor = await facade.get_doctor(doctor_id=doctor_id, session=session)
+    doctor = await doctor_facade.get_doctor(doctor_id=doctor_id, session=session)
     if not doctor:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Doctor not found"
         )
     
-    appoints = await facade.get_appointment_by_doctor(doctor_id=doctor_id, session=session)
+    appoints = await appoint_facade.get_appointment_by_doctor(doctor_id=doctor_id, session=session)
     if not appoints:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -103,13 +109,13 @@ async def get_appoint_by_patient(
     patient_id: UUID,
     session: AsyncSession = Depends(get_db)
     ):
-    patient = await facade.get_patient(patient_id=patient_id, session=session)
+    patient = await patient_facade.get_patient(patient_id=patient_id, session=session)
     if not patient:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Patient not found"
         )
-    appoints = await facade.get_appointment_by_patient(patient_id=patient_id, session=session)
+    appoints = await appoint_facade.get_appointment_by_patient(patient_id=patient_id, session=session)
     if not appoints:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -125,7 +131,7 @@ async def get_appoint_by_datetime(
     datetime: datetime,
     session: AsyncSession = Depends(get_db)
 ):
-    appoints = await facade.get_appointment_by_datetime(datetime=datetime, session=session)
+    appoints = await appoint_facade.get_appointment_by_datetime(datetime=datetime, session=session)
     if not appoints:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -142,14 +148,14 @@ async def update_full_appoint(
     Model: UpdateAppointmentModel,
     session: AsyncSession = Depends(get_db)
     ):
-    existing_appoint: Appointment = await facade.get_appointment(appointment_id=appoint_id, session=session)
+    existing_appoint: Appointment = await appoint_facade.get_appointment(appointment_id=appoint_id, session=session)
     if not existing_appoint:
         raise HTTPException(
             detail='Appoint not found',
             status_code=status.HTTP_404_NOT_FOUND
         )
     if existing_appoint['doctor_id'] != Model.doctor_id and Model.doctor_id:
-        existing_doctor = await facade.get_doctor(doctor_id=Model.doctor_id, session=session)
+        existing_doctor = await doctor_facade.get_doctor(doctor_id=Model.doctor_id, session=session)
         if not existing_doctor:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -157,14 +163,14 @@ async def update_full_appoint(
             )
         
     if existing_appoint['patient_id'] != Model.patient_id and Model.patient_id:
-        existing_patient = await facade.get_patient(patient_id=Model.patient_id, session=session)
+        existing_patient = await patient_facade.get_patient(patient_id=Model.patient_id, session=session)
         if not existing_patient:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail='Patient Not Found'
             )
     
-    appoint = await facade.update_appointment(appointment_id=appoint_id, Model=Model, session=session)
+    appoint = await appoint_facade.update_appointment(appointment_id=appoint_id, Model=Model, session=session)
     return appoint
 
 
@@ -173,7 +179,7 @@ async def delete_appoint(
     appoint_id: UUID,
     session: AsyncSession = Depends(get_db)
 ):
-    appoint = await facade.get_appointment(appointment_id=appoint_id, session=session)
+    appoint = await appoint_facade.get_appointment(appointment_id=appoint_id, session=session)
 
     if not appoint:
         raise HTTPException(
@@ -182,4 +188,4 @@ async def delete_appoint(
         )
     await delete_da_comment_by_appoint_id(appoint_id=appoint_id, session=session)
     await delete_pa_comment_by_appoint_id(appoint_id=appoint_id, session=session)
-    await facade.delete_appointment(appointment_id=appoint_id, session=session)
+    await appoint_facade.delete_appointment(appointment_id=appoint_id, session=session)

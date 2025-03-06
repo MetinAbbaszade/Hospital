@@ -2,20 +2,23 @@ from app.api.v1.schemas.auth import CustomOAuthBearer, create_access_token
 from app.api.v1.schemas.patient import PostPatientModel
 from app.api.v1.schemas.user import UserModel
 from app.models.user import User
-from app.models.patient import Patient
 from app.extensions import get_db
-from app.service import facade
+from app.service.patient import Facade as Patient_facade
+from app.service.user import Facade as User_facade
 from datetime import datetime, timezone
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+patient_facade = Patient_facade()
+user_facade = User_facade()
+
 router = APIRouter(prefix='/api/v1/auth', tags=['authentication'])
 
 @router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=UserModel)
 async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db)):
-    existing_user = await facade.get_user_by_email(email=Model.email, session=session)
+    existing_user = await user_facade.get_user_by_email(email=Model.email, session=session)
 
     if existing_user:
         raise HTTPException(
@@ -27,8 +30,8 @@ async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db
     Model.updated_at = datetime.now(timezone.utc)
     Model.created_at = datetime.now(timezone.utc)
 
-    new_user: User = await facade.add_user(Model=Model, session=session)
-    await facade.add_patient(Model=Model, session=session)
+    new_user: User = await user_facade.add_user(Model=Model, session=session)
+    await patient_facade.add_patient(Model=Model, session=session)
 
     return new_user
 
@@ -37,7 +40,7 @@ async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db
 async def login(formdata: CustomOAuthBearer = Depends(), session: AsyncSession = Depends(get_db)):
     email = formdata.email
 
-    existing_user: User = await facade.get_user_by_email(email=email, session=session)
+    existing_user: User = await user_facade.get_user_by_email(email=email, session=session)
 
     if not existing_user:
         raise HTTPException(

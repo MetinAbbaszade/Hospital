@@ -1,6 +1,8 @@
 from app.api.v1.schemas.patienttohospitalcomment import PostPatientToHospitalCommentModel, GetPatientToHospitalCommentModel, UpdatePatientToHospitalCommentModel
 from app.extensions import get_db
-from app.service import facade
+from app.service.patienttohospitalcomment import Facade as PH_facade
+from app.service.patient import Facade as Patient_facade
+from app.service.hospital import Facade as Hospital_facade
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, status, Depends
 from uuid import UUID, uuid4
@@ -9,15 +11,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix='/api/v1/ph_comment', tags=['Comment Was Written to Hospital by Patient'])
 
+ph_facade = PH_facade()
+patient_facade = Patient_facade()
+hospital_facade = Hospital_facade()
+
 @router.post('/', response_model=GetPatientToHospitalCommentModel, status_code=status.HTTP_201_CREATED)
 async def create_patient_to_hospital_comment(Model: PostPatientToHospitalCommentModel, session: AsyncSession = Depends(get_db)):
-    existing_hospital = await facade.get_hospital(hospital_id=Model.hospital_id, session=session)
+    existing_hospital = await hospital_facade.get_hospital(hospital_id=Model.hospital_id, session=session)
     if not existing_hospital:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Hospital not found'
         )
-    existing_patient = await facade.get_patient(patient_id=Model.patient_id, session=session)
+    existing_patient = await patient_facade.get_patient(patient_id=Model.patient_id, session=session)
     if not existing_patient:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -26,12 +32,12 @@ async def create_patient_to_hospital_comment(Model: PostPatientToHospitalComment
     Model.id = uuid4()
     Model.created_at = datetime.now()
     Model.updated_at = datetime.now()
-    hospitalcomment = await facade.add_ph_comment(Model=Model, session=session)
+    hospitalcomment = await ph_facade.add_ph_comment(Model=Model, session=session)
     return hospitalcomment
 
 @router.get('/', response_model=List[GetPatientToHospitalCommentModel], status_code=status.HTTP_200_OK)
 async def get_patient_to_hospital_comments(session: AsyncSession = Depends(get_db)):
-    hospitalcomments = await facade.get_all_ph_comments(session=session)
+    hospitalcomments = await ph_facade.get_all_ph_comments(session=session)
     if not hospitalcomments:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -44,7 +50,7 @@ async def get_patient_to_hospital_comments(session: AsyncSession = Depends(get_d
 
 @router.get('/{hospitalcomment_id}', response_model=GetPatientToHospitalCommentModel, status_code=status.HTTP_200_OK)
 async def get_patient_to_hospital_comment(hospitalcomment_id: UUID | str, session: AsyncSession = Depends(get_db)):
-    hospitalcomment = await facade.get_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
+    hospitalcomment = await ph_facade.get_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
     if not hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -54,14 +60,14 @@ async def get_patient_to_hospital_comment(hospitalcomment_id: UUID | str, sessio
 
 @router.get('/hospital/{hospital_id}', response_model=List[GetPatientToHospitalCommentModel], status_code=status.HTTP_200_OK)
 async def get_ph_comment_by_hospital_id(hospital_id: UUID, session: AsyncSession = Depends(get_db)):
-    existing_doctor = await facade.get_hospital(hospital_id=hospital_id, session=session)
+    existing_doctor = await hospital_facade.get_hospital(hospital_id=hospital_id, session=session)
     if not existing_doctor:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Doctor not found'
         )
     
-    comments = await facade.get_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    comments = await ph_facade.get_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
     if not comments:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -76,14 +82,14 @@ async def get_ph_comment_by_hospital_id(hospital_id: UUID, session: AsyncSession
 
 @router.get('/patient/{patient_id}', response_model=List[GetPatientToHospitalCommentModel], status_code=status.HTTP_200_OK)
 async def get_ph_comment_by_patient_id(patient_id: UUID, session: AsyncSession = Depends(get_db)):
-    existing_patient = await facade.get_patient(patient_id=patient_id, session=session)
+    existing_patient = await patient_facade.get_patient(patient_id=patient_id, session=session)
     if not existing_patient:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Patient not found'
         )
     
-    comments = await facade.get_ph_comment_by_patient_id(patient_id=patient_id, session=session)
+    comments = await ph_facade.get_ph_comment_by_patient_id(patient_id=patient_id, session=session)
     if not comments:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -98,7 +104,7 @@ async def get_ph_comment_by_patient_id(patient_id: UUID, session: AsyncSession =
 
 @router.put('/{hospitalcomment_id}', response_model=GetPatientToHospitalCommentModel, status_code=status.HTTP_200_OK)
 async def update_patient_to_hospital_comment(hospitalcomment_id: UUID | str, Model: UpdatePatientToHospitalCommentModel, session: AsyncSession = Depends(get_db)):
-    existing_hospitalcomment = await facade.get_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
+    existing_hospitalcomment = await ph_facade.get_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
     if not existing_hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -114,40 +120,40 @@ async def update_patient_to_hospital_comment(hospitalcomment_id: UUID | str, Mod
             status_code=status.HTTP_403_FORBIDDEN,
             detail='Patient_id cannot be changed'
         )
-    hospitalcomment = await facade.update_ph_comment(Model=Model, session=session, patienttohospitalcomment_id=hospitalcomment_id)
+    hospitalcomment = await ph_facade.update_ph_comment(Model=Model, session=session, patienttohospitalcomment_id=hospitalcomment_id)
     return hospitalcomment
 
 @router.delete('/{hospitalcomment_id}', response_model=None, status_code=status.HTTP_204_NO_CONTENT)
 async def delete_patient_to_hospital_comment(hospitalcomment_id: UUID | str, session: AsyncSession = Depends(get_db)):
-    existing_hospitalcomment = await facade.get_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
+    existing_hospitalcomment = await ph_facade.get_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
     if not existing_hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Hospitalcomment not found'
         )
-    await facade.delete_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
+    await ph_facade.delete_ph_comment(patienttohospitalcomment_id=hospitalcomment_id, session=session)
     return None
 
 
 @router.delete('/hospital/{hospital_id}', response_model=None, status_code=status.HTTP_204_NO_CONTENT)
 async def delete_ph_comment_by_hospital_id(hospital_id: UUID, session: AsyncSession = Depends(get_db)):
-    existing_hospitalcomment = await facade.get_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    existing_hospitalcomment = await ph_facade.get_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
     if not existing_hospitalcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Hospitalcomment not found'
         )
-    await facade.delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    await ph_facade.delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
     return None
 
 
 @router.delete('/patient/{patient_id}', response_model=None, status_code=status.HTTP_204_NO_CONTENT)
 async def delete_ph_comment_by_patient_id(patient_id: UUID, session: AsyncSession = Depends(get_db)):
-    existing_doctorcomment = await facade.get_ph_comment_by_patient_id(patient_id=patient_id, session=session)
+    existing_doctorcomment = await ph_facade.get_ph_comment_by_patient_id(patient_id=patient_id, session=session)
     if not existing_doctorcomment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Hospitalcomment not found'
         )
-    await facade.delete_ph_comment_by_patient_id(patient_id=patient_id, session=session)
+    await ph_facade.delete_ph_comment_by_patient_id(patient_id=patient_id, session=session)
     return None

@@ -1,18 +1,18 @@
 from app.extensions import get_db
 from app.models.user import User
-from datetime import datetime
 import jwt
+from app.service.user import Facade as User_facade
 from fastapi import Form, Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.service import facade
-from pydantic import BaseModel
 
 http_token = HTTPBearer()
 
 SECRETKEY = 'b1LpX8$^92Ww7JsdQm4!RgTzZf9#nCvMkRpY03!H5LN8@aX&yF7#G2'
 ALGORITHM = 'HS256'
+
+user_facade = User_facade()
 
 
 class CustomOAuthBearer:
@@ -52,7 +52,7 @@ async def get_current_user(token: str = Depends(get_token_from_credentials), ses
     decoded_token = await decode_token(token)
     email: str = decoded_token.get('email')
 
-    user: User = await facade.get_user_by_email(email=email, session=session)
+    user: User = await user_facade.get_user_by_email(email=email, session=session)
 
     if not user:
         raise HTTPException(
