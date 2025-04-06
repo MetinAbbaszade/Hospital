@@ -5,12 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePasswordBtns = document.querySelectorAll(".toggle-password");
   const inputs = document.querySelectorAll(".input-field input");
 
-  // Add placeholder attribute to all inputs to work with the floating label
   inputs.forEach(input => {
     input.setAttribute("placeholder", " ");
   });
 
-  // Toggle password visibility
   togglePasswordBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const input = btn.previousElementSibling;
@@ -26,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Switch between login and signup forms
   if (signupBtn && signinBtn && mainContainer) {
     signupBtn.addEventListener("click", () => {
       mainContainer.classList.toggle("change");
@@ -37,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Login form submission
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
@@ -62,7 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         if (response.ok) {
           console.log("Login Successful", data);
-          // You could redirect user or show success message
+          localStorage.setItem("token", data);
+          redirectToPage();
         } else {
           console.error("Login Failed:", data);
           alert("Error: " + (data.detail || response.statusText));
@@ -74,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Signup form submission
   const signupForm = document.getElementById('signup-form');
   if (signupForm) {
     signupForm.addEventListener('submit', async (event) => {
@@ -100,10 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          const user = await response.json();
-          console.log("Signup successful:", user);
+          const token = await response.json();
           alert("Signup successful!");
-          // You could redirect the user or automatically log them in
+          localStorage.setItem("token", token);
+          redirectToPage()
         } else {
           const error = await response.json();
           console.error("Error response:", error);
@@ -116,3 +112,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+function redirectToPage() {
+  const redirectionToPage = {
+    'patient': 'http://127.0.0.1:5506/frontend/Main%20Page/index.html',
+    'doctor': 'http://127.0.0.1:5506/frontend/Doctor%20Panel/doctor.html',
+    'admin': 'http://127.0.0.1:5506/frontend/Admin%20UI/admin.html',
+    'owner': 'http://127.0.0.1:5506/frontend/Hospital%20Management/hospital.html'
+  };
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("No token found in localStorage.");
+    return;
+  }
+
+  try {
+    const payloadBase64 = token.split('.')[1];
+    const decodedPayload = JSON.parse(atob(payloadBase64));
+
+    const role = decodedPayload['role'];
+
+    if (role && redirectionToPage[role]) {
+      window.location.href = redirectionToPage[role];
+    } else {
+      console.warn("Role not found or not recognized:", role);
+      alert("Unauthorized role or destination.");
+    }
+  } catch (error) {
+    console.error("Failed to decode token:", error);
+  }
+}
