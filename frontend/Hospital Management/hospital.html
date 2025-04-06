@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="hospital.css">
     <link rel="icon" href="Medical Snake.webp" type="image/x-icon">
     <script src="hospital.js" defer></script>
 </head>
+
 <body>
     <div class="main-content">
         <header>
@@ -24,10 +28,7 @@
 
             <div class="user-wrapper">
                 <img src="Profil Photo.webp" width="40px" height="40px" alt="Profile">
-                <div>
-                    <h4>Hospital Owner</h4>
-                    <small>Administrator</small>
-                </div>
+                <div> </div>
             </div>
         </header>
 
@@ -35,14 +36,14 @@
             <div class="cards">
                 <div class="card-single">
                     <div>
-                        <h1>10</h1>
-                        <span>Departments</span>
+                        <h1></h1>
+                        <span>Hospitals</span>
                     </div>
                     <div>
                         <span class="las la-users"></span>
                     </div>
                 </div>
-                <div class="card-single">
+                <div class="card-single doctor-count">
                     <div>
                         <h1>15</h1>
                         <span>Doctors</span>
@@ -62,79 +63,8 @@
                 </div>
             </div>
 
-            <!-- Add hospital cards container -->
-            <div class="hospital-cards-container" id="hospitalCardsContainer">
-                <!-- Hospital cards will be dynamically inserted here -->
-            </div>
-
             <div class="recent-grid">
-                <div class="hospital-info">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Hospital Information</h3>
-                            <button id="editHospital">Edit <span class="las la-edit"></span></button>
-                        </div>
-                        <div class="card-body">
-                            <div class="hospital-details">
-                                <div class="detail-item">
-                                    <span class="las la-hospital"></span>
-                                    <div class="info">
-                                        <h4>City Central Hospital</h4>
-                                        <small>Name</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-map-marker"></span>
-                                    <div class="info">
-                                        <h4>123 Medical Street, City Center</h4>
-                                        <small>Address</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-phone"></span>
-                                    <div class="info">
-                                        <h4>+1 234 567 8900</h4>
-                                        <small>Contact</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-envelope"></span>
-                                    <div class="info">
-                                        <h4>info@cityhospital.com</h4>
-                                        <small>Email</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-clock"></span>
-                                    <div class="info">
-                                        <h4>24/7</h4>
-                                        <small>Working Hours</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-bed"></span>
-                                    <div class="info">
-                                        <h4>250 Beds</h4>
-                                        <small>Capacity</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-calendar"></span>
-                                    <div class="info">
-                                        <h4>Since 1995</h4>
-                                        <small>Established</small>
-                                    </div>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="las la-certificate"></span>
-                                    <div class="info">
-                                        <h4>ISO 9001:2015</h4>
-                                        <small>Certification</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="hospital-cards-container" id="hospitalCardsContainer">
                 </div>
                 <div class="add-doctor">
                     <div class="card">
@@ -144,12 +74,16 @@
                         <div class="card-body">
                             <form id="addDoctorForm" class="add-doctor-form">
                                 <div class="form-group">
-                                    <label for="doctorName">Full Name</label>
+                                    <label for="doctorName">First Name</label>
                                     <input type="text" id="doctorName" name="doctorName" required>
                                 </div>
                                 <div class="form-group">
+                                    <label for="doctorSurName">SurName</label>
+                                    <input type="text" id="doctorSurName" name="doctorSurName" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="specialization">Specialization</label>
-                                    <input type="text" id="specialization" name="specialization" required>
+                                    <input type="text" id="specialization" name="specialization">
                                 </div>
                                 <div class="form-group">
                                     <label for="experience">Experience (years)</label>
@@ -162,6 +96,10 @@
                                 <div class="form-group">
                                     <label for="phone">Phone</label>
                                     <input type="tel" id="phone" name="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hospitalName">HospitalName</label>
+                                    <input type="tel" id="hospitalName" name="hospital" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="photo">Profile Photo</label>
@@ -264,4 +202,5 @@
         </div>
     </div>
 </body>
+
 </html>
