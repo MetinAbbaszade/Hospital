@@ -139,7 +139,7 @@ async def get_appoint_by_datetime(
         data.append(appoint)
     return data
 
-@router.put("/appoint_id", response_model=GetAppointmentModel, status_code=status.HTTP_200_OK)
+@router.put("/{appoint_id}", response_model=GetAppointmentModel, status_code=status.HTTP_200_OK)
 async def update_full_appoint(
     appoint_id: UUID,
     Model: UpdateAppointmentModel,
