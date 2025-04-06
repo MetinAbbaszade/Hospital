@@ -36,7 +36,8 @@ async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db
     payload = {
         'sub': new_user.id,
         'email': new_user.email,
-        'role': new_user.role
+        'role': new_user.role,
+        'full_name': new_user.fname + ' ' + new_user.lname
     }
     access_token = await create_access_token(payload)
 

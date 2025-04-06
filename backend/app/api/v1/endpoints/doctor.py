@@ -31,7 +31,6 @@ async def add_doctor(
     ):
     existing_email = await user_facade.get_user_by_email(email=Model.email, session=session)
 
-   
     if existing_email:
         raise HTTPException(
             detail='Email has already signed up',
@@ -50,6 +49,10 @@ async def add_doctor(
     Model.updated_at = datetime.now()
 
 
+    user = await user_facade.add_user(Model=Model, session=session)
+    await doctor_facade.add_doctor(Model=Model, session=session)
+
+    session.commit()
     for speciality in Model.specialities:
         specialization = await specialization_facade.get_specialization_by_name(name=speciality, session=session)
         if not specialization:
@@ -65,8 +68,8 @@ async def add_doctor(
             updated_at=None
         )
         await doctorspecialization_facade.add_doctorspecialization(Model=doctor_specialization, session=session)
-    user = await user_facade.add_user(Model=Model, session=session)
-    await doctor_facade.add_doctor(Model=Model, session=session)
+
+    session.commit()
 
     return user
 
