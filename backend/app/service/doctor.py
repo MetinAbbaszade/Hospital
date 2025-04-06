@@ -2,7 +2,6 @@ from app.persistence.modelRepository.doctor import DoctorRepository
 from app.models.doctor import Doctor
 from app.api.v1.schemas.doctor import PostDoctorModel, UpdateDoctorModel
 from sqlalchemy.ext.asyncio import AsyncSession
-#Doctor facade
 
 class Facade:
 

@@ -50,22 +50,6 @@ async def create_appoint(
 
     return appoint
 
-
-
-@router.get("/{appoint_id}", response_model=GetAppointmentModel, status_code=status.HTTP_200_OK)
-async def get_appoint(
-    appoint_id: UUID,
-    session: AsyncSession = Depends(get_db)
-    ):
-    appoint = await appoint_facade.get_appointment(appointment_id=appoint_id, session=session)
-
-    if not appoint:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Appoint not found"
-        )
-    return appoint
-
 @router.get("/", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
 async def get_all_appoints(
     session: AsyncSession = Depends(get_db)
@@ -81,7 +65,21 @@ async def get_all_appoints(
         data.append(appoint)
     return data
 
-@router.get("/doctor_id", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
+@router.get("/{appoint_id}", response_model=GetAppointmentModel, status_code=status.HTTP_200_OK)
+async def get_appoint(
+    appoint_id: UUID,
+    session: AsyncSession = Depends(get_db)
+    ):
+    appoint = await appoint_facade.get_appointment(appointment_id=appoint_id, session=session)
+
+    if not appoint:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appoint not found"
+        )
+    return appoint
+
+@router.get("/doctor/{doctor_id}", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
 async def get_appoint_by_doctor(
     doctor_id: UUID,
     session: AsyncSession = Depends(get_db)
@@ -92,7 +90,6 @@ async def get_appoint_by_doctor(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Doctor not found"
         )
-    
     appoints = await appoint_facade.get_appointment_by_doctor(doctor_id=doctor_id, session=session)
     if not appoints:
         raise HTTPException(
@@ -104,7 +101,7 @@ async def get_appoint_by_doctor(
         data.append(appoint)
     return data
 
-@router.get("/patient_id", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
+@router.get("/patient/{patient_id}", response_model=List[GetAppointmentModel], status_code=status.HTTP_200_OK)
 async def get_appoint_by_patient(
     patient_id: UUID,
     session: AsyncSession = Depends(get_db)
