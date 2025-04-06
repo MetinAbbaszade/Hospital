@@ -16,7 +16,7 @@ user_facade = User_facade()
 
 router = APIRouter(prefix='/api/v1/auth', tags=['authentication'])
 
-@router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=UserModel)
+@router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=str)
 async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db)):
     existing_user = await user_facade.get_user_by_email(email=Model.email, session=session)
 
@@ -33,7 +33,14 @@ async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db
     new_user: User = await user_facade.add_user(Model=Model, session=session)
     await patient_facade.add_patient(Model=Model, session=session)
 
-    return new_user
+    payload = {
+        'sub': new_user.id,
+        'email': new_user.email,
+        'role': new_user.role
+    }
+    access_token = await create_access_token(payload)
+
+    return access_token
 
 
 @router.post('/login', response_model=str, status_code=status.HTTP_201_CREATED)
