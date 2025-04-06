@@ -73,6 +73,9 @@ function loadAppointments() {
                         <span class="las la-check"></span>
                     </button>
                 ` : ''}
+                <button class="btn btn-danger" onclick="deleteAppointment(${appointment.id})">
+                    <span class="las la-times"></span>
+                </button>
             </td>
         `;
         appointmentsList.appendChild(row);
@@ -98,6 +101,22 @@ function confirmAppointment(appointmentId) {
         appointment.status = 'Confirmed';
         loadAppointments();
         alert(`Appointment with ${appointment.patientName} has been confirmed`);
+    }
+}
+
+function deleteAppointment(appointmentId) {
+    if (confirm('Bu görüşü silmək istədiyinizə əminsiniz?')) {
+        const index = appointments.findIndex(a => a.id === appointmentId);
+        if (index !== -1) {
+            appointments.splice(index, 1);
+            loadAppointments();
+            // Update stats
+            doctorData.stats.totalAppointments--;
+            if (appointments.filter(a => a.date === new Date().toISOString().split('T')[0]).length < doctorData.stats.todayAppointments) {
+                doctorData.stats.todayAppointments--;
+            }
+            loadStats();
+        }
     }
 }
 

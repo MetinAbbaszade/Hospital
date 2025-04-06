@@ -27,12 +27,12 @@
         <div class="forms-container">
             <!-- Signup Form -->
             <div class="form-control signup-form">
-                <form action="#">
+                <form action="#" id="signup-form">
                     <h2>Qeydiyyat</h2>
-                    <input type="text" placeholder="Ad" required />
-                    <input type="text" placeholder="Soyad" required />
-                    <input type="email" placeholder="Email" required />
-                    <input type="password" placeholder="Şifrə" required />
+                    <input type="text" placeholder="Ad" required id="sign-up-fname"/>
+                    <input type="text" placeholder="Soyad" required id="sign-up-lname" />
+                    <input type="email" placeholder="Email" required id="sign-up-email"/>
+                    <input type="password" placeholder="Şifrə" required id="sign-up-password" />
                     <button type="submit">Daxil ol</button>
                 </form>
                 <span>və yaxud</span>
@@ -44,10 +44,10 @@
             </div>
             <!-- Signin Form -->
             <div class="form-control signin-form">
-                <form action="#">
+                <form action="#" id="signin-form">
                     <h2>Daxil Ol</h2>
-                    <input type="text" placeholder="Ad Soyad" required />
-                    <input type="password" placeholder="Şifrə" required />
+                    <input type="text" placeholder="Email" required id="sign-in-email"/>
+                    <input type="password" placeholder="Şifrə" required id="sign-in-password"/>
                     <button type="submit">Daxil ol</button>
                 </form>
                 <span>və yaxud</span>

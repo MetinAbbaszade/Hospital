@@ -314,6 +314,19 @@ tr td:last-child {
     transform: translateY(-1px);
 }
 
+.btn-danger {
+    background: #ff4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #cc0000;
+}
+
+.las.la-times {
+    font-size: 1.1rem;
+}
+
 /* Modal Styles */
 .modal {
     display: none;

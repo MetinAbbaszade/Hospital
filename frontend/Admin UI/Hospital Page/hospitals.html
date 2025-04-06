@@ -161,6 +161,62 @@
         </main>
     </div>
 
+    <!-- Add Hospital Modal -->
+    <div id="addHospitalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Xəstəxana Əlavə Et</h2>
+                <span class="close">&times;</span>
+            </div>
+            <form id="addHospitalForm">
+                <div class="form-group">
+                    <label for="hospitalName">Xəstəxana Adı</label>
+                    <input type="text" id="hospitalName" name="hospitalName" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Ünvan</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="district">Rayon</label>
+                    <select id="district" name="district" required>
+                        <option value="">Rayon seçin</option>
+                        <option value="Nəsimi">Nəsimi</option>
+                        <option value="Yasamal">Yasamal</option>
+                        <option value="Nərimanov">Nərimanov</option>
+                        <option value="Binəqədi">Binəqədi</option>
+                        <option value="Səbail">Səbail</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="workingHours">İş Saatları</label>
+                    <div class="working-hours-inputs">
+                        <input type="time" id="openTime" name="openTime" required>
+                        <span>-dan</span>
+                        <input type="time" id="closeTime" name="closeTime" required>
+                        <span>-dək</span>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="is24Hours" name="is24Hours">
+                            <label for="is24Hours">24/7</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon</label>
+                    <input type="tel" id="phone" name="phone" pattern="[\+]?[0-9]{3,}" required>
+                </div>
+                <div class="form-group">
+                    <label for="hospitalImage">Xəstəxana Şəkli</label>
+                    <input type="file" id="hospitalImage" name="hospitalImage" accept="image/*" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Əlavə Et</button>
+                    <button type="button" class="cancel-btn">Ləğv Et</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="hospitals.js"></script>
 </body>
 </html>

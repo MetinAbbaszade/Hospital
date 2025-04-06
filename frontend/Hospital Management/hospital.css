@@ -230,7 +230,7 @@ main {
     cursor: pointer;
 }
 
-.detail-item:hover span,
+detail-item:hover span,
 .detail-item:hover .info h4,
 .detail-item:hover .info small {
     color: #fff;
@@ -663,6 +663,52 @@ main {
     border-top: 1px solid #eee;
 }
 
+.add-doctor-form {
+    padding: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark);
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--main-color);
+}
+
+.submit-btn {
+    background: var(--main-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #1582b5;
+}
+
 @media screen and (max-width: 768px) {
     .hospital-details {
         grid-template-columns: 1fr;
@@ -731,4 +777,131 @@ main {
     .hospital-details {
         grid-template-columns: 1fr;
     }
+}
+
+/* Add to your existing hospital.css file */
+
+.hospital-cards-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.hospital-card {
+    background: var(--main-color);
+    border-radius: 5px;
+}
+
+.hospital-card .card {
+    height: 100%;
+}
+
+.hospital-card .card-body {
+    padding: 1rem;
+}
+
+.hospital-card .hospital-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.no-hospitals {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+    font-size: 1.1rem;
+}
+
+.edit-hospital-btn {
+    background: var(--main-color);
+    border-radius: 4px;
+    color: #fff;
+    font-size: .8rem;
+    padding: .5rem 1rem;
+    border: 1px solid var(--main-color);
+    cursor: pointer;
+}
+
+.edit-hospital-btn:hover {
+    background: #fff;
+    color: var(--main-color);
+}
+
+/* Alert Notifications */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+}
+
+.alert-success {
+    background-color: #4CAF50;
+}
+
+.alert-error {
+    background-color: #f44336;
+}
+
+.alert-warning {
+    background-color: #ff9800;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Doctors List Styling */
+.doctors-list {
+    margin-top: 2rem;
+}
+
+.doctor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.doctor .info {
+    display: flex;
+    align-items: center;
+}
+
+.doctor .info img {
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.no-doctors {
+    text-align: center;
+    padding: 1rem;
+    color: #777;
+    font-style: italic;
+}
+
+/* Selected hospital card styling */
+.hospital-card.selected {
+    border: 2px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
 }

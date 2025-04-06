@@ -39,7 +39,6 @@ async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db
 @router.post('/login', response_model=str, status_code=status.HTTP_201_CREATED)
 async def login(formdata: CustomOAuthBearer = Depends(), session: AsyncSession = Depends(get_db)):
     email = formdata.email
-
     existing_user: User = await user_facade.get_user_by_email(email=email, session=session)
 
     if not existing_user:
