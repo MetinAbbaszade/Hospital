@@ -20,5 +20,5 @@ class GetPatientModel(BaseModel):
     updated_at: datetime | None = None    
 
 class UpdatePatientModel(BaseModel):
-    lname: str
-    fname: str
+    lname: str | None = None
+    fname: str | None = None
