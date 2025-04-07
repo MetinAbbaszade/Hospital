@@ -165,54 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
-    // // Function to display doctors in the UI
-    // function displayDoctors(doctors) {
-    //     const doctorsList = document.getElementById('doctorsList') || createDoctorsList();
-
-    //     doctorsList.innerHTML = '';
-
-    //     if (doctors.length === 0) {
-    //         doctorsList.innerHTML = '<p class="no-doctors">No doctors found for this hospital.</p>';
-    //         return;
-    //     }
-
-    //     doctors.forEach(doctor => {
-    //         const doctorDiv = document.createElement('div');
-    //         doctorDiv.className = 'doctor';
-    //         doctorDiv.setAttribute('data-id', doctor.id);
-    //         doctorDiv.innerHTML = `
-    //             <div class="info">
-    //                 <img src="../Profil Photo.webp" width="50px" height="50px" alt="Doctor">
-    //                 <div>
-    //                     <h4>${doctor.name}</h4>
-    //                     <small>${doctor.specialities.join(', ')}</small>
-    //                     <p class="experience">${doctor.experience || 'N/A'}</p>
-    //                 </div>
-    //             </div>
-    //             <div class="contact">
-    //                 <span class="las la-user-circle" title="View Profile"></span>
-    //                 <span class="las la-comment" title="Send Message"></span>
-    //                 <span class="las la-phone" title="Call"></span>
-    //             </div>
-    //         `;
-    //         doctorsList.appendChild(doctorDiv);
-    //     });
-    // }
-
-    // // Function to create doctors list container if it doesn't exist
-    // function createDoctorsList() {
-    //     const container = document.createElement('div');
-    //     container.id = 'doctorsList';
-    //     container.className = 'doctors-list';
-
-    //     // Find where to append this in your DOM structure
-    //     const main = document.querySelector('main');
-    //     main.appendChild(container);
-
-    //     return container;
-    // }
-
     function showAlert(message, type) {
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type}`;
