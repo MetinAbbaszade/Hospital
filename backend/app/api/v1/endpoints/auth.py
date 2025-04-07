@@ -1,14 +1,20 @@
-from app.api.v1.schemas.auth import CustomOAuthBearer, create_access_token
+from app.api.v1.schemas.auth import (
+    CustomOAuthBearer, create_access_token, create_tokens, 
+    decode_token, TokenResponse
+)
 from app.api.v1.schemas.patient import PostPatientModel
 from app.api.v1.schemas.user import UserModel
 from app.models.user import User
+from app.models.patient import Patient
 from app.extensions import get_db
 from app.service.patient import Facade as Patient_facade
 from app.service.user import Facade as User_facade
 from datetime import datetime, timezone
 from uuid import uuid4
+from typing import Dict
+from pydantic import BaseModel
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 patient_facade = Patient_facade()
@@ -16,7 +22,14 @@ user_facade = User_facade()
 
 router = APIRouter(prefix='/api/v1/auth', tags=['authentication'])
 
-@router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=str)
+class TokenPair(BaseModel):
+    access_token: str
+    refresh_token: str
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+@router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=TokenPair)
 async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db)):
     existing_user = await user_facade.get_user_by_email(email=Model.email, session=session)
 
@@ -31,20 +44,20 @@ async def signup(Model: PostPatientModel, session: AsyncSession = Depends(get_db
     Model.created_at = datetime.now(timezone.utc)
 
     new_user: User = await user_facade.add_user(Model=Model, session=session)
-    await patient_facade.add_patient(Model=Model, session=session)
+    new_patient: Patient = await patient_facade.add_patient(Model=Model, session=session)
 
     payload = {
         'sub': new_user.id,
         'email': new_user.email,
         'role': new_user.role,
-        'full_name': new_user.fname + ' ' + new_user.lname
+        'full_name': new_patient.fname + ' ' + new_patient.lname
     }
-    access_token = await create_access_token(payload)
+    access_token, refresh_token = await create_tokens(payload)
 
-    return access_token
+    return TokenPair(access_token=access_token, refresh_token=refresh_token)
 
 
-@router.post('/login', response_model=str, status_code=status.HTTP_201_CREATED)
+@router.post('/login', response_model=TokenPair, status_code=status.HTTP_201_CREATED)
 async def login(formdata: CustomOAuthBearer = Depends(), session: AsyncSession = Depends(get_db)):
     email = formdata.email
     existing_user: User = await user_facade.get_user_by_email(email=email, session=session)
@@ -67,6 +80,45 @@ async def login(formdata: CustomOAuthBearer = Depends(), session: AsyncSession =
         'role': existing_user.role
     }
 
-    access_token = await create_access_token(payload)
+    access_token, refresh_token = await create_tokens(payload)
 
-    return access_token
+    return TokenPair(access_token=access_token, refresh_token=refresh_token)
+
+
+@router.post('/refresh', response_model=TokenPair)
+async def refresh_token(refresh_data: RefreshRequest, session: AsyncSession = Depends(get_db)):
+    try:
+        decoded_token = await decode_token(refresh_data.refresh_token)
+        
+
+        if decoded_token.get('token_type') != 'refresh':
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail='Invalid token type'
+            )
+        
+
+        email = decoded_token.get('email')
+        existing_user = await user_facade.get_user_by_email(email=email, session=session)
+        
+        if not existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail='User not found'
+            )
+        
+        payload = {
+            'sub': existing_user.id,
+            'email': existing_user.email,
+            'role': existing_user.role
+        }
+        
+        access_token, refresh_token = await create_tokens(payload)
+        
+        return TokenPair(access_token=access_token, refresh_token=refresh_token)
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Invalid refresh token: {str(e)}"
+        )

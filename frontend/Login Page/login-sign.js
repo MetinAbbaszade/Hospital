@@ -58,7 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         if (response.ok) {
           console.log("Login Successful", data);
-          localStorage.setItem("token", data);
+          // Store both tokens
+          localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("refresh_token", data.refresh_token);
           redirectToPage();
         } else {
           console.error("Login Failed:", data);
@@ -96,10 +98,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          const token = await response.json();
+          const data = await response.json();
           alert("Signup successful!");
-          localStorage.setItem("token", token);
-          redirectToPage()
+          // Store both tokens
+          localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("refresh_token", data.refresh_token);
+          redirectToPage();
         } else {
           const error = await response.json();
           console.error("Error response:", error);
@@ -113,6 +117,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Add token refresh functionality
+async function refreshToken() {
+  const refreshToken = localStorage.getItem("refresh_token");
+  if (!refreshToken) {
+    console.error("No refresh token found");
+    return false;
+  }
+
+  try {
+    const response = await fetch("http://0.0.0.0:8000/api/v1/auth/refresh", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refresh_token: refreshToken
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
+      return true;
+    } else {
+      console.error("Token refresh failed", await response.json());
+      return false;
+    }
+  } catch (error) {
+    console.error("Token refresh error:", error);
+    return false;
+  }
+}
+
 function redirectToPage() {
   const redirectionToPage = {
     'patient': 'http://127.0.0.1:5506/frontend/Main%20Page/index.html',
@@ -120,9 +158,9 @@ function redirectToPage() {
     'admin': 'http://127.0.0.1:5506/frontend/Admin%20UI/admin.html',
     'owner': 'http://127.0.0.1:5506/frontend/Hospital%20Management/hospital.html'
   };
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   if (!token) {
-    console.error("No token found in localStorage.");
+    console.error("No access token found in localStorage.");
     return;
   }
 

@@ -243,7 +243,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 async function getDoctorIdFromLocalStorage() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
         console.error("No token found in localStorage.");
         return null;
@@ -261,7 +261,7 @@ async function getDoctorIdFromLocalStorage() {
 }
 
 async function getDoctorEmailFromLocalStorage() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
         console.error("No token found in localStorage.");
         return null;

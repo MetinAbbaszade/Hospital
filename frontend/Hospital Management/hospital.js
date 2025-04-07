@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getOwnerId() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access_token");
         if (!token) {
             console.error("No token found in localStorage.");
             return;
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getOwnerName() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access_token");
         if (!token) {
             console.error("No token found in localStorage.");
             return;
