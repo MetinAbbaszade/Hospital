@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedAze Admin</title>
-    <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" >
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="admin.css">
     <link rel="icon" href="Medical Snake.webp" type="image/x-icon">
 </head>
+
 <body>
     <input type="checkbox" id="nav-toggle">
 
@@ -20,7 +23,7 @@
             <ul>
                 <li>
                     <a href="" class="active"><span class="las la-igloo"></span>
-                    <span>Dashboard</span></a>
+                        <span>Dashboard</span></a>
                 </li>
                 <li>
                     <a href="" class="active"><span class="las la-users-cog"></span>
@@ -37,15 +40,15 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="main-content">
         <header>
             <h2>
-                    <label for="nav-toggle">
-                        <span class="las la-bars"></span>
-                    </label>
+                <label for="nav-toggle">
+                    <span class="las la-bars"></span>
+                </label>
 
-                    Dashboard
+                Dashboard
             </h2>
 
             <div class="search-wrapper">
@@ -56,7 +59,7 @@
             <div class="user-wrapper">
                 <img src="Profil Photo.webp" width="40px" height="40px">
                 <div>
-                    <h4>Vasif Yagubov</h4>
+                    <h4></h4>
                     <small>Admin</small>
                 </div>
             </div>
@@ -67,7 +70,7 @@
             <div class="cards">
                 <div class="card-single">
                     <div>
-                        <h1>54</h1>
+                        <h1 id="user-count"></h1>
                         <span>Users</span>
                     </div>
                     <div>
@@ -76,15 +79,16 @@
                 </div>
                 <div class="card-single">
                     <div>
-                        <h1>79</h1>
+                        <h1 id="hospital-count"></h1>
                         <span>Hospitals</span>
                     </div>
                     <div>
                         <span class="las la-hospital-symbol"></span>
                     </div>
-                </div> <div class="card-single">
+                </div>
+                <div class="card-single">
                     <div>
-                        <h1>124</h1>
+                        <h1 id="appointment-count"></h1>
                         <span>Appoints</span>
                     </div>
                     <div>
@@ -110,73 +114,20 @@
                             <h3>Recent Appoints</h3>
 
                             <button>See all <span class="las la-arrow-right">
-                            </span></button>
+                                </span></button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table width="100%">
                                     <thead>
                                         <tr>
-                                            <td>Appoint Title</td>
+                                            <td>Patient Name</td>
                                             <td>Hospital</td>
+                                            <td>Time</td>
                                             <td>Status</td>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Vasif's Appoint</td>
-                                            <td>BonEdea</td>
-                                            <td>
-                                                <div class="status purple"></div>
-                                                review
-                                            </td>
-                                         </tr>
-    
-                                         <tr>
-                                            <td>Web development</td>
-                                            <td>Mobile  team</td>
-                                            <td>
-                                                <div class="status pink"></div>
-                                                in progress
-                                            </td>
-                                         </tr>
-    
-                                         <tr>
-                                            <td>Ushop app</td>
-                                            <td>UI team</td>
-                                            <td>
-                                                <div class="status orange"></div>
-                                                pending
-                                            </td>
-                                         </tr>
-    
-                                         <tr>
-                                            <td>UI/UX Design</td>
-                                            <td>UI team</td>
-                                            <td>
-                                                <div class="status purple"></div>
-                                                review
-                                            </td>
-                                         </tr>
-    
-                                         <tr>
-                                            <td>Web development</td>
-                                            <td>Mobile  team</td>
-                                            <td>
-                                                <div class="status pink"></div>
-                                                in progress
-                                            </td>
-                                         </tr>
-    
-                                         <tr>
-                                            <td>Ushop app</td>
-                                            <td>UI team</td>
-                                            <td>
-                                                <div class="status orange"></div>
-                                                pending
-                                            </td>
-                                         </tr>
-    
+                                    <tbody class="appoint-body">
                                     </tbody>
                                 </table>
                             </div>
@@ -186,98 +137,19 @@
                 <div class="customers">
                     <div class="card">
                         <div class="card-header">
-                            <h3>New Users</h3>
+                            <h3>New Patients</h3>
 
                             <button>See all <span class="las la-arrow-right">
-                            </span></button>
+                                </span></button>
                         </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="Profil Photo.webp"  width="40px"
-                                height="40px">
-                                <div>
-                                    <h4>Lewis S. Cunningham</h4>
-                                    <small>CEO expert</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-comment"></span>
-                                    <span class="las la-phone"></span>
-                                </div>
-                            </div>
-
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="Profil Photo.webp"  width="40px"
-                                height="40px">
-                                <div>
-                                    <h4>Lewis S. Cunningham</h4>
-                                    <small>CEO expert</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-comment"></span>
-                                    <span class="las la-phone"></span>
-                                </div>
-                            </div>
-
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="Profil Photo.webp"  width="40px"
-                                height="40px">
-                                <div>
-                                    <h4>Lewis S. Cunningham</h4>
-                                    <small>CEO expert</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-comment"></span>
-                                    <span class="las la-phone"></span>
-                                </div>
-                            </div>
-
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="Profil Photo.webp"  width="40px"
-                                height="40px">
-                                <div>
-                                    <h4>Lewis S. Cunningham</h4>
-                                    <small>CEO expert</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-comment"></span>
-                                    <span class="las la-phone"></span>
-                                </div>
-                            </div>
-
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="Profil Photo.webp"  width="40px"
-                                height="40px">
-                                <div>
-                                    <h4>Lewis S. Cunningham</h4>
-                                    <small>CEO expert</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-comment"></span>
-                                    <span class="las la-phone"></span>
-                                </div>
-                            </div>
+                        <div id="card-body">
                         </div>
-
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    
+    <script src="./admin.js"></script>
 </body>
+
 </html>
