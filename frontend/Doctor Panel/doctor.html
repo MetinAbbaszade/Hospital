@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Panel</title>
-    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="doctor.css">
     <link rel="icon" href="Medical Snake.webp" type="image/x-icon">
 </head>
+
 <body>
     <header>
         <h2><span class="las la-stethoscope"></span> Doctor Panel</h2>
@@ -132,6 +135,13 @@
                                 <small id="hospitalName"></small>
                             </div>
                         </div>
+                        <div class="detail-item">
+                            <span class="las la-hospital"></span>
+                            <div class="info">
+                                <h4>Licence N<sup>o</sup></h4>
+                                <small id="licenseNo"></small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,36 +156,32 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="editFullName">
+                    <label>First Name</label>
+                    <input type="text" id="editFirstName">
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" id="editLastName">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="editEmail">
+                    <input type="email" id="editEmail" disabled>
                 </div>
                 <div class="form-group">
                     <label>Phone</label>
                     <input type="tel" id="editPhone">
                 </div>
                 <div class="form-group">
-                    <label>Specialization</label>
-                    <input type="text" id="editSpecialization">
-                </div>
-                <div class="form-group">
                     <label>Experience</label>
                     <input type="text" id="editExperience">
                 </div>
                 <div class="form-group">
-                    <label>License No</label>
-                    <input type="text" id="editLicense">
-                </div>
-                <div class="form-group">
-                    <label>Working Hours</label>
-                    <input type="text" id="editWorkingHours">
+                    <label>License N<sup>o</sup></label>
+                    <input type="text" id="editLicense" disabled>
                 </div>
                 <div class="form-group">
                     <label>Hospital</label>
-                    <input type="text" id="editHospital">
+                    <input type="text" id="editHospital" disabled>
                 </div>
             </div>
             <div class="modal-footer">
@@ -187,4 +193,5 @@
 
     <script src="doctor.js"></script>
 </body>
+
 </html>

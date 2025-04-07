@@ -158,14 +158,6 @@ async def update_doctor(
             detail='Doctor not found',
             status_code=status.HTTP_404_NOT_FOUND
         )
-
-    if Model.hospital_id != doctor.hospital_id and Model.hospital_id:
-        hospital = await hospital_facade.get_hospital(hospital_id=Model.hospital_id, session=session)
-        if not hospital:
-            raise HTTPException(
-                detail='Hospital not found',
-                status_code=status.HTTP_404_NOT_FOUND
-            )
     updated_doctor = await doctor_facade.update_doctor(Model=Model, doctor_id=doctor_id, session=session)
     return updated_doctor
 

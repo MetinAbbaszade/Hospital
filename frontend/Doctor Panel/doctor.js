@@ -1,24 +1,72 @@
-async function loadDoctorProfile() {
+async function getDoctorData() {
     const doctorId = await getDoctorIdFromLocalStorage();
     const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/${doctorId}`)
     if (!response.ok) {
         console.error("Failed to fetch doctor data:", response.statusText);
         return;
     }
-    const data = await response.json();
-    document.getElementById('doctorName').textContent = (data.fname).replace(data.fname[0], data.fname[0].toUpperCase()) + " " + (data.lname).replace(data.lname[0], data.lname[0].toUpperCase());
-    document.getElementById('fullName').textContent = (data.fname).replace(data.fname[0], data.fname[0].toUpperCase()) + " " + (data.lname).replace(data.lname[0], data.lname[0].toUpperCase());
-    document.getElementById('email').textContent = await getDoctorEmailFromLocalStorage();
-    document.getElementById('phone').textContent = data.phone_num;
-    document.getElementById('experience').textContent = data.experience;
-    const hospitalName = await fetch(`http://0.0.0.0:8000/api/v1/hospital/${data.hospital_id}`);
+    const data = await response.json()
+    return data;
+}
+
+async function getHospitalName(id) {
+    const hospitalName = await fetch(`http://0.0.0.0:8000/api/v1/hospital/${id}`);
     if (!hospitalName.ok) {
         console.error("Failed to fetch hospital data:", hospitalName.statusText);
         return;
     }
-    const hospitalData = await hospitalName.json();
+    const data = await hospitalName.json();
+    return data;
+}
+
+async function getDoctorSpecialization(id) {
+    const doctorSpecialization = await fetch(`http://0.0.0.0:8000/api/v1/doctorspecialization/doctor/${id}`);
+    if (!doctorSpecialization.ok) {
+        console.error("Failed to fetch doctor specialization data:", doctorSpecialization.statusText);
+        return;
+    }
+    const doctorSpecializationDatas = await doctorSpecialization.json();
+    return doctorSpecializationDatas;
+}
+
+async function loadDoctorProfile() {
+    const doctorId = await getDoctorIdFromLocalStorage();
+    if (!doctorId) {
+        console.error("No doctor ID found in localStorage.");
+        return;
+    }
+    const data = await getDoctorData();
+    if (!data) {
+        console.error("No doctor data found.");
+        return;
+    }
+    document.getElementById('doctorName').textContent = toCapitalize(data)
+    document.getElementById('fullName').textContent = toCapitalize(data)
+    document.getElementById('email').textContent = await getDoctorEmailFromLocalStorage();
+    document.getElementById('phone').textContent = data.phone_num;
+    document.getElementById('experience').textContent = data.experience;
+    document.getElementById('licenseNo').textContent = (data.id).slice(0, 4);
+
+
+    const doctorSpecializationDatas = await getDoctorSpecialization(doctorId);
+    const count = 0;
+    for (const specialization of doctorSpecializationDatas) {
+        const response = await fetch(`http://0.0.0.0:8000/api/v1/specialization/${specialization.specialization_id}`);
+        if (!response.ok) {
+            console.error("Failed to fetch specialization data:", response.statusText);
+            return;
+        }
+        const specializationData = await response.json();
+        if ((count + 1) === doctorSpecializationDatas.length) {
+            document.getElementById('specializationInfo').textContent += specializationData.name;
+        } else {
+            document.getElementById('specializationInfo').textContent += specializationData.name + ", ";
+        }
+    }
+    const hospitalData = await getHospitalName(data.hospital_id);
     document.getElementById('hospitalName').textContent = hospitalData.name;
 }
+
 
 
 async function loadAppointments() {
@@ -88,13 +136,6 @@ function loadStats() {
     todaysAppointmentWrapper.textContent = todaysAppointments;
 }
 
-// function viewDetails(appointmentId) {
-//     const appointment = appointments.find(a => a.id === appointmentId);
-//     if (appointment) {
-//         alert(`Viewing details for appointment with ${appointment.patientName}`);
-//     }
-// }
-
 async function confirmAppointment(appointmentId) {
     const response = await fetch(`http://0.0.0.0:8000/api/v1/appointment/${appointmentId}`,
         {
@@ -114,7 +155,7 @@ async function confirmAppointment(appointmentId) {
 }
 
 
-async function cancelAppointment(buttonElement, appointmentId) {
+async function cancelAppointment(appointmentId) {
     if (confirm('Bu görüşü silmək istədiyinizə əminsiniz?')) {
         const response = await fetch(`http://0.0.0.0:8000/api/v1/appointment/${appointmentId}`, {
             method: "PUT",
@@ -131,47 +172,70 @@ async function cancelAppointment(buttonElement, appointmentId) {
     }
 }
 
-// function editProfile() {
-//     document.getElementById('editFullName').value = doctorData.fullName;
-//     document.getElementById('editEmail').value = doctorData.email;
-//     document.getElementById('editPhone').value = doctorData.phone;
-//     document.getElementById('editSpecialization').value = doctorData.specialization;
-//     document.getElementById('editExperience').value = doctorData.experience;
-//     document.getElementById('editLicense').value = doctorData.license;
-//     document.getElementById('editWorkingHours').value = doctorData.hospital.workingHours;
-//     document.getElementById('editHospital').value = doctorData.hospital.name;
+async function editProfile() {
+    const doctorData = await getDoctorData();
+    if (!doctorData) {
+        console.error("No doctor data found.");
+        return;
+    }
+    const hospitalName = await getHospitalName(doctorData.hospital_id);
+    document.getElementById('editHospital').value = hospitalName.name;
+    document.getElementById('editLicense').value = (doctorData.id).slice(0, 4);
+    document.getElementById('editEmail').value = await getDoctorEmailFromLocalStorage();
+    document.getElementById('editModal').style.display = 'block';
+}
 
-//     document.getElementById('editModal').style.display = 'block';
-// }
+async function saveProfile() {
+    const obj = {
+        fname: document.getElementById('editFirstName').value,
+        lname: document.getElementById('editLastName').value,
+        phone_num: document.getElementById('editPhone').value,
+        experience: document.getElementById('editExperience').value
+    }
+    console.log(obj);
+    await updateDoctorProfile(obj);
+    document.getElementById('editModal').style.display = 'none';
+    alert('Profile updated successfully!');
+}
 
-// function saveProfile() {
-//     doctorData.fullName = document.getElementById('editFullName').value;
-//     doctorData.email = document.getElementById('editEmail').value;
-//     doctorData.phone = document.getElementById('editPhone').value;
-//     doctorData.specialization = document.getElementById('editSpecialization').value;
-//     doctorData.experience = document.getElementById('editExperience').value;
-//     doctorData.license = document.getElementById('editLicense').value;
-//     doctorData.hospital.workingHours = document.getElementById('editWorkingHours').value;
-//     doctorData.hospital.name = document.getElementById('editHospital').value;
+async function updateDoctorProfile(obj) {
+    for (const key in obj) {
+        if(obj[key] === "") {
+            delete obj[key];
+        }
+    }
+    if (Object.keys(obj).length === 0) {
+        console.error("No fields to update.");
+        return;
+    }
+    const doctorId = await getDoctorIdFromLocalStorage();
+    const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/${doctorId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({...obj})
+    })
+    if (!response.ok) {
+        console.error(`${response.json}`)
+        return;
+    }
+    window.location.reload();
+}
 
-//     loadDoctorProfile();
-//     document.getElementById('editModal').style.display = 'none';
-//     alert('Profile updated successfully!');
-// }
+function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
 
-// function closeModal() {
-//     document.getElementById('editModal').style.display = 'none';
-// }
+// Close modal when clicking outside
+window.onclick = (event) => {
+    if (event.target === document.getElementById('editModal')) {
+        closeModal();
+    }
+};
 
-// // Close modal when clicking outside
-// window.onclick = (event) => {
-//     if (event.target === document.getElementById('editModal')) {
-//         closeModal();
-//     }
-// };
-
-// // Close modal when clicking X
-// document.querySelector('.close').onclick = closeModal;
+// Close modal when clicking X
+document.querySelector('.close').onclick = closeModal;
 
 window.addEventListener('DOMContentLoaded', () => {
     loadDoctorProfile();
@@ -213,3 +277,6 @@ async function getDoctorEmailFromLocalStorage() {
         return null;
     }
 }
+
+
+const toCapitalize = (data) => (data.fname).replace(data.fname[0], data.fname[0].toUpperCase()) + " " + (data.lname).replace(data.lname[0], data.lname[0].toUpperCase());

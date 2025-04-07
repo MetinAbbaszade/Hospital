@@ -40,7 +40,7 @@ async def create_doctorspecialization(Model: PostDoctorSpecializationModel, sess
 @router.get('/', response_model=List[GetDoctorSpecializationModel], status_code=status.HTTP_200_OK)
 async def get_all_doctorspecialization(session: AsyncSession = Depends(get_db)):
     relationships = await doctorspecialization_facade.get_all_doctorspecializations(session=session)
-    if not relationship:
+    if not relationships:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='No Doctor Specialization Found'
@@ -60,6 +60,34 @@ async def get_doctorspecialization(doctorspecialization_id: UUID, session: Async
             detail='Doctor Specialization Not Found'
         )
     return relationship
+
+@router.get('/doctor/{doctor_id}', response_model=List[GetDoctorSpecializationModel], status_code=status.HTTP_200_OK)
+async def get_doctorspecialization_by_doctor(doctor_id: UUID, session: AsyncSession = Depends(get_db)):
+    relationships = await doctorspecialization_facade.get_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
+    if not relationships:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='No Doctor Specialization Found'
+        )
+    data = []
+    for relationship in relationships:
+        data.append(relationship)
+
+    return data
+
+@router.get('/specialization/{specialization_id}', response_model=List[GetDoctorSpecializationModel], status_code=status.HTTP_200_OK)
+async def get_doctorspecialization_by_specialization(specialization_id: UUID, session: AsyncSession = Depends(get_db)):
+    relationships = await doctorspecialization_facade.get_doctorspecialization_by_specialization(specialization_id=specialization_id, session=session)
+    if not relationships:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='No Doctor Specialization Found'
+        )
+    data = []
+    for relationship in relationships:
+        data.append(relationship)
+
+    return data
 
 @router.put('/{doctorspecialization_id}', response_model=GetDoctorSpecializationModel, status_code=status.HTTP_200_OK)
 async def update_doctorspecialization(doctorspecialization_id: UUID, Model: UpdateDoctorSpecializationModel, session: AsyncSession = Depends(get_db)):
@@ -96,4 +124,26 @@ async def delete_doctorspecialization(doctorspecialization_id: UUID, session: As
             detail='Doctor Specialization Not Found'
         )
     await doctorspecialization_facade.delete_doctorspecialization(doctorspecialization_id=doctorspecialization_id, session=session)
+    return None
+
+@router.delete('/doctor/{doctor_id}', response_model=None, status_code=status.HTTP_204_NO_CONTENT)
+async def delete_doctorspecialization_by_doctor(doctor_id: UUID, session: AsyncSession = Depends(get_db)):
+    existing_relationship = await doctorspecialization_facade.get_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
+    if not existing_relationship:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Doctor Specialization Not Found'
+        )
+    await doctorspecialization_facade.delete_doctorspecialization_by_doctor(doctor_id=doctor_id, session=session)
+    return None
+
+@router.delete('/specialization/{specialization_id}', response_model=None, status_code=status.HTTP_204_NO_CONTENT)
+async def delete_doctorspecialization_by_specialization(specialization_id: UUID, session: AsyncSession = Depends(get_db)):
+    existing_relationship = await doctorspecialization_facade.get_doctorspecialization_by_specialization(specialization_id=specialization_id, session=session)
+    if not existing_relationship:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Doctor Specialization Not Found'
+        )
+    await doctorspecialization_facade.delete_doctorspecialization_by_specialization(specialization_id=specialization_id, session=session)
     return None
