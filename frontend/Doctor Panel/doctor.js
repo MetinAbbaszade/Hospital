@@ -152,6 +152,7 @@ async function confirmAppointment(appointmentId) {
         console.error("Failed to fetch appointment data:", response.statusText);
         return;
     }
+    window.location.reload();
 }
 
 
@@ -227,14 +228,14 @@ function closeModal() {
     document.getElementById('editModal').style.display = 'none';
 }
 
-// Close modal when clicking outside
+
 window.onclick = (event) => {
     if (event.target === document.getElementById('editModal')) {
         closeModal();
     }
 };
 
-// Close modal when clicking X
+
 document.querySelector('.close').onclick = closeModal;
 
 window.addEventListener('DOMContentLoaded', () => {
