@@ -459,3 +459,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize with default language
 updateContent(currentLang);
+
+// Add functionality for My Account link
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle My Account link click
+    const myAccountLink = document.querySelector('.dropdown-item i.fas.fa-user').parentElement;
+    myAccountLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Check if user is authenticated
+        if (isAuthenticated()) {
+            // Redirect to User UI page
+            window.location.href = '../Admin UI/User UI/user_ui.html';
+        } else {
+            // Redirect to login page if user is not authenticated
+            window.location.href = 'Login Page/login_sign.html';
+        }
+    });
+    
+    // Also update the href attribute for the link
+    myAccountLink.href = isAuthenticated() ? '../Admin UI/User UI/user_ui.html' : 'Login Page/login_sign.html';
+});
+
+// Function to check if user is authenticated and redirect to login page if not
+function checkAuthAndRedirect() {
+    if (!isAuthenticated()) {
+        console.log('User not authenticated, redirecting to login page');
+        window.location.href = 'Login Page/login_sign.html';
+        return false;
+    }
+    return true;
+}
+
+// Function to get current page name from URL
+function getCurrentPageName() {
+    const path = window.location.pathname;
+    const pageName = path.split('/').pop();
+    return pageName;
+}
+
+// Check authentication on restricted pages
+document.addEventListener('DOMContentLoaded', () => {
+    // List of pages that require authentication
+    const restrictedPages = ['user_ui.html', 'appoints.html', 'profile.html'];
+    
+    const currentPage = getCurrentPageName();
+    
+    // If current page is restricted, check authentication
+    if (restrictedPages.includes(currentPage)) {
+        checkAuthAndRedirect();
+    }
+});
