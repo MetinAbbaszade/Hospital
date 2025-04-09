@@ -174,7 +174,7 @@ async def delete_hospital(
             status_code=status.HTTP_400_BAD_REQUEST
         )
     
-    await delete_dh_comment_by_hospital_id(hospital_id=hospital_id, session=session)
-    await delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
-    await hs_facade.delete_hospitalspecialization_by_hospital(hospital_id=hospital_id, session=session)
+    # await delete_dh_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    # await delete_ph_comment_by_hospital_id(hospital_id=hospital_id, session=session)
+    # await hs_facade.delete_hospitalspecialization_by_hospital(hospital_id=hospital_id, session=session)
     await hospital_facade.delete_hospital(hospital_id=hospital_id, session=session)

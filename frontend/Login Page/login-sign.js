@@ -155,7 +155,7 @@ function redirectToPage() {
   const redirectionToPage = {
     'patient': 'http://127.0.0.1:5506/frontend/Admin%20UI/User%20UI/user_ui.html',
     'doctor': 'http://127.0.0.1:5506/frontend/Doctor%20Panel/doctor.html',
-    'admin': 'http://127.0.0.1:5506/frontend/Admin%20UI/admin.html',
+    'admin': 'http://127.0.0.1:5506/frontend/Admin%20UI/Hospital%20Page/hospitals.html',
     'owner': 'http://127.0.0.1:5506/frontend/Hospital%20Management/hospital.html'
   };
   const token = localStorage.getItem("access_token");

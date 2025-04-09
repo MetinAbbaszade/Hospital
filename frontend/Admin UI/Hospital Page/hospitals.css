@@ -36,7 +36,7 @@
     margin-top: 1rem;
 }
 
-.sidebar-menu li{
+.sidebar-menu li {
     width: 100%;
     margin-bottom: 1.7rem;
     padding-left: 1rem;
@@ -82,17 +82,17 @@
     padding-right: 0.1rem;
 }
 
-#nav-toggle:checked + .sidebar{
+#nav-toggle:checked+.sidebar {
     width: 70px;
 }
 
-#nav-toggle:checked + .sidebar .sidebar-brand,
-#nav-toggle:checked + .sidebar li {
+#nav-toggle:checked+.sidebar .sidebar-brand,
+#nav-toggle:checked+.sidebar li {
     padding-left: 1rem;
     text-align: center;
 }
 
-#nav-toggle:checked + .sidebar .sidebar-brand h1 span:last-child {
+#nav-toggle:checked+.sidebar .sidebar-brand h1 span:last-child {
     display: none;
 }
 
@@ -102,21 +102,21 @@
     width: 1.5rem;
 }
 
-#nav-toggle:checked + .sidebar li a {
+#nav-toggle:checked+.sidebar li a {
     padding-left: 0rem;
 }
 
 
-#nav-toggle:checked + .sidebar .sidebar-brand h2 span:last-child,
-#nav-toggle:checked + .sidebar li a span:last-child {
+#nav-toggle:checked+.sidebar .sidebar-brand h2 span:last-child,
+#nav-toggle:checked+.sidebar li a span:last-child {
     display: none;
 }
 
-#nav-toggle:checked ~ .main-content{
+#nav-toggle:checked~.main-content {
     margin-left: 70px;
 }
 
-#nav-toggle:checked ~ .main-content header{
+#nav-toggle:checked~.main-content header {
     width: calc(100% - 70px);
     left: 70px;
 }
@@ -132,7 +132,7 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 1rem 1.5rem;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     position: fixed;
     left: 345px;
     width: calc(100% - 345px);
@@ -266,6 +266,8 @@ main {
     width: 90%;
     max-width: 600px;
     border-radius: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     animation: modalSlideIn 0.3s ease-out;
 }
@@ -275,6 +277,7 @@ main {
         transform: translateY(-100px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -395,4 +398,11 @@ main {
 
 .cancel-btn:hover {
     background: #e1e1e1;
+}
+
+.no-hospitals-message {
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+    padding: 20px;
 }
