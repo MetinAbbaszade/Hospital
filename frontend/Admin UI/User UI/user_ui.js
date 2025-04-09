@@ -158,6 +158,17 @@ const fetchDoctorDatas = async () => {
     return data;
 }
 
+const fetchDoctorData = async (doctorId) => {
+    const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/${doctorId}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    const data = await response.json();
+    return data;
+}
+
 const appointmentForm = document.querySelector('.appointment-form');
 appointmentForm.addEventListener('submit', async (e) => {
     const patientId = getUserIdFromLocalStorage();
@@ -172,15 +183,18 @@ appointmentForm.addEventListener('submit', async (e) => {
     }
     const localDateTime = new Date(`${date}T${time}`);
     const isoDateTime = localDateTime.toISOString();
-
-
+    const hospitalId = document.querySelector('.hospital-select').value;
+    const doctorData = await fetchDoctorData(doctorId);
+    if(doctorData.hospital_id !== hospitalId) {
+        alert("The correct hospital is not selected.");
+        return null;
+    }
     const appointmentData = {
         patient_id: patientId,
         doctor_id: doctorId,
         date_time: isoDateTime,
         problem: problem
     };
-
     await createAppointment(appointmentData);
     window.location.reload();
 })
