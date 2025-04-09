@@ -249,6 +249,10 @@ header h2 {
     background: #28a745;
 }
 
+.stat-icon.canceled{
+    background: #dc3545;
+}
+
 .appointments-stats {
     margin-bottom: 2rem;
 }
@@ -518,6 +522,11 @@ header h2 {
 .status.confirmed {
     background: #e5ffe5;
     color: #008000;
+}
+
+.status.canceled{
+    background: #ffe5e5;
+    color: #dc3545;
 }
 
 .appointment-details p {
