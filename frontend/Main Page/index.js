@@ -1,12 +1,72 @@
-// API endpoint for hospitals
-const API_URL = 'http://localhost:8000/api/v1';
+document.addEventListener('DOMContentLoaded', () => {
+    if (isAuthenticated()) {
+        document.querySelector('#login-button').style.display = 'none';
+        document.querySelector('#register-button').style.display = 'none';
+    }
+    loadHospitals();
+    loadDoctors();
+});
 
-// Load hospitals when the page loads
-document.addEventListener('DOMContentLoaded', loadHospitals);
+async function loadDoctors() {
+    try {
+        const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/`);
+        const doctors = await response.json();
+        displayDoctors(doctors);
+    } catch {
+        console.error('Error loading doctors:', error);
+    }
+}
+
+async function displayDoctors(doctors) {
+    const container = document.querySelector('#doctors-container');
+    container.innerHTML = '';
+    let count = 0;
+    for (const doctor of doctors) {
+        if (count != 4) {
+            const div = document.createElement('div');
+            div.className = 'col-md-6';
+            div.classList.add('mb-4');
+            div.classList.add('col-lg-4');
+            const hospital = await loadHospitalDetails(doctor.hospital_id)
+            const specializations = await fetchDoctorSpecialization(doctor.id)
+            div.innerHTML = `
+            <div class="doctor-card">
+                <div class="card-badge">
+                    <i class="fas fa-star"></i>Top Rated
+                </div>
+                <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg"
+                alt="Doctor" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-user-md"></i>Dr. ${doctor.fname} ${doctor.lname}
+                    </h5>
+                    <p class="card-text">
+                        <i class="fas fa-stethoscope"></i>${await fetchDoctorSpecialization(doctor.id)}
+                    </p>
+                    <div class="doctor-features">
+                        <span><i class="fas fa-hospital"></i>${hospital.name}</span>
+                        <span><i class="fas fa-clock"></i>${doctor.experience} Years</span>
+                    </div>
+                    <p class="doctor-description">${aboutDoctors['cardiologist']}</p>
+                    <a href="#appointment" class="btn btn-primary">
+                        <i class="fas fa-calendar-check"></i>Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>`;
+            container.appendChild(div);
+            count++;
+        }
+        else {
+            break;
+        }
+    }
+
+}
 
 async function loadHospitals() {
     try {
-        const response = await fetch(`${API_URL}/hospitals/`);
+        const response = await fetch(`http://0.0.0.0:8000/api/v1/hospital/`);
         const hospitals = await response.json();
         displayHospitals(hospitals);
     } catch (error) {
@@ -14,474 +74,71 @@ async function loadHospitals() {
     }
 }
 
-function displayHospitals(hospitals) {
+async function loadHospitalDetails(hospitalId) {
+    try {
+        const response = await fetch(`http://0.0.0.0:8000/api/v1/hospital/${hospitalId}`);
+        const hospital = await response.json();
+        return hospital;
+    } catch (error) {
+        console.error('Error loading hospital details:', error);
+    }
+}
+
+async function fetchDoctorSpecialization(doctorId) {
+    try {
+        const response = await fetch(`http://0.0.0.0:8000/api/v1/doctorspecialization/doctor/${doctorId}`);
+        const doctorSpecializations = await response.json();
+        const specializations = [];
+        for (const doctorSpecialization of doctorSpecializations) {
+            const response2 = await fetch(`http://0.0.0.0:8000/api/v1/specialization/${doctorSpecialization.specialization_id}`);
+            const specialization = await response2.json();
+            specializations.push(specialization.name);
+        }
+        return specializations.join(', ');
+    } catch {
+        console.error('Error loading doctor specialization:', error);
+    }
+}
+
+async function displayHospitals(hospitals) {
     const container = document.getElementById('hospitals-container');
     container.innerHTML = '';
 
-    hospitals.forEach(hospital => {
+    for (const hospital of hospitals) {
         const card = document.createElement('div');
         card.className = 'col-md-4';
         card.innerHTML = `
             <div class="card hospital-card">
-                <img src="${hospital.image || 'Admin UI/Hospital Page/Hospital 1.jpg'}" class="card-img-top" alt="${hospital.name}">
-                <div class="card-body">
-                    <h5 class="card-title">${hospital.name}</h5>
-                    <p class="card-text">${hospital.address}</p>
-                    <p class="card-text">
-                        <small class="text-muted">
-                            <i class="fas fa-phone"></i> ${hospital.phone}
-                        </small>
-                    </p>
-                    <button class="btn btn-primary" onclick="bookAppointment(${hospital.id})">
-                        Book Appointment
-                    </button>
-                </div>
-            </div>
+                        <div class="card-badge"><i class="fas fa-check-circle"></i> Premium</div>
+                        <!-- <img src="Admin UI/Hospital Page/Hospital 2.jpg" class="card-img-top" alt="Modern Hospital Baku"> -->
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>${hospital.name}</h5>
+                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>${hospital.state}, ${hospital.city}</p>
+                            <p class="card-text"><i class="fas fa-phone me-2"></i>${formatPhoneNumber(hospital.phone_number)}</p>
+                            <div class="hospital-features">
+                                <span><i class="fas fa-user-md"></i> ${await fetchDoctorCounts(hospital.id)} Doctors</span>
+                                <span><i class="fas fa-star"></i> 5.0</span>
+                                <span><i class="fas fa-procedures"></i> 200 Beds</span>
+                            </div>
+                            <div class="hospital-actions">
+                                <button class="btn btn-info btn-sm hospital-details">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment()">
+                                    <i class="fas fa-calendar-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
         `;
         container.appendChild(card);
-    });
-}
-
-function bookAppointment(hospitalId) {
-    // Redirect to login if user is not authenticated
-    if (!isAuthenticated()) {
-        window.location.href = 'Login Page/login_sign.html';
-        return;
-    }
-    // Otherwise redirect to appointment page
-    window.location.href = `Admin UI/Appoints Page/appoints.html?hospital=${hospitalId}`;
-}
-
-function isAuthenticated() {
-    // Check if user has valid token in localStorage
-    return localStorage.getItem('token') !== null;
-}
-
-function scrollToHospitals() {
-    document.getElementById('hospitals').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Chatbot functionality
-let isChatbotMinimized = false;
-
-function toggleChatbot() {
-    const chatbotBody = document.getElementById('chatbot-body');
-    const minimizeBtn = document.querySelector('.minimize-btn i');
-    
-    if (isChatbotMinimized) {
-        chatbotBody.style.display = 'flex';
-        minimizeBtn.className = 'fas fa-minus';
-    } else {
-        chatbotBody.style.display = 'none';
-        minimizeBtn.className = 'fas fa-plus';
-    }
-    
-    isChatbotMinimized = !isChatbotMinimized;
-}
-
-function sendMessage() {
-    const input = document.getElementById('chatbot-input');
-    const message = input.value.trim();
-    
-    if (message) {
-        addMessage('user', message);
-        input.value = '';
-        
-        // Process the message and get bot response
-        processMessage(message);
     }
 }
 
-function addMessage(sender, text) {
-    const messages = document.getElementById('chatbot-messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    messageDiv.textContent = text;
-    messages.appendChild(messageDiv);
-    messages.scrollTop = messages.scrollHeight;
+async function bookAppointment() {
+    window.location.href = "http://127.0.0.1:5506/frontend/Admin%20UI/User%20UI/user_ui.html";
 }
 
-function processMessage(message) {
-    // Simple response logic - can be expanded with more sophisticated AI/API integration
-    const responses = {
-        'hello': 'Hi! How can I help you today?',
-        'hi': 'Hello! What can I do for you?',
-        'appointment': 'To book an appointment, please select a hospital from the list above and click "Book Appointment".',
-        'help': 'I can help you with: \n- Finding hospitals\n- Booking appointments\n- General information',
-        'default': 'I\'m here to help! You can ask about hospitals, appointments, or any other healthcare related questions.'
-    };
-
-    const lowercaseMsg = message.toLowerCase();
-    let response = responses.default;
-
-    for (const [key, value] of Object.entries(responses)) {
-        if (lowercaseMsg.includes(key)) {
-            response = value;
-            break;
-        }
-    }
-
-    // Simulate typing delay
-    setTimeout(() => {
-        addMessage('bot', response);
-    }, 500);
-}
-
-// Handle Enter key in chatbot input
-document.getElementById('chatbot-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
-// Chat functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const chatMessages = document.getElementById('chatMessages');
-    const searchInput = document.getElementById('searchInput');
-    const sendButton = document.getElementById('sendButton');
-
-    const addMessage = (message, isUser = false) => {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-        
-        const icon = document.createElement('i');
-        icon.className = isUser ? 'fas fa-user' : 'fas fa-robot';
-        
-        const content = document.createElement('div');
-        content.className = 'message-content';
-        content.textContent = message;
-        
-        messageDiv.appendChild(icon);
-        messageDiv.appendChild(content);
-        chatMessages.appendChild(messageDiv);
-        
-        // Scroll to bottom
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    };
-
-    const processQuestion = (question) => {
-        // Sample responses - in a real app, this would be connected to a backend
-        const responses = {
-            'ən yaxın xəstəxana': 'Sizə ən yaxın xəstəxana Central Hospital-dır. Ünvan: Bakı şəhəri, Nərimanov rayonu.',
-            'həkim növləri': 'Bizim xəstəxanalarda müxtəlif ixtisaslar var: Kardioloq, Nevroloq, Pediatr, Dermatoloq, Ortoped və s.',
-            'qiymətlər': 'Qiymətlər həkim və xəstəxanaya görə dəyişir. Ümumi müayinə: 30-50 AZN, Mütəxəssis müayinəsi: 50-100 AZN.',
-            'default': 'Üzr istəyirəm, bu sual haqqında məlumatım yoxdur. Zəhmət olmasa, daha dəqiq sual verin və ya +994 12 345 67 89 nömrəsi ilə əlaqə saxlayın.'
-        };
-
-        const questionLower = question.toLowerCase();
-        let response = responses.default;
-
-        for (const [key, value] of Object.entries(responses)) {
-            if (questionLower.includes(key)) {
-                response = value;
-                break;
-            }
-        }
-
-        addMessage(response);
-    };
-
-    const handleSend = () => {
-        const message = searchInput.value.trim();
-        if (message) {
-            addMessage(message, true);
-            searchInput.value = '';
-            setTimeout(() => processQuestion(message), 500);
-        }
-    };
-
-    sendButton.addEventListener('click', handleSend);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handleSend();
-        }
-    });
-});
-
-// Function for quick action buttons
-function askQuestion(question) {
-    const searchInput = document.getElementById('searchInput');
-    searchInput.value = question;
-    document.getElementById('sendButton').click();
-}
-
-// Language translations
-const translations = {
-    az: {
-        hospitals: "Xəstəxanalar",
-        doctors: "Həkimlər",
-        about: "Haqqımızda",
-        contact: "Əlaqə",
-        register: "Qeydiyyat",
-        login: "Daxil ol",
-        language: "Dil",
-        welcome: "MedAze-yə xoş gəlmisiniz",
-        findHospitals: "Xəstəxanaları tap",
-        description: "Ən yaxşı xəstəxanaları tapın, görüş təyin edin və dərhal tibbi yardım alın.",
-        quickLinks: "Sürətli Keçidlər",
-        services: "Xidmətlər",
-        contactInfo: "Əlaqə Məlumatları",
-        bookAppointment: "Görüş təyin et",
-        findDoctor: "Həkim tap",
-        emergencyCare: "Təcili Yardım",
-        insurance: "Sığorta",
-        ourDoctors: "Həkimlərimiz",
-        topRated: "Ən Yaxşı",
-        certified: "Sertifikatlı",
-        experience: "il təcrübə",
-        specializes: "İxtisaslaşıb:",
-        cardiology: "Kardioloq",
-        neurology: "Nevroloq",
-        pediatrics: "Pediatr",
-        centralHospital: "Mərkəzi Xəstəxana",
-        medicalCenter: "Tibb Mərkəzi",
-        childrensHospital: "Uşaq Xəstəxanası",
-        doctorDescriptions: {
-            sarah: "Ürək xəstəlikləri və kardiovaskulyar sağlamlıq üzrə ixtisaslaşıb. Mürəkkəb kardiak prosedurlar üzrə təcrübəlidir.",
-            michael: "Nevroloji pozuntular və beyin sağlamlığı üzrə ekspert. Hərtərəfli nevroloji qayğı göstərir.",
-            emily: "Uşaq sağlamlığı və inkişafına həsr olunub. Pediatrik qayğı və müalicədə təcrübəlidir."
-        }
-    },
-    en: {
-        hospitals: "Hospitals",
-        doctors: "Doctors",
-        about: "About",
-        contact: "Contact",
-        register: "Register",
-        login: "Login",
-        language: "Language",
-        welcome: "Welcome to MedAze",
-        findHospitals: "Find Hospitals",
-        description: "Find the best hospitals, book appointments, and get instant medical assistance.",
-        quickLinks: "Quick Links",
-        services: "Services",
-        contactInfo: "Contact Info",
-        bookAppointment: "Book Appointment",
-        findDoctor: "Find Doctor",
-        emergencyCare: "Emergency Care",
-        insurance: "Insurance",
-        ourDoctors: "Our Doctors",
-        topRated: "Top Rated",
-        certified: "Certified",
-        experience: "Years Experience",
-        specializes: "Specializes in:",
-        cardiology: "Cardiologist",
-        neurology: "Neurologist",
-        pediatrics: "Pediatrician",
-        centralHospital: "Central Hospital",
-        medicalCenter: "Medical Center",
-        childrensHospital: "Children's Hospital",
-        doctorDescriptions: {
-            sarah: "Specializes in heart diseases and cardiovascular health. Experienced in complex cardiac procedures.",
-            michael: "Expert in neurological disorders and brain health. Provides comprehensive neurological care.",
-            emily: "Dedicated to children's health and development. Experienced in pediatric care and treatment."
-        }
-    },
-    ru: {
-        hospitals: "Больницы",
-        doctors: "Врачи",
-        about: "О нас",
-        contact: "Контакты",
-        register: "Регистрация",
-        login: "Вход",
-        language: "Язык",
-        welcome: "Добро пожаловать в MedAze",
-        findHospitals: "Найти больницы",
-        description: "Найдите лучшие больницы, записывайтесь на прием и получайте мгновенную медицинскую помощь.",
-        quickLinks: "Быстрые ссылки",
-        services: "Услуги",
-        contactInfo: "Контактная информация",
-        bookAppointment: "Записаться на прием",
-        findDoctor: "Найти врача",
-        emergencyCare: "Экстренная помощь",
-        insurance: "Страхование",
-        ourDoctors: "Наши врачи",
-        topRated: "Лучший",
-        certified: "Сертифицированный",
-        experience: "лет опыта",
-        specializes: "Специализация:",
-        cardiology: "Кардиолог",
-        neurology: "Невролог",
-        pediatrics: "Педиатр",
-        centralHospital: "Центральная больница",
-        medicalCenter: "Медицинский центр",
-        childrensHospital: "Детская больница",
-        doctorDescriptions: {
-            sarah: "Специализируется на заболеваниях сердца и сердечно-сосудистой системы. Имеет опыт проведения сложных кардиологических процедур.",
-            michael: "Эксперт по неврологическим расстройствам и здоровью мозга. Предоставляет комплексную неврологическую помощь.",
-            emily: "Посвятила себя здоровью и развитию детей. Имеет опыт в педиатрическом уходе и лечении."
-        }
-    }
-};
-
-// Set default language
-let currentLang = 'az';
-
-// Function to update content
-function updateContent(lang) {
-    currentLang = lang;
-    
-    // Update navigation items
-    document.querySelector('a[href="#hospitals"]').innerHTML = `<i class="fas fa-hospital me-1"></i>${translations[lang].hospitals}`;
-    document.querySelector('a[href="#doctors"]').innerHTML = `<i class="fas fa-user-md me-1"></i>${translations[lang].doctors}`;
-    document.querySelector('a[href="#about"]').innerHTML = `<i class="fas fa-info-circle me-1"></i>${translations[lang].about}`;
-    document.querySelector('a[href="#contact"]').innerHTML = `<i class="fas fa-envelope me-1"></i>${translations[lang].contact}`;
-    
-    // Update login/register buttons
-    document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.innerHTML.includes('Register')) {
-            link.innerHTML = `<i class="fas fa-user-plus me-1"></i>${translations[lang].register}`;
-        }
-        if (link.innerHTML.includes('Login')) {
-            link.innerHTML = `<i class="fas fa-sign-in-alt me-1"></i>${translations[lang].login}`;
-        }
-        if (link.innerHTML.includes('Language')) {
-            link.innerHTML = `<i class="fas fa-globe me-1"></i>${translations[lang].language}`;
-        }
-    });
-    
-    // Update hero section
-    document.querySelector('.hero h1').innerHTML = translations[lang].welcome;
-    document.querySelector('.hero p').textContent = translations[lang].description;
-    document.querySelector('.hero .btn-primary').innerHTML = `<i class="fas fa-hospital-user me-2"></i>${translations[lang].findHospitals}`;
-    
-    // Update doctors section
-    document.querySelector('.doctors-section h2').innerHTML = `<i class="fas fa-user-md me-2"></i>${translations[lang].ourDoctors}`;
-    
-    // Update doctor cards
-    const doctorCards = document.querySelectorAll('.doctor-card');
-    doctorCards.forEach((card, index) => {
-        const badges = card.querySelectorAll('.card-badge');
-        badges.forEach(badge => {
-            if (badge.innerHTML.includes('Top Rated')) {
-                badge.innerHTML = `<i class="fas fa-star"></i>${translations[lang].topRated}`;
-            }
-            if (badge.innerHTML.includes('Certified')) {
-                badge.innerHTML = `<i class="fas fa-certificate"></i>${translations[lang].certified}`;
-            }
-        });
-
-        const features = card.querySelectorAll('.doctor-features span');
-        features.forEach(feature => {
-            if (feature.innerHTML.includes('Central Hospital')) {
-                feature.innerHTML = `<i class="fas fa-hospital"></i>${translations[lang].centralHospital}`;
-            }
-            if (feature.innerHTML.includes('Medical Center')) {
-                feature.innerHTML = `<i class="fas fa-hospital"></i>${translations[lang].medicalCenter}`;
-            }
-            if (feature.innerHTML.includes('Children')) {
-                feature.innerHTML = `<i class="fas fa-hospital"></i>${translations[lang].childrensHospital}`;
-            }
-            if (feature.innerHTML.includes('Years')) {
-                const years = feature.innerHTML.match(/\d+/)[0];
-                feature.innerHTML = `<i class="fas fa-clock"></i>${years} ${translations[lang].experience}`;
-            }
-        });
-
-        const specialty = card.querySelector('.card-text');
-        if (specialty.innerHTML.includes('Cardiologist')) {
-            specialty.innerHTML = `<i class="fas fa-stethoscope"></i>${translations[lang].cardiology}`;
-        }
-        if (specialty.innerHTML.includes('Neurologist')) {
-            specialty.innerHTML = `<i class="fas fa-stethoscope"></i>${translations[lang].neurology}`;
-        }
-        if (specialty.innerHTML.includes('Pediatrician')) {
-            specialty.innerHTML = `<i class="fas fa-stethoscope"></i>${translations[lang].pediatrics}`;
-        }
-
-        const description = card.querySelector('.doctor-description');
-        if (description.innerHTML.includes('Sarah')) {
-            description.textContent = translations[lang].doctorDescriptions.sarah;
-        }
-        if (description.innerHTML.includes('Michael')) {
-            description.textContent = translations[lang].doctorDescriptions.michael;
-        }
-        if (description.innerHTML.includes('Emily')) {
-            description.textContent = translations[lang].doctorDescriptions.emily;
-        }
-
-        const appointmentBtn = card.querySelector('.btn-primary');
-        appointmentBtn.innerHTML = `<i class="fas fa-calendar-check"></i>${translations[lang].bookAppointment}`;
-    });
-    
-    // Update footer sections
-    document.querySelectorAll('.footer h5').forEach(h5 => {
-        if (h5.innerHTML.includes('Quick Links')) {
-            h5.innerHTML = `<i class="fas fa-link me-2"></i>${translations[lang].quickLinks}`;
-        }
-        if (h5.innerHTML.includes('Services')) {
-            h5.innerHTML = `<i class="fas fa-stethoscope me-2"></i>${translations[lang].services}`;
-        }
-        if (h5.innerHTML.includes('Contact Info')) {
-            h5.innerHTML = `<i class="fas fa-phone-alt me-2"></i>${translations[lang].contactInfo}`;
-        }
-    });
-    
-    // Update footer links
-    document.querySelectorAll('.footer a').forEach(link => {
-        if (link.innerHTML.includes('Book Appointment')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].bookAppointment}`;
-        }
-        if (link.innerHTML.includes('Find Doctor')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].findDoctor}`;
-        }
-        if (link.innerHTML.includes('Emergency Care')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].emergencyCare}`;
-        }
-        if (link.innerHTML.includes('Insurance')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].insurance}`;
-        }
-        if (link.innerHTML.includes('Hospitals')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].hospitals}`;
-        }
-        if (link.innerHTML.includes('Doctors')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].doctors}`;
-        }
-        if (link.innerHTML.includes('About')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].about}`;
-        }
-        if (link.innerHTML.includes('Contact')) {
-            link.innerHTML = `<i class="fas fa-chevron-right"></i>${translations[lang].contact}`;
-        }
-    });
-}
-
-// Add click event listeners to language options
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            const lang = e.target.closest('.dropdown-item').getAttribute('data-lang');
-            updateContent(lang);
-        });
-    });
-});
-
-// Initialize with default language
-updateContent(currentLang);
-
-// Add functionality for My Account link
-document.addEventListener('DOMContentLoaded', () => {
-    // Handle My Account link click
-    const myAccountLink = document.querySelector('.dropdown-item i.fas.fa-user').parentElement;
-    myAccountLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // Check if user is authenticated
-        if (isAuthenticated()) {
-            // Redirect to User UI page
-            window.location.href = '../Admin UI/User UI/user_ui.html';
-        } else {
-            // Redirect to login page if user is not authenticated
-            window.location.href = 'Login Page/login_sign.html';
-        }
-    });
-    
-    // Also update the href attribute for the link
-    myAccountLink.href = isAuthenticated() ? '../Admin UI/User UI/user_ui.html' : 'Login Page/login_sign.html';
-});
-
-// Function to check if user is authenticated and redirect to login page if not
 function checkAuthAndRedirect() {
     if (!isAuthenticated()) {
         console.log('User not authenticated, redirecting to login page');
@@ -491,22 +148,41 @@ function checkAuthAndRedirect() {
     return true;
 }
 
-// Function to get current page name from URL
+
 function getCurrentPageName() {
     const path = window.location.pathname;
     const pageName = path.split('/').pop();
     return pageName;
 }
 
-// Check authentication on restricted pages
-document.addEventListener('DOMContentLoaded', () => {
-    // List of pages that require authentication
-    const restrictedPages = ['user_ui.html', 'appoints.html', 'profile.html'];
-    
-    const currentPage = getCurrentPageName();
-    
-    // If current page is restricted, check authentication
-    if (restrictedPages.includes(currentPage)) {
-        checkAuthAndRedirect();
-    }
+document.querySelector('#logoutLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    window.location.href = 'http://127.0.0.1:5506/frontend/Login%20Page/login_sign.html';
 });
+
+const isAuthenticated = () => localStorage.getItem('access_token');
+
+function formatPhoneNumber(number) {
+    return number.replace(/^(\+\d{3})(\d{2})(\d{3})(\d{2})(\d{2})$/, '$1 $2 $3 $4 $5');
+}
+
+const fetchDoctorCounts = async (hospital_id) => {
+    const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/hospital/${hospital_id}`);
+    const data = await response.json();
+    return data.length ? data.length : 0;
+}
+
+const aboutDoctors = {
+    cardiologist: "Cardiologists specialize in diagnosing and treating diseases of the heart and blood vessels, such as hypertension, arrhythmias, and heart failure.",
+    neurologist: "Neurologists focus on disorders of the nervous system, including the brain, spinal cord, and nerves. They treat conditions like epilepsy, migraines, and multiple sclerosis.",
+    dermatologist: "Dermatologists treat conditions related to the skin, hair, and nails, including acne, eczema, psoriasis, and skin cancer.",
+    pediatrician: "Pediatricians care for the health and development of children from birth through adolescence, handling everything from routine checkups to childhood illnesses.",
+    orthopedic: "Orthopedic doctors diagnose and treat issues related to the musculoskeletal system, such as broken bones, joint problems, arthritis, and sports injuries.",
+    gynecologist: "Gynecologists specialize in women’s reproductive health, including menstruation, fertility, pregnancy, and menopause.",
+    ophthalmologist: "Ophthalmologists diagnose and treat eye conditions and perform eye surgeries. They deal with issues like cataracts, glaucoma, and vision correction.",
+    psychiatrist: "Psychiatrists are medical doctors who diagnose and treat mental health disorders, such as depression, anxiety, and schizophrenia. They can prescribe medication.",
+    oncologist: "Oncologists specialize in the diagnosis and treatment of cancer, including chemotherapy, immunotherapy, and palliative care.",
+    general_practitioner: "General practitioners (GPs) provide routine health care, treat common illnesses, and guide patients on preventive care and health education."
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
     <link rel="stylesheet" href="index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -41,33 +44,40 @@
                             <i class="fas fa-envelope me-1"></i>Contact
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="register-button">
                         <a class="nav-link" href="Login Page/login_sign.html">
                             <i class="fas fa-user-plus me-1"></i>Register
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="login-button">
                         <a class="nav-link" href="Login Page/login_sign.html">
                             <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                            data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle me-1"></i>Profile
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../Admin UI/User UI/user_ui.html" id="myAccountLink"><i class="fas fa-user me-2"></i>My Account</a></li>                           
-                            <li><a class="dropdown-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li><a class="dropdown-item" href="../Admin UI/User UI/user_ui.html" id="myAccountLink"><i
+                                        class="fas fa-user me-2"></i>My Account</a></li>
+                            <li><a class="dropdown-item" href="#" id="logoutLink"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                            data-bs-toggle="dropdown">
                             <i class="fas fa-globe me-1"></i>Language
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" data-lang="az"><img src="https://flagcdn.com/w20/az.png" alt="AZ" class="me-2">Azərbaycan</a></li>
-                            <li><a class="dropdown-item" href="#" data-lang="en"><img src="https://flagcdn.com/w20/gb.png" alt="EN" class="me-2">English</a></li>
-                            <li><a class="dropdown-item" href="#" data-lang="ru"><img src="https://flagcdn.com/w20/ru.png" alt="RU" class="me-2">Русский</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="az"><img
+                                        src="https://flagcdn.com/w20/az.png" alt="AZ" class="me-2">Azərbaycan</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="en"><img
+                                        src="https://flagcdn.com/w20/gb.png" alt="EN" class="me-2">English</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="ru"><img
+                                        src="https://flagcdn.com/w20/ru.png" alt="RU" class="me-2">Русский</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -114,7 +124,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <img src="https://img.freepik.com/free-vector/hospital-building-concept-illustration_114360-8440.jpg" alt="Hospital Illustration" class="img-fluid rounded-4 shadow-lg">
+                    <img src="https://img.freepik.com/free-vector/hospital-building-concept-illustration_114360-8440.jpg"
+                        alt="Hospital Illustration" class="img-fluid rounded-4 shadow-lg">
                 </div>
             </div>
         </div>
@@ -127,160 +138,20 @@
                 Our Partner Hospitals
             </h2>
             <div class="row" id="hospitals-container">
-                <div class="col-md-4">
-                    <div class="card hospital-card">
-                        <div class="card-badge"><i class="fas fa-check-circle"></i> Premium</div>
-                        <img src="Admin UI/Hospital Page/Hospital 1.jpg" class="card-img-top" alt="Central Hospital">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>Central Hospital</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>Baku, Azerbaijan</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>+994 12 345 67 89</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> 50+ Doctors</span>
-                                <span><i class="fas fa-star"></i> 4.8</span>
-                                <span><i class="fas fa-procedures"></i> 200 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment(1)">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card hospital-card">
-                        <div class="card-badge"><i class="fas fa-check-circle"></i> Premium</div>
-                        <img src="Admin UI/Hospital Page/Hospital 2.jpg" class="card-img-top" alt="MedPlaza">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>MedPlaza</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>Ganja, Azerbaijan</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>+994 12 345 67 90</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> 35+ Doctors</span>
-                                <span><i class="fas fa-star"></i> 4.6</span>
-                                <span><i class="fas fa-procedures"></i> 150 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment(2)">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card hospital-card">
-                        <img src="Admin UI/Hospital Page/Hospital 3.jpg" class="card-img-top" alt="Sumgayit Medical Center">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>Sumgayit Medical Center</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>Sumgayit, Azerbaijan</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>+994 12 345 67 91</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> 30+ Doctors</span>
-                                <span><i class="fas fa-star"></i> 4.5</span>
-                                <span><i class="fas fa-procedures"></i> 120 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment(3)">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card hospital-card">
-                        <img src="Admin UI/Hospital Page/Hospital 4.jpg" class="card-img-top" alt="Baku Medical Plaza">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>Baku Medical Plaza</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>Baku, Azerbaijan</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>+994 12 345 67 92</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> 40+ Doctors</span>
-                                <span><i class="fas fa-star"></i> 4.7</span>
-                                <span><i class="fas fa-procedures"></i> 180 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment(4)">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card hospital-card">
-                        <div class="card-badge"><i class="fas fa-check-circle"></i> Premium</div>
-                        <img src="Admin UI/Hospital Page/Hospital 1.jpg" class="card-img-top" alt="Azerbaijan Medical Center">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>Azerbaijan Medical Center</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>Baku, Azerbaijan</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>+994 12 345 67 93</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> 45+ Doctors</span>
-                                <span><i class="fas fa-star"></i> 4.9</span>
-                                <span><i class="fas fa-procedures"></i> 220 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment(5)">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card hospital-card">
-                        <img src="Admin UI/Hospital Page/Hospital 2.jpg" class="card-img-top" alt="Modern Hospital Baku">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>Modern Hospital Baku</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>Baku, Azerbaijan</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>+994 12 345 67 94</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> 38+ Doctors</span>
-                                <span><i class="fas fa-star"></i> 4.6</span>
-                                <span><i class="fas fa-procedures"></i> 160 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment(6)">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
     <section class="doctors-section" id="doctors">
         <div class="container">
             <h2 class="text-center mb-5"><i class="fas fa-user-md me-2"></i>Our Doctors</h2>
-            <div class="row">
+            <div class="row" id="doctors-container">
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="doctor-card">
                         <div class="card-badge">
                             <i class="fas fa-star"></i>Top Rated
                         </div>
-                        <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg" alt="Doctor" class="card-img-top">
+                        <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg"
+                            alt="Doctor" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-user-md"></i>Dr. Sarah Johnson
@@ -292,7 +163,8 @@
                                 <span><i class="fas fa-hospital"></i>Central Hospital</span>
                                 <span><i class="fas fa-clock"></i>10+ Years</span>
                             </div>
-                            <p class="doctor-description">Specializes in heart diseases and cardiovascular health. Experienced in complex cardiac procedures.</p>
+                            <p class="doctor-description">Specializes in heart diseases and cardiovascular health.
+                                Experienced in complex cardiac procedures.</p>
                             <a href="#appointment" class="btn btn-primary">
                                 <i class="fas fa-calendar-check"></i>Book Appointment
                             </a>
@@ -301,7 +173,8 @@
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="doctor-card">
-                        <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" alt="Doctor" class="card-img-top">
+                        <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg"
+                            alt="Doctor" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-user-md"></i>Dr. Michael Brown
@@ -313,7 +186,8 @@
                                 <span><i class="fas fa-hospital"></i>Medical Center</span>
                                 <span><i class="fas fa-clock"></i>8 Years</span>
                             </div>
-                            <p class="doctor-description">Expert in neurological disorders and brain health. Provides comprehensive neurological care.</p>
+                            <p class="doctor-description">Expert in neurological disorders and brain health. Provides
+                                comprehensive neurological care.</p>
                             <a href="#appointment" class="btn btn-primary">
                                 <i class="fas fa-calendar-check"></i>Book Appointment
                             </a>
@@ -325,7 +199,8 @@
                         <div class="card-badge">
                             <i class="fas fa-certificate"></i>Certified
                         </div>
-                        <img src="https://img.freepik.com/free-photo/woman-doctor-wearing-lab-coat-with-stethoscope-isolated_1303-29791.jpg" alt="Doctor" class="card-img-top">
+                        <img src="https://img.freepik.com/free-photo/woman-doctor-wearing-lab-coat-with-stethoscope-isolated_1303-29791.jpg"
+                            alt="Doctor" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <i class="fas fa-user-md"></i>Dr. Emily Davis
@@ -337,7 +212,8 @@
                                 <span><i class="fas fa-hospital"></i>Children's Hospital</span>
                                 <span><i class="fas fa-clock"></i>12 Years</span>
                             </div>
-                            <p class="doctor-description">Dedicated to children's health and development. Experienced in pediatric care and treatment.</p>
+                            <p class="doctor-description">Dedicated to children's health and development. Experienced in
+                                pediatric care and treatment.</p>
                             <a href="#appointment" class="btn btn-primary">
                                 <i class="fas fa-calendar-check"></i>Book Appointment
                             </a>
@@ -353,10 +229,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <h2>About MedAze</h2>
-                    <p>MedAze is Azerbaijan's leading healthcare platform, connecting patients with the best hospitals and medical professionals across the country. Our mission is to make healthcare accessible and efficient for everyone.</p>
+                    <p>MedAze is Azerbaijan's leading healthcare platform, connecting patients with the best hospitals
+                        and medical professionals across the country. Our mission is to make healthcare accessible and
+                        efficient for everyone.</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="Admin UI/Hospital Page/Hospital 4.jpg" alt="About MedAze" class="img-fluid rounded">
+                    <!-- <img src="Admin UI/Hospital Page/Hospital 4.jpg" alt="About MedAze" class="img-fluid rounded"> -->
                 </div>
             </div>
         </div>
@@ -369,10 +247,10 @@
                     <div class="contact-info">
                         <h4><i class="fas fa-map-marker-alt"></i> Address</h4>
                         <p>123 Healthcare Street, Baku, Azerbaijan</p>
-                        
+
                         <h4><i class="fas fa-phone"></i> Phone</h4>
                         <p>+994 12 345 67 89</p>
-                        
+
                         <h4><i class="fas fa-envelope"></i> Email</h4>
                         <p>info@medaze.az</p>
                     </div>
@@ -400,7 +278,8 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5><i class="fas fa-hospital-alt me-2"></i>MEDAZE</h5>
-                    <p>Your trusted partner in healthcare management. We connect patients with the best hospitals and doctors in Azerbaijan.</p>
+                    <p>Your trusted partner in healthcare management. We connect patients with the best hospitals and
+                        doctors in Azerbaijan.</p>
                     <div class="social-links">
                         <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -461,4 +340,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
 </body>
+
 </html>
