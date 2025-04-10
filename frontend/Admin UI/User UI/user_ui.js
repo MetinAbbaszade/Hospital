@@ -132,17 +132,9 @@ const makeAppointSection = async () => {
 
     hospitalDatas.forEach(hospital => {
         const option = document.createElement('option');
-        option.value = hospital.id;
+        option.setAttribute('hospitalid', hospital.id);
         option.textContent = hospital.name;
         hospitalSelect.appendChild(option);
-    });
-    const doctorDatas = await fetchDoctorDatas();
-    const doctorSelect = document.querySelector('.doctor-select');
-    doctorDatas.forEach(doctor => {
-        const option = document.createElement('option');
-        option.value = doctor.id;
-        option.textContent = doctor.fname.charAt(0).toUpperCase() + doctor.fname.slice(1) + " " + doctor.lname.charAt(0).toUpperCase() + doctor.lname.slice(1);
-        doctorSelect.appendChild(option);
     });
 }
 
@@ -224,4 +216,37 @@ async function createAppointment(appointmentData) {
         console.error('Error creating appointment:', data);
         showAlert('Error creating appointment');
     }
+}
+
+const hospitalSelect = document.querySelector('#hospital-select');
+
+hospitalSelect.addEventListener('change', async (event) => {
+    const selectedOption = event.target.selectedOptions[0];
+    const hospitalId = selectedOption.getAttribute('hospitalid');
+    const doctorSelect = document.querySelector('.doctor-select');
+    if (!hospitalId) {
+        console.warn('No hospitalId found in selected option');
+        return;
+    }
+
+    try {
+        const datas = await fetchDoctorDatasByHospital(hospitalId);
+        doctorSelect.innerHTML = '<option value="">Select a doctor</option>'; 
+        datas.forEach((data) => {
+            const option = document.createElement('option');
+            option.setAttribute('doctor-id', data.id);
+            option.textContent = data.fname.charAt(0).toUpperCase() + data.fname.slice(1) + " " + data.lname.charAt(0).toUpperCase() + data.lname.slice(1)
+            doctorSelect.appendChild(option);
+        })
+
+    } catch (error) {
+        console.error('Error fetching doctor data:', error);
+    }
+});
+
+
+const fetchDoctorDatasByHospital = async (hospitalId) => {
+    const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/hospital/${hospitalId}`);
+    const data = await response.json();
+    return data;
 }
