@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#login-button').style.display = 'none';
         document.querySelector('#register-button').style.display = 'none';
     }
+    if(!isAuthenticated()){
+        document.querySelector('#profileDropdown').style.display = 'none';
+    }
     loadHospitals();
     loadDoctors();
 
