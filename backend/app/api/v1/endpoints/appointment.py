@@ -183,6 +183,6 @@ async def delete_appoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Appoint not found"
         )
-    await delete_da_comment_by_appoint_id(appoint_id=appoint_id, session=session)
-    await delete_pa_comment_by_appoint_id(appoint_id=appoint_id, session=session)
+    # await delete_da_comment_by_appoint_id(appoint_id=appoint_id, session=session)
+    # await delete_pa_comment_by_appoint_id(appoint_id=appoint_id, session=session)
     await appoint_facade.delete_appointment(appointment_id=appoint_id, session=session)

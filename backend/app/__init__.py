@@ -42,11 +42,11 @@ def create_app():
     app.include_router(router=appointment_router)
     app.include_router(router=specialization_router)
     app.include_router(router=doctorspecialization_router)
-    app.include_router(router=pd_comment_router)
-    app.include_router(router=da_comment_router)
-    app.include_router(router=pa_comment_router)
-    app.include_router(router=ph_comment_router)
-    app.include_router(router=dh_comment_router)
+    # app.include_router(router=pd_comment_router)
+    # app.include_router(router=da_comment_router)
+    # app.include_router(router=pa_comment_router)
+    # app.include_router(router=ph_comment_router)
+    # app.include_router(router=dh_comment_router)
     app.include_router(router=hospitalspecialization_router)
     return app
 

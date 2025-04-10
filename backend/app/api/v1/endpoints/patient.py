@@ -94,8 +94,8 @@ async def delete_patient(
             detail='Patient not found',
             status_code=status.HTTP_404_NOT_FOUND
         )
-    await delete_pd_comment_by_patient_id(patient_id=patient_id, session=session)
-    await delete_pa_comment_by_patient_id(patient_id=patient_id, session=session)
-    await delete_ph_comment_by_patient_id(patient_id=patient_id, session=session)
+    # await delete_pd_comment_by_patient_id(patient_id=patient_id, session=session)
+    # await delete_pa_comment_by_patient_id(patient_id=patient_id, session=session)
+    # await delete_ph_comment_by_patient_id(patient_id=patient_id, session=session)
     await patient_facade.delete_patient(patient_id=patient_id, session=session)
     await user_facade.delete_user(user_id=patient_id, session=session)
