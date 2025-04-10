@@ -1,3 +1,31 @@
+
+const aboutDoctors = {
+    "kardiologiya": "Kardioloqlar ürək və qan damarları xəstəliklərinin, o cümlədən hipertoniya, aritmiya və ürək çatışmazlığının diaqnostika və müalicəsində ixtisaslaşırlar.",
+    "ortopediya": "Ortopedlər sümük, oynaqlar və əzələ sistemi ilə bağlı problemlərin, o cümlədən sınıqlar, artrit və idman xəsarətlərinin müalicəsi ilə məşğul olurlar.",
+    "təcili_yardım": "Təcili yardım həkimləri qəfil və həyati təhlükə yaradan tibbi hallarda sürətli və effektiv tibbi yardım göstərirlər.",
+    "nevrologiya": "Nevroloqlar beyin, onurğa beyni və sinirlər daxil olmaqla sinir sistemi pozuntularının diaqnostikası və müalicəsini aparırlar.",
+    "onkologiya": "Onkoloqlar xərçəng və şiş xəstəliklərinin diaqnostika və müalicəsində ixtisaslaşırlar; kimyaterapiya, immunoterapiya və palyativ baxımı həyata keçirirlər.",
+    "pediatriya": "Pediatrlar doğuşdan yeniyetməlik dövrünə qədər uşaqların sağlamlığı və inkişafına nəzarət edir, xəstəliklərin müalicəsini həyata keçirirlər.",
+    "dermatologiya": "Dermatoloqlar dəri, saç və dırnaqlarla bağlı xəstəliklərin, o cümlədən sızanaq, ekzema və dəri xərçəngi kimi problemlərin müalicəsi ilə məşğul olurlar.",
+    "cərrahiyyə": "Cərrahlar müxtəlif xəstəlik və zədələrin müalicəsi üçün əməliyyatlar həyata keçirirlər – həm açıq, həm də minimal invaziv prosedurlar şəklində.",
+    "radiologiya": "Radioloqlar rentgen, KT, MRT kimi görüntüləmə üsullarından istifadə edərək diaqnoz qoyurlar və bəzən müalicə də edirlər.",
+    "endokrinologiya": "Endokrinoloqlar hormon balanssızlıqları və şəkərli diabet, qalxanabənzər vəzi xəstəlikləri kimi hormonal problemlərin müalicəsində ixtisaslaşırlar.",
+    "psixiatriya": "Psixiatrlar zehni pozuntular, o cümlədən depressiya, narahatlıq, şizofreniya kimi xəstəliklərin diaqnostika və müalicəsini həyata keçirirlər və dərman yaza bilirlər.",
+    "daxili_xəstəliklər": "Terapevtlər (daxili xəstəliklər üzrə həkimlər) orqan sistemlərinin müxtəlif xəstəliklərini aşkarlayır və müalicə edirlər.",
+    "nefrologiya": "Nefroloqlar böyrəklərlə bağlı xəstəliklərin, o cümlədən xroniki böyrək çatışmazlığı və dializ müalicəsinin aparılması ilə məşğul olurlar.",
+    "qastroenterologiya": "Qastroenteroloqlar həzm sistemi xəstəliklərinin – mədə, bağırsaq, qaraciyər və mədəaltı vəzi pozuntularının müalicəsi ilə məşğul olurlar.",
+    "pulmonologiya": "Pulmonoloqlar tənəffüs sistemi xəstəliklərinin, o cümlədən astma, KOAH və sətəlcəm kimi problemlərin diaqnostika və müalicəsini həyata keçirirlər.",
+    "allergologiya": "Allerqoloqlar allergik reaksiyalar, o cümlədən toz, yemək və dərman allergiyalarının və immun sistem pozuntularının müalicəsi ilə məşğul olurlar.",
+    "revmotologiya": "Revmotoloqlar oynaq və əzələ xəstəlikləri, məsələn revmatoid artrit və digər autoimmun xəstəlikləri müalicə edirlər.",
+    "ağrı_müalicəsi": "Ağrı mütəxəssisləri xroniki və kəskin ağrıların idarə edilməsi və müalicəsi ilə məşğul olurlar.",
+    "geriatriya": "Geriatriya həkimləri yaşlı insanların sağlamlıq problemlərinin diaqnostika və müalicəsi ilə məşğul olurlar.",
+    "infeksion_xəstəliklər": "İnfeksionistlər bakterial, virus və digər yoluxucu xəstəliklərin, məsələn hepatit və COVID-19-un müalicəsini həyata keçirirlər.",
+    "plastik_cərrahiyyə": "Plastik cərrahlar estetik və rekonstruktiv əməliyyatlar apararaq görünüşü yaxşılaşdırır və ya deformasiyaları aradan qaldırırlar.",
+    "lor": "LOR (qulaq, burun, boğaz) həkimləri bu orqanlarla bağlı xəstəliklərin müalicəsini həyata keçirirlər – məsələn, sinusit, otit və səs problemləri.",
+    "infeksion xəstəliklər": "İnfeksionistlər bakterial, virus və digər yoluxucu xəstəliklərin, məsələn hepatit və COVID-19-un müalicəsini həyata keçirirlər."
+  };
+  
+
 document.addEventListener('DOMContentLoaded', () => {
     if (isAuthenticated()) {
         document.querySelector('#login-button').style.display = 'none';
@@ -122,7 +150,9 @@ async function displayDoctors(doctors) {
     container.innerHTML = '';
     let count = 0;
     for (const doctor of doctors) {
-        if (count != 4) {
+
+        console.log(doctor.fname)
+        if (count != 6) {
             const div = document.createElement('div');
             div.className = 'col-md-6';
             div.classList.add('mb-4');
@@ -134,7 +164,7 @@ async function displayDoctors(doctors) {
                 <div class="card-badge">
                     <i class="fas fa-star"></i>Top Rated
                 </div>
-                <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg"
+                <img src="doctorImg/${doctor.fname}.webp"
                 alt="Doctor" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -147,7 +177,7 @@ async function displayDoctors(doctors) {
                         <span><i class="fas fa-hospital"></i>${hospital.name}</span>
                         <span><i class="fas fa-clock"></i>${doctor.experience} Years</span>
                     </div>
-                    <p class="doctor-description">${aboutDoctors['cardiologist']}</p>
+                    <p class="doctor-description">${aboutDoctors[specializations[0].toLowerCase()]}</p>
                     <a href="#appointment" class="btn btn-primary">
                         <i class="fas fa-calendar-check"></i>Book Appointment
                     </a>
@@ -203,36 +233,42 @@ async function fetchDoctorSpecialization(doctorId) {
 async function displayHospitals(hospitals) {
     const container = document.getElementById('hospitals-container');
     container.innerHTML = '';
-
+    let count = 0;
     for (const hospital of hospitals) {
-        const card = document.createElement('div');
-        card.className = 'col-md-4';
-        card.innerHTML = `
-            <div class="card hospital-card">
-                        <div class="card-badge"><i class="fas fa-check-circle"></i> Premium</div>
-                        <!-- <img src="Admin UI/Hospital Page/Hospital 2.jpg" class="card-img-top" alt="Modern Hospital Baku"> -->
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>${hospital.name}</h5>
-                            <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>${hospital.state}, ${hospital.city}</p>
-                            <p class="card-text"><i class="fas fa-phone me-2"></i>${formatPhoneNumber(hospital.phone_number)}</p>
-                            <div class="hospital-features">
-                                <span><i class="fas fa-user-md"></i> ${await fetchDoctorCounts(hospital.id)} Doctors</span>
-                                <span><i class="fas fa-star"></i> 5.0</span>
-                                <span><i class="fas fa-procedures"></i> 200 Beds</span>
-                            </div>
-                            <div class="hospital-actions">
-                                <button class="btn btn-info btn-sm hospital-details">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment()">
-                                    <i class="fas fa-calendar-check"></i>
-                                </button>
+        if (count != 6) {
+            const card = document.createElement('div');
+            card.className = 'col-md-4';
+            card.innerHTML = `
+                <div class="card hospital-card">
+                            <div class="card-badge"><i class="fas fa-check-circle"></i> Premium</div>
+                            <img src="hospitalImg/${hospital.name}.jpg" class="card-img-top" alt="${hospital.name}">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-hospital-alt me-2"></i>${hospital.name}</h5>
+                                <p class="card-text"><i class="fas fa-map-marker-alt me-2"></i>${hospital.state}, ${hospital.city}</p>
+                                <p class="card-text"><i class="fas fa-phone me-2"></i>${formatPhoneNumber(hospital.phone_number)}</p>
+                                <div class="hospital-features">
+                                    <span><i class="fas fa-user-md"></i> ${await fetchDoctorCounts(hospital.id)} Doctors</span>
+                                    <span><i class="fas fa-star"></i> 5.0</span>
+                                    <span><i class="fas fa-procedures"></i> 200 Beds</span>
+                                </div>
+                                <div class="hospital-actions">
+                                    <button class="btn btn-info btn-sm hospital-details">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm book-appointment" onclick="bookAppointment()">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-        `;
-        container.appendChild(card);
+            `;
+            container.appendChild(card);
+            count++;
+        }else{
+            return;
+        }
     }
+
 }
 
 async function bookAppointment() {
@@ -272,17 +308,4 @@ const fetchDoctorCounts = async (hospital_id) => {
     const response = await fetch(`http://0.0.0.0:8000/api/v1/doctor/hospital/${hospital_id}`);
     const data = await response.json();
     return data.length ? data.length : 0;
-}
-
-const aboutDoctors = {
-    cardiologist: "Cardiologists specialize in diagnosing and treating diseases of the heart and blood vessels, such as hypertension, arrhythmias, and heart failure.",
-    neurologist: "Neurologists focus on disorders of the nervous system, including the brain, spinal cord, and nerves. They treat conditions like epilepsy, migraines, and multiple sclerosis.",
-    dermatologist: "Dermatologists treat conditions related to the skin, hair, and nails, including acne, eczema, psoriasis, and skin cancer.",
-    pediatrician: "Pediatricians care for the health and development of children from birth through adolescence, handling everything from routine checkups to childhood illnesses.",
-    orthopedic: "Orthopedic doctors diagnose and treat issues related to the musculoskeletal system, such as broken bones, joint problems, arthritis, and sports injuries.",
-    gynecologist: "Gynecologists specialize in women’s reproductive health, including menstruation, fertility, pregnancy, and menopause.",
-    ophthalmologist: "Ophthalmologists diagnose and treat eye conditions and perform eye surgeries. They deal with issues like cataracts, glaucoma, and vision correction.",
-    psychiatrist: "Psychiatrists are medical doctors who diagnose and treat mental health disorders, such as depression, anxiety, and schizophrenia. They can prescribe medication.",
-    oncologist: "Oncologists specialize in the diagnosis and treatment of cancer, including chemotherapy, immunotherapy, and palliative care.",
-    general_practitioner: "General practitioners (GPs) provide routine health care, treat common illnesses, and guide patients on preventive care and health education."
 }
