@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
   const signupBtn = document.getElementById("signup-btn");
   const signinBtn = document.getElementById("signin-btn");
   const mainContainer = document.querySelector(".container");

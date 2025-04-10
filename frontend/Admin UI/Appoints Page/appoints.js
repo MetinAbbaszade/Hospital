@@ -52,10 +52,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                             <i class="las la-calendar"></i>
                             Reschedule
                         </button>
-                        ${appointment.status === 'pending' ? `<button class="action-btn cancel-btn">
-                            <i class="las la-times"></i>
-                            Cancel
-                        </button>` : ''}
                     </div>`
         appointmentWrapper.append(appointmentItem);
     }
