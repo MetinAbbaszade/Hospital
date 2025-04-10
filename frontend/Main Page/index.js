@@ -5,7 +5,107 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     loadHospitals();
     loadDoctors();
+
+    initChatbot();
+
+    const quickActions = document.querySelector('.quick-actions');
+    if (quickActions) {
+        const hasHorizontalScroll = quickActions.scrollWidth > quickActions.clientWidth;
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+
+        if (!hasHorizontalScroll && scrollIndicator) {
+            scrollIndicator.style.display = 'none';
+        }
+
+        quickActions.addEventListener('scroll', function () {
+            if (this.scrollLeft > 30) {
+                scrollIndicator.style.opacity = '0';
+                setTimeout(() => {
+                    scrollIndicator.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        quickActions.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowRight') {
+                this.scrollLeft += 100;
+            } else if (e.key === 'ArrowLeft') {
+                this.scrollLeft -= 100;
+            }
+        });
+    }
 });
+
+const chatbotResponses = {
+    "Ən yaxın xəstəxana?": "Sizə ən yaxın xəstəxana Mərkəzi Klinikadır. Ünvan: Rəşid Behbudov küç. 87, Bakı. Telefon: +994 12 310 10 10",
+    "Həkim növləri?": "Bizim sistemdə aşağıdakı həkim növləri var: Kardioloq, Nevroloq, Dermatoloq, Pediatr, Ortoped, Ginekoloq, Oftalmoloq, Psixiatr, Onkoloq və Ümumi həkim.",
+    "Qiymətlər?": "Müayinə qiymətləri həkim ixtisasından asılı olaraq 30-120 AZN arasında dəyişir. Dəqiq məlumat üçün xəstəxana ilə əlaqə saxlayın.",
+    "İş saatları?": "Xəstəxanalarımız Bazar ertəsi-Cümə günləri 08:00-20:00, Şənbə 09:00-18:00 saatlarında fəaliyyət göstərir. Bazar günü 10:00-16:00 saatlarında yalnız təcili yardım şöbəsi işləyir.",
+    "Təcili yardım?": "Təcili tibbi yardım üçün 103 və ya 112 nömrələri ilə əlaqə saxlaya bilərsiniz. Həmçinin MedAze tətbiqindən də təcili yardım çağıra bilərsiniz.",
+    "Sığorta?": "Bizim xəstəxanalar şəbəkəsi Paşa Sığorta, Atəşgah Sığorta, AXA Mbask və digər əsas sığorta şirkətləri ilə əməkdaşlıq edir. Xidmət göstərilməzdən əvvəl sığorta kartınızı təqdim edin.",
+    "Başım ağrıyır və başgicəllənmə hiss edirəm. Nə etməliyəm?": "Baş ağrısı və başgicəllənmə bir çox səbəbdən ola bilər. Əgər simptomlar kəskindirsə və ya qəflətən başlayıbsa, təcili tibbi yardıma müraciət edin. Digər hallarda Nevroloq və ya Ümumi həkimə müraciət etməyiniz məsləhətdir. Bol su için və dincəlin.",
+    "Yüksək qızdırmam var və boğazım ağrıyır. Hansı həkimə müraciət etməliyəm?": "Qızdırma və boğaz ağrısı virus və ya bakterial infeksiyalara işarə ola bilər. Ümumi həkim və ya infeksionist həkimə müraciət etməyiniz tövsiyə olunur. Çox su için, parasetamol qəbul edin və dincəlin.",
+    "Dərimdə səpkilər var və qaşınır. Bu nə ola bilər?": "Dəri səpkisi və qaşınma allergiya, dəri infeksiyası və ya digər dəri xəstəliklərindən ola bilər. Dermatoloqa müraciət etməyiniz tövsiyə olunur. Dəri səpkisinə toxunmamağa çalışın və hidratlaşdırıcı krem istifadə edin.",
+    "Ürək döyüntülərim sürətlənib və nəfəs almaqda çətinlik çəkirəm. Təcili yardım lazımdır?": "Əgər kəskin nəfəs darlığı və sürətli ürək döyüntüsü yaşayırsınızsa, bu təcili tibbi vəziyyət ola bilər. Dərhal 103 və ya 112 ilə əlaqə saxlayın. Kardioloq müayinəsi tövsiyə olunur.",
+    "Qarın ağrısı və ürəkbulanma hiss edirəm. Nə etməliyəm?": "Qarın ağrısı və ürəkbulanma həzm sistemində problem ola bilər. Qastroenteroloq və ya ümumi həkimə müraciət edin. Yağlı və ağır yeməklərdən uzaq durun, bol su için və yüngül qidalar qəbul edin.",
+    "Oynaqlarda ağrı və şişkinlik var. Hansı həkimə getməliyəm?": "Oynaq ağrısı və şişkinlik revmatizm, artrit və ya travma əlaməti ola bilər. Revmatoloq və ya ortopedə müraciət edin. İsti kompres və ağrıkəsici kremlər müvəqqəti rahatlıq verə bilər.",
+    "Göz qızartısı və qaşınma hiss edirəm. Allergiya ola bilər?": "Göz qızartısı və qaşınma allergik reaksiya, göz infeksiyası və ya quruluq səbəbi ilə ola bilər. Oftalmoloqa müraciət edin. Gözlərinizi ovuşdurmaqdan çəkinin və təmiz su ilə yuyun.",
+    "Uşağımın səpgisi və yüksək hərarəti var. Təcili müdaxilə lazımdır?": "Uşaqlarda səpgi və yüksək hərarət müxtəlif infeksiyaların əlaməti ola bilər. Pediatra müraciət edin. Əgər uşaq 3 aydan kiçikdirsə və ya hərarət 39°C-dən yüksəkdirsə, dərhal tibbi yardım alın. Parasetamol uşaq dozasında və çox su vermək tövsiyə olunur."
+};
+
+function initChatbot() {
+    const quickActionButtons = document.querySelectorAll('.quick-action-btn');
+    const chatMessages = document.getElementById('chatMessages');
+
+    quickActionButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const question = this.getAttribute('data-question');
+            addUserMessage(question);
+
+            quickActionButtons.forEach(btn => btn.disabled = true);
+
+            // Add a small delay to simulate processing
+            setTimeout(() => {
+                addBotMessage(chatbotResponses[question]);
+
+                quickActionButtons.forEach(btn => btn.disabled = false);
+            }, 1000);
+        });
+    });
+}
+
+function addUserMessage(message) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user';
+    messageDiv.innerHTML = `
+        <i class="fas fa-user"></i>
+        <div class="message-content">
+            ${message}
+        </div>
+    `;
+    chatMessages.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+function addBotMessage(message) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message bot';
+    messageDiv.innerHTML = `
+        <i class="fas fa-robot"></i>
+        <div class="message-content">
+            ${message}
+        </div>
+    `;
+    chatMessages.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
 async function loadDoctors() {
     try {
@@ -41,7 +141,7 @@ async function displayDoctors(doctors) {
                         <i class="fas fa-user-md"></i>Dr. ${doctor.fname} ${doctor.lname}
                     </h5>
                     <p class="card-text">
-                        <i class="fas fa-stethoscope"></i>${await fetchDoctorSpecialization(doctor.id)}
+                        <i class="fas fa-stethoscope"></i>${specializations[0]}
                     </p>
                     <div class="doctor-features">
                         <span><i class="fas fa-hospital"></i>${hospital.name}</span>
@@ -94,7 +194,7 @@ async function fetchDoctorSpecialization(doctorId) {
             const specialization = await response2.json();
             specializations.push(specialization.name);
         }
-        return specializations.join(', ');
+        return specializations;
     } catch {
         console.error('Error loading doctor specialization:', error);
     }
