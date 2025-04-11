@@ -1,3 +1,24 @@
+const hospitalImg = [
+    './img/Hospital 1.jpg',
+    './img/Hospital 2.jpg',
+    './img/Hospital 3.jpg',
+    './img/Hospital 4.jpg',
+    'https://media.gettyimages.com/id/1312706413/photo/modern-hospital-building.jpg?s=612x612&w=0&k=20&c=oUILskmtaPiA711DP53DFhOUvE7pfdNeEK9CfyxlGio=',
+    'https://media.gettyimages.com/id/1453876840/photo/hospital-sign.jpg?s=612x612&w=0&k=20&c=r1s1eCKhK4jprX4HodUDOZ32H_x5rK0xIASqTx1lwVs=',
+    'https://media.gettyimages.com/id/1312706504/photo/modern-hospital-building.jpg?s=612x612&w=0&k=20&c=DT6YDRZMH5G5dL-Qv6VwPpVDpIDxJqkAY4Gg0ojGi58=',
+    'https://media.gettyimages.com/id/1191945461/photo/modern-hospital-building.jpg?s=612x612&w=0&k=20&c=FtoTkJB1BTa1yu4qqHJN_RHAkZiB9ZNJ0B8LunTpRXs=',
+    'https://media.gettyimages.com/id/173799627/photo/study-of-architectural-form-05.jpg?s=612x612&w=0&k=20&c=rrHldo5akJRAeGjm_5ICkzZrTooEYLcww1BkMeCc7Y0=',
+    'https://media.gettyimages.com/id/182344359/photo/hospital.jpg?s=612x612&w=0&k=20&c=uRc1SKUdsXgpz-H4NdTtlvLOo5_dftXalm4j_CmIssI=',
+    'https://media.gettyimages.com/id/157187378/photo/modern-building.jpg?s=612x612&w=0&k=20&c=uv2GYmOUDRpAL2vEnrdNxnlerEvC3K2OXTk3nyP6V64=',
+    'https://media.gettyimages.com/id/183239497/photo/modern-hospital-building-exterior.jpg?s=612x612&w=0&k=20&c=AOR5m5SnHGB4ximhe06fgbTfrrgb9XCJLmCck_hLiz0=',
+    'https://media.gettyimages.com/id/157525237/photo/modern-scottsdale-medical-business-building.jpg?s=612x612&w=0&k=20&c=my_e3_RjUAn21TmBKW_h-xrrCxzFMmwxDk8xindOtmY=',
+    'https://media.gettyimages.com/id/2170018550/photo/post-cancer-check-up.jpg?s=612x612&w=0&k=20&c=cfVQGT4htRKg2nTI-wfmiadL2tFw4RtreXMJYCYmO60=',
+    'https://media.gettyimages.com/id/157643948/photo/large-teaching-research-hospital.jpg?s=612x612&w=0&k=20&c=ovp3oGamE8OgthkfH045kg4zp0J7j7SHH0YHICmp1_A=',
+    'https://media.gettyimages.com/id/171308566/photo/hospital.jpg?s=612x612&w=0&k=20&c=xmmW_3wc4-qpjZk2aJfHgVMuQYRtmP_bnh-G7hf02lM=',
+    'https://media.gettyimages.com/id/626386896/photo/the-siriraj-hospital-in-bangkok-at-sunset.jpg?s=612x612&w=0&k=20&c=8OrZg785sPAwa9Lxlh_CGGeXbyC8c2Pa9Uzw5VcaypM=',
+    'https://media.gettyimages.com/id/935715504/photo/netcare-hospital-in-rosebank-johannesburg.jpg?s=612x612&w=0&k=20&c=QFT53OtVBzyvus928LSB-S_1r2dpINio522g0eAwB4o='
+]
+
 const districtsByCity = {
     'Bakı': [
         'Nəsimi', 'Yasamal', 'Nərimanov', 'Binəqədi', 'Səbail',
@@ -106,9 +127,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const card = document.createElement('div');
             card.className = 'hospital-card';
             card.innerHTML = `
-            <img src="Hospital ${index + 1}.jpg" alt="${hospital.name}">
+            <img src="${hospitalImg[index+1]}" alt="${hospital.name}">
             <h2>${hospital.name}</h2>
-            <p><span class="las la-map-marker"></span>Address: ${hospital.street} street ${hospital.state}, ${hospital.city} city</p>
+            <p><span class="las la-map-marker"></span>Address: ${hospital.street} ${hospital.state}, ${hospital.city} city</p>
             <p><span class="las la-clock"></span>Working Hours: 08:00 - 20:00</p>
             <p><span class="las la-phone"></span>${formatPhoneNumber(hospital.phone_number)}</p>
         `;

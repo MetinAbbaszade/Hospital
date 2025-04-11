@@ -165,7 +165,8 @@ const appointmentForm = document.querySelector('.appointment-form');
 appointmentForm.addEventListener('submit', async (e) => {
     const patientId = getUserIdFromLocalStorage();
     e.preventDefault();
-    const doctorId = document.querySelector('.doctor-select').value;
+    const selectedOption = document.querySelector('.doctor-select').selectedOptions[0];
+    const doctorId = selectedOption.getAttribute('doctor-id');
     const date = document.querySelector('.date-input').value;
     const time = document.querySelector('.time-input').value;
     const problem = document.querySelector('.problem-input').value;
@@ -175,12 +176,8 @@ appointmentForm.addEventListener('submit', async (e) => {
     }
     const localDateTime = new Date(`${date}T${time}`);
     const isoDateTime = localDateTime.toISOString();
-    const hospitalId = document.querySelector('.hospital-select').value;
-    const doctorData = await fetchDoctorData(doctorId);
-    if(doctorData.hospital_id !== hospitalId) {
-        alert("The correct hospital is not selected.");
-        return null;
-    }
+    console.log(patientId)
+    console.log(doctorId)
     const appointmentData = {
         patient_id: patientId,
         doctor_id: doctorId,
@@ -207,7 +204,7 @@ async function createAppointment(appointmentData) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({...appointmentData})
+        body: JSON.stringify({ ...appointmentData })
     })
     const data = await response.json();
     if (response.ok) {
@@ -231,7 +228,7 @@ hospitalSelect.addEventListener('change', async (event) => {
 
     try {
         const datas = await fetchDoctorDatasByHospital(hospitalId);
-        doctorSelect.innerHTML = '<option value="">Select a doctor</option>'; 
+        doctorSelect.innerHTML = '<option value="">Select a doctor</option>';
         datas.forEach((data) => {
             const option = document.createElement('option');
             option.setAttribute('doctor-id', data.id);

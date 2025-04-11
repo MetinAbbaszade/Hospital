@@ -108,7 +108,7 @@ async function loadAppointments() {
                     </button>
                 ` : ''}
                 ${appointment.status === 'pending' ? `
-                     <button class="btn btn-danger" onclick="cancelAppointment(this, '${appointment.id}')">
+                     <button class="btn btn-danger" onclick="cancelAppointment('${appointment.id}')">
                     <span class="las la-times"></span>
                 </button>
                 ` : ''}
@@ -171,6 +171,7 @@ async function cancelAppointment(appointmentId) {
             return;
         }
     }
+    window.location.reload();
 }
 
 async function editProfile() {

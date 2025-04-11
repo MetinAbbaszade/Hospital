@@ -137,7 +137,7 @@ async function showUsers() {
             <img src="Profil Photo.webp" width="40px" height="40px">
             <div>
                 <h4>${row.fname + " " + row.lname}</h4>
-                <small>CEO expert</small>
+                <small>User</small>
             </div>
         </div>
         <div class="contact">
