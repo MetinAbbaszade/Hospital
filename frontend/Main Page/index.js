@@ -120,7 +120,6 @@ function initChatbot() {
 
             quickActionButtons.forEach(btn => btn.disabled = true);
 
-            // Add a small delay to simulate processing
             setTimeout(() => {
                 addBotMessage(chatbotResponses[question]);
 
@@ -206,9 +205,9 @@ async function displayDoctors(doctors) {
                         <span><i class="fas fa-clock"></i>${doctor.experience} Years</span>
                     </div>
                     <p class="doctor-description">${aboutDoctors[specializations[0].toLowerCase()]}</p>
-                    <a href="#appointment" class="btn btn-primary">
+                    <button href="/" onclick="bookAppointment()" class="btn btn-primary">
                         <i class="fas fa-calendar-check"></i>Book Appointment
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>`;
@@ -300,7 +299,11 @@ async function displayHospitals(hospitals) {
 }
 
 async function bookAppointment() {
-    window.location.href = "http://127.0.0.1:5506/frontend/Admin%20UI/User%20UI/user_ui.html";
+    if(isAuthenticated()){
+        window.location.href = 'http://127.0.0.1:5506/frontend/Admin%20UI/User%20UI/user_ui.html';
+        return;
+    }
+    window.location.href = 'http://127.0.0.1:5506/frontend/Login%20Page/login_sign.html';
 }
 
 function checkAuthAndRedirect() {
